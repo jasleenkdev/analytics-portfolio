@@ -1,0 +1,32 @@
+# Project 2 configuration. Planted effects live in data_gen/plants.toml (generator only).
+
+[sim]
+seed = 20260504
+users = 60000
+experiment_start = "2026-05-04"   # first assignment day (a Monday)
+assignment_days = 7               # users are assigned on their first visit in the first week
+observation_days = 21             # each user is measured for 21 days from assignment
+pre_period_days = 28              # history before the experiment, used for CUPED and power
+pilot_nodes = 24
+pilot_treated = 8
+pilot_start = "2026-01-05"
+pilot_pre_days = 56
+pilot_post_days = 56
+
+[promo]
+control_free_threshold = 40.0     # control: free delivery on baskets at or above this value
+treatment_free_threshold = 25.0   # treatment: lower threshold under test
+delivery_fee = 3.49
+delivery_cost = 3.80              # cost to serve one order, paid by the business
+
+[analysis]
+alpha = 0.05
+power = 0.80
+srm_alpha = 0.001                 # SRM is a data-integrity alarm, so a strict threshold
+segment_correction = "holm"       # family-wise correction for segment cuts
+novelty_weeks = 3
+rider_cost_per_hour = 14.0        # converts rider minutes per order into cost per order
+pilot_guardrail_defect_pp = 0.30  # max tolerated increase in defect rate (percentage points)
+pilot_guardrail_sla_pp = 2.0      # max tolerated drop in % orders within SLA (percentage points)
+placebo_offset_days = 28          # fake treatment date this many days before the real one
+sla_minutes = 30

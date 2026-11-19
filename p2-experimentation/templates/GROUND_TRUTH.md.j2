@@ -1,0 +1,22 @@
+# Ground truth: planted effects in the project 2 generator
+
+Rendered from `data_gen/plants.toml` and `data/planted_entities.json` by the generator. The analysis never reads either; they are used only by the final found-vs-planted cross-check.
+
+## Experiment A: free-delivery threshold ({{ promo.control_free_threshold }} -> {{ promo.treatment_free_threshold }})
+Users: {{ sim.users }} randomised 50/50 on first visit between {{ start }} and {{ assign_end }}; each observed for {{ sim.observation_days }} days.
+
+1. **Sample-ratio mismatch on one day.** On assignment day {{ srm.day }} ({{ srm_date }}), {{ (srm.lost_control_share * 100) | round | int }}% of control assignments were dropped from the assignment log ({{ ent.lost_control_assignments }} users). Those users still exist and still order; they are just missing from `assignments`. Expected signature: overall SRM; the daily split is balanced except on that day.
+2. **Novelty effect.** Treatment lifts the order rate by {{ pe.order_lift_by_week | map("string") | join(", ") }} (relative) in weeks 1, 2 and 3 after assignment. Expected signature: a lift that decays week by week.
+3. **Heterogeneous effect.** Users who signed up less than 90 days before the test get an extra {{ pe.new_user_extra_lift }} lift in every week. Platform and zone have no true effect differences.
+4. **Cannibalisation of high-margin baskets.** In treatment, the probability that an order is a high-margin (small, top-up) basket is multiplied by {{ pe.high_margin_multiplier }}. Expected signature: lower high-margin share and lower product margin per order in treatment.
+5. **Threshold bunching.** In treatment, {{ (pe.bunching_prob * 100) | round | int }}% of baskets within {{ pe.bunching_window }} below the new threshold are topped up to just above it.
+- **Net truth:** more orders and GMV, lower contribution margin per user (lost fees + cheaper basket mix). The right call is not to launch at this threshold.
+
+## Experiment B: rider-batching pilot
+{{ sim.pilot_nodes }} nodes, {{ sim.pilot_treated }} treated ({{ ent.pilot_treated_nodes | join(", ") }}), {{ sim.pilot_pre_days }} days before and {{ sim.pilot_post_days }} days after {{ pilot_date }}.
+
+1. **Cost benefit.** Rider minutes per order change by {{ (pl.rider_min_per_order * 100) | round | int }}% at treated nodes after the start.
+2. **Guardrail regression.** Defect rate rises by {{ pl.defect_rate_pp }} percentage points at treated nodes; mean delivery time rises by {{ pl.delivery_min }} min; % within SLA changes by {{ pl.sla_pp }} points.
+3. **Parallel trends hold.** Treated and control nodes share seasonality, trend and daily shocks; there is no pre-period divergence, so a placebo test should find nothing.
+4. **Data gap.** Control node(s) {{ ent.pilot_nodes_with_gaps | join(", ") }} lose days {{ dq.missing_days | join(", ") }} of the panel (unbalanced panel).
+- **Net truth:** the pilot saves rider cost but breaches the defect guardrail; it should not be scaled as-is.

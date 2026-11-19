@@ -260,3 +260,31 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** the links are known only after publishing, and keeping them out of the templates means publishing changes one file and a rebuild.
 - **Alternatives rejected:** deriving the URL from the git remote at build time, because a fresh clone of a fork would point at the wrong site; hard-coding the URL in templates, because it breaks the "no hand-typed values" rule in spirit.
 - **Trade-off / consequence:** until publishing, READMEs link only to the committed dashboard file.
+
+### D-038: promotion test design with a fixed per-user observation window
+- **Project / phase:** p2, phase 8
+- **Decision:** about 60k users are randomised 50/50 on their first visit during a 7-day assignment week; each user is measured for exactly 21 days from assignment, so every user has the same exposure and weeks 1-3 since assignment are comparable for the novelty cut. Control keeps free delivery from a basket of 40; treatment gets free delivery from 25.
+- **Why:** staggered entry is how real app experiments enrol users; a fixed window per user avoids the bias where early-assigned users contribute more days than late ones, and makes "week since assignment" the natural axis for novelty.
+- **Alternatives rejected:** a calendar-window analysis (all orders between two dates), because early and late users would have unequal exposure and novelty would be blurred across calendar weeks; randomising at session level, because a delivery-fee policy has to be stable for a user.
+- **Trade-off / consequence:** the experiment needs 28 calendar days to observe 21 days for the last users; effects beyond three weeks are not observed.
+
+### D-039: user behaviour model for the promotion test
+- **Project / phase:** p2, phase 8
+- **Decision:** each user orders as a Poisson process with a gamma-distributed personal rate, has a lognormal personal basket size, and a beta-distributed propensity for small high-margin "top-up" baskets (36% vs 21% product margin). A 28-day pre-period is generated under the control policy for every user. Each order carries product margin, delivery fee charged and delivery cost.
+- **Why:** gamma-Poisson gives the over-dispersed, heavy-tailed order counts real platforms see, which is what makes variance reduction (CUPED) worthwhile; the high-margin basket type is the mechanism through which a free-delivery threshold can cannibalise margin; the pre-period is the covariate CUPED and the power analysis need.
+- **Alternatives rejected:** normally distributed per-user spend, because it understates variance and would make every test look over-powered; modelling individual SKUs, because the decision depends on basket economics, not on product mix detail (that is project 3's subject).
+- **Trade-off / consequence:** users do not churn or acquire during the test, so the analysis cannot speak to retention effects of the promotion.
+
+### D-040: pilot as a daily node panel with shared shocks
+- **Project / phase:** p2, phase 8
+- **Decision:** the rider-batching pilot is a daily panel of 24 nodes (8 randomly chosen treated) over 56 days before and 56 days after the switch-on date, with orders, rider hours, delivery minutes, orders within SLA and defect orders per node-day. All nodes share weekly seasonality, a growth trend and daily shocks; busier days are slower everywhere.
+- **Why:** operational pilots are evaluated on node aggregates; shared shocks make a naive before/after comparison wrong and a control group necessary, which is the point of a difference-in-differences design.
+- **Alternatives rejected:** order-level pilot data, because the decision metrics are node-day rates and order rows would add volume without information; non-random selection of pilot nodes, because it would require a selection model that distracts from the method the brief asks for.
+- **Trade-off / consequence:** 8 treated clusters is a small number for cluster-robust inference; the analysis states this and uses a placebo test as a sanity check.
+
+### D-041: sample-ratio mismatch planted as lost assignment-log rows
+- **Project / phase:** p2, phase 8
+- **Decision:** the SRM is created by dropping a share of control assignment records on one assignment day; the users and their orders still exist.
+- **Why:** this is the most common real cause of SRM (a logging or redirect bug on one arm), and it is the realistic hard case: the remaining users look normal and the bias is invisible unless the split itself is tested.
+- **Alternatives rejected:** an unequal randomisation probability for the whole test, because it is detectable but has no root cause to localise; deleting whole users, because real logging bugs do not delete customers.
+- **Trade-off / consequence:** the analysis can detect and localise the bad day, but cannot recover the lost control users, so it must decide whether to exclude that day's cohort.
