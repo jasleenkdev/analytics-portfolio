@@ -1,0 +1,42 @@
+# Ground truth: planted effects in the project 1 generator
+
+This file is rendered from `data_gen/plants.toml` by the generator. The analysis code never reads it or that TOML file; they are used only by the final found-vs-planted cross-check.
+
+Simulation window: {{ start }} to {{ end }} ({{ days }} days), delivery SLA {{ sla }} minutes.
+
+## A. Evening understaffing at one node
+- **Node:** {{ us.node_id }}
+- **Hours:** {{ us.hours | join(", ") }} (local hour of order placement), every day
+- **Mechanism:** pickers rostered at {{ (us.picker_ratio * 100) | round | int }}% of the forecast-based requirement, so picker utilisation saturates and pick time balloons through queueing. Wrong-item defects also rise with picker load.
+- **Expected signature:** high pick-stage minutes and late rate in those node-hours versus peer nodes in the same hours; rider wait and travel normal.
+
+## B. Bad-weather surge where rider wait drives delay
+- **Zones:** {{ storm.zones | join(", ") }} (nodes {{ storm_nodes | join(", ") }})
+- **Dates:** {{ storm_dates | join(", ") }}, from {{ storm.first_hour }}:00
+- **Mechanism:** storm conditions raise demand by {{ ((storm.demand_multiplier - 1) * 100) | round | int }}%, {{ (storm.rider_dropout * 100) | round | int }}% of rider shifts in the window never log in, and travel speed falls to {{ (storm.speed_multiplier * 100) | round | int }}% of normal. Pickers are rostered from a weather-aware forecast, so picking holds up.
+- **Expected signature:** temporal anomalies at those nodes and dates; the delay decomposition is dominated by rider wait (then travel), not picking; rider utilisation pinned near saturation.
+
+## C. Repeat stockouts of a SKU cluster at two nodes
+- **Nodes:** {{ sc.node_ids | join(", ") }}
+- **SKUs:** the {{ sc.n_skus }} fastest-moving `{{ sc.category }}` SKUs: {{ cluster_skus | join(", ") }}
+- **Mechanism:** order-up-to level set at {{ (sc.cover_ratio * 100) | round | int }}% of mean daily demand at those nodes (other node-SKUs: 160% plus safety stock), so the shelf empties most afternoons.
+- **Expected signature:** these node-SKUs dominate the stockout rate and missing-item defects; fill rate at the two nodes is lower for that category only.
+
+## D. Data-quality issues to clean
+- Duplicate event rows: {{ (dq.duplicate_event_rate * 100) | round(2) }}% of orders get one duplicated event (half exact copies, half with a 1-29 second timestamp jitter).
+- Delivered before placed: {{ dq.delivered_before_placed }} delivered orders have the delivered timestamp moved 5-120 minutes before placement (clock skew).
+- Missing rider ids: {{ (dq.null_rider_rate * 100) | round(2) }}% of `rider_assigned` events have a null `rider_id`.
+
+## E. Process change that improves one node
+- **Node:** {{ pc.node_id }}
+- **Change date:** {{ pc_date }} (day {{ pc.change_day }})
+- **Mechanism:** picking work content multiplier {{ pc.work_before }} before and {{ pc.work_after }} after the change (relative to the network's 1.0).
+- **Expected signature:** a step down in pick time and delivery time at that node from the change date, absent at other nodes.
+
+## Generator assumptions that are not planted anomalies
+- Demand: Poisson per node-hour from a weekday/weekend hourly curve, a node size factor, a 0.12% daily growth trend, rain (+12%) and storm uplift.
+- Picking: work content of 2.5 + 0.7 minutes per order line, lognormal noise, and a queueing multiplier that is 1.0 at {{ (picker_util * 100) | round | int }}% picker utilisation.
+- Riders: shifts of up to 5 hours rostered to cover forecast demand at {{ (rider_util * 100) | round | int }}% utilisation; 3% random no-shows; rider wait grows with orders per online rider.
+- Travel: gamma-distributed distance (node mean 2.4-3.8 km), lognormal speed around 20 km/h, slower in rain (85%) and storms.
+- Cancellations: 0.6% at placement plus 25% of orders whose pick plus rider wait exceeds 35 minutes.
+- Defects: 30% of late orders claim a late credit; wrong-item and damaged rates rise with picker load and rain respectively; every short-picked line becomes a missing-item refund.

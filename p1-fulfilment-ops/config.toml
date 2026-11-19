@@ -1,0 +1,27 @@
+# Project 1 configuration. Everything the analysis needs is here; planted effects live
+# separately in data_gen/plants.toml and are read only by the generator.
+
+[sim]
+seed = 20260105
+start_date = "2026-01-05"   # a Monday
+days = 90
+n_nodes = 12
+n_skus = 800
+target_orders = 400000
+open_hour = 7               # first operating hour (inclusive)
+close_hour = 23             # last operating hour (inclusive)
+tracked_skus = 150          # hourly inventory snapshots are kept for the fastest movers only
+customers = 120000
+
+[ops]
+sla_minutes = 30            # delivery promise; change to 10 or 1440 for other business models
+picker_target_utilisation = 0.70
+rider_target_utilisation = 0.75
+
+[analysis]
+zscore_threshold = 3.0       # |z| above this flags a node-hour cell
+rolling_window_days = 14     # trailing same-hour window for the temporal z-score
+min_orders_per_cell = 8      # node-hour cells with fewer delivered orders are not scored
+change_min_segment_days = 14 # shortest segment allowed either side of a candidate change point
+change_min_effect = 0.15     # minimum relative shift in daily median pick time to report a change point
+stockout_repeat_days = 0.5   # a node-SKU is a repeat stockout if it hits zero on at least this share of days

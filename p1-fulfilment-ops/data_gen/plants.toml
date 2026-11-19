@@ -1,0 +1,33 @@
+# Planted effects. Read ONLY by the generator (and the final cross-check). The analysis
+# code must discover these from the data without reading this file.
+
+[understaffing]
+node_id = "N07"
+hours = [18, 19, 20, 21]
+picker_ratio = 0.55          # share of the forecast-based picker requirement actually rostered
+
+[storm]
+zones = ["south", "central"]
+start_day = 52               # day index from sim.start_date
+days = 3
+first_hour = 10
+demand_multiplier = 1.35
+rider_dropout = 0.40         # share of rider shifts in the storm window that never log in
+speed_multiplier = 0.70
+
+[stockout_cluster]
+node_ids = ["N03", "N09"]
+category = "dairy"
+n_skus = 12
+cover_ratio = 0.70           # order-up-to level as a share of mean daily demand at the affected nodes
+
+[data_quality]
+duplicate_event_rate = 0.004 # share of orders with one duplicated event row
+delivered_before_placed = 75 # orders whose delivered timestamp precedes placement (clock skew)
+null_rider_rate = 0.001      # share of rider_assigned events with a missing rider_id
+
+[process_change]
+node_id = "N02"
+change_day = 45
+work_before = 1.15           # picking work multiplier before the change
+work_after = 0.75            # and after (new slotting / pick-path process)
