@@ -421,3 +421,45 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** every retention, RFM and repeat-purchase query needs the same sequence and cohort logic; computing it once in SQL keeps the definitions identical across analyses. Cohorting on first order measures retention of customers who actually bought, while signups who never ordered belong in the funnel and acquisition view.
 - **Alternatives rejected:** cohorting on signup date, because the 4% of signups who never order would show as month-0 churn and blur the retention drivers; recomputing sequence numbers inside each analysis, because subtle differences (ties, ordering) would make numbers disagree.
 - **Trade-off / consequence:** a customer who signs up in March and first orders in May is a May cohort member, which is what the retention question needs but differs from a marketing view of acquisition month.
+
+### D-061: funnel measured per session with conditional aggregation, step-to-step and from visit
+- **Project / phase:** p3, phase 16
+- **Decision:** each session is flattened to one row of step flags (`bool_or` over events), then counted per platform x app version x month; both step-to-step conversion and share of visits are reported, and daily payment success per platform and version is kept for drop-off detection.
+- **Why:** step-to-step rates locate where a problem sits (a payment fault shows only in payment success), while share-of-visits shows how much of the total loss it causes; splitting by app version is what turns "Android got worse" into "this release broke payment".
+- **Alternatives rejected:** user-level funnels, because a user with many sessions would be counted once and session-level faults would be diluted; time-windowed funnels (step within N minutes), because sessions here are already bounded.
+- **Trade-off / consequence:** segment-month cells can be small for web; cells below `funnel_min_sessions` are not used for conclusions.
+
+### D-062: retention views: cohort triangle, repeat curve and 90-day repeat by driver
+- **Project / phase:** p3, phase 16
+- **Decision:** retention is reported three ways: monthly cohort triangle (share of each first-order cohort ordering in month k), repeat-purchase curve (share with a second order within 7 to 180 days, only for customers observable that long) and 90-day repeat rate by acquisition channel, platform and first-order experience (customers with at least 90 days of history).
+- **Why:** the triangle shows decay and cohort quality over time; the repeat curve answers "how quickly do they come back", which sets the timing of re-engagement messages; the driver table answers "why" in a form a growth team can act on. Restricting to observable customers avoids counting recent customers as non-repeaters.
+- **Alternatives rejected:** a single overall retention rate, because it mixes young and old cohorts; churn defined by an inactivity threshold, because the threshold choice would drive the answer.
+- **Trade-off / consequence:** the most recent cohorts appear only in the early columns, and the driver table excludes the last 90 days of first orders.
+
+### D-063: RFM with NTILE quintiles and rule-based named segments
+- **Project / phase:** p3, phase 16
+- **Decision:** recency (days since last order), frequency (orders) and monetary value (gross margin, not revenue) are scored 1 to 5 with `NTILE` as of the end of the year; six named segments come from simple rules on R and F (champions, loyal, new or promising, needs attention, at risk, hibernating).
+- **Why:** quintiles adapt to the data's scale; margin rather than revenue ranks customers by what they are worth; named segments with one-line rules are what CRM teams can target.
+- **Alternatives rejected:** k-means clustering on RFM, because clusters change with every rerun and need explaining after the fact; fixed thresholds (e.g. recency under 30 days), because they do not transfer between business models (a 10-minute delivery business and a next-day one have different purchase cycles).
+- **Trade-off / consequence:** ties in frequency are broken by monetary value inside NTILE, so customers with the same order count can land in adjacent F scores.
+
+### D-064: ABC on network revenue, XYZ on median node-level weekly variability
+- **Project / phase:** p3, phase 16
+- **Decision:** ABC uses cumulative network revenue share (A up to 80%, B up to 95%), with the class decided by the share before the SKU is added so the SKU that crosses 80% is still A; XYZ uses the coefficient of variation of weekly units at each node where the SKU is ranged (zero weeks included), taking the median across nodes (X up to 0.5, Y up to 1.0). Velocity per ranged node-week is reported alongside.
+- **Why:** revenue concentration is a network question, but demand predictability matters where stock is held; at network level weekly demand was so smooth that almost every SKU was X, which carries no information. Velocity per ranged node is what separates a weak SKU from a well-performing SKU that simply is not ranged widely.
+- **Alternatives rejected:** XYZ on network weekly totals, because it put 355 of 420 SKUs in X; daily CV, because many node-SKU-days are zero and daily CV mostly measures the size of the SKU.
+- **Trade-off / consequence:** median node CV is higher for SKUs ranged at few small nodes, so XYZ partly reflects ranging breadth.
+
+### D-065: affinity as support, confidence and lift with a minimum co-occurrence count
+- **Project / phase:** p3, phase 16
+- **Decision:** every pair of SKUs in the same basket is counted with a self-join on order id (pair kept once with sku_a < sku_b); support, both directions of confidence and lift are computed; pairs need at least 100 shared orders.
+- **Why:** lift is the right measure of "bought together more than chance" but explodes for rare items; a co-occurrence floor removes pairs whose lift rests on a handful of baskets.
+- **Alternatives rejected:** Apriori or FP-growth libraries, because pairs are all a merchandising team uses for adjacency and bundles, and the SQL self-join is transparent; a statistical test per pair, because thousands of pairs would need multiple-testing control for little gain when the planted-strength signals are tens of times above baseline.
+- **Trade-off / consequence:** triples and higher-order bundles are not analysed.
+
+### D-066: wastage risk as days of cover over shelf life, ranked by waste cost
+- **Project / phase:** p3, phase 16
+- **Decision:** for perishable node-SKUs, days of cover = average opening stock / average daily units sold; risk score = cover / shelf life (high at 0.8 or above); waste is measured in units, cost and share of receipts.
+- **Why:** cover above shelf life guarantees that the oldest units expire; the score is predictive (it can be computed before waste happens) and maps directly to the replenishment parameter a planner changes.
+- **Alternatives rejected:** waste rate alone, because very slow SKUs waste a large share of a tiny presentation stock while costing little; forecasting-based safety-stock optimisation, because the decision here is ranging and depth, not a new replenishment engine.
+- **Trade-off / consequence:** the score ignores intra-week demand peaks, so it is a screening tool; actions are sized on actual waste cost.

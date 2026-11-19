@@ -54,7 +54,7 @@ def build_catalogue(rng, plants):
     hg = plants["hidden_gems"]
     gems = skus.index[skus.category == hg["category"]][: hg["n_skus"]]
     skus.loc[gems, "unit_cost"] = (skus.loc[gems, "unit_price"] * (1 - hg["margin"])).round(2)
-    skus.loc[gems, "popularity"] = np.quantile(skus.popularity, 0.85)
+    skus.loc[gems, "popularity"] = np.quantile(skus.popularity, 0.75)
     return skus, list(skus.sku_id[gems])
 
 
