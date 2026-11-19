@@ -185,6 +185,8 @@
   "chronic": [
     {
       "driver_stage": "picking",
+      "extra_picker_hours_per_week": 81.455625,
+      "extra_pickers_per_hour": 2.909129,
       "flagged_day_share": 0.411111,
       "hours": [
         18,
@@ -195,11 +197,13 @@
       "late_orders": 5470,
       "late_rate": 0.365373,
       "node_id": "N07",
+      "orders_per_hour": 41.902778,
       "orders_per_picker": 15.444894,
       "orders_timed": 14971,
       "peer_late_rate": 0.094614,
       "peer_orders_per_picker": 7.196058,
       "pick_excess_min": 6.988441,
+      "pickers_rostered": 2.913889,
       "recoverable_late_orders": 3179,
       "recoverable_share_of_network_late": 0.062383,
       "travel_excess_min": 1.890736,

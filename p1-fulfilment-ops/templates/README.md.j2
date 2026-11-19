@@ -1,0 +1,52 @@
+{% set n = f.network %}
+# Fulfilment and delivery operations analytics
+
+**Business question:** where and why are we missing the delivery SLA and losing orders to defects, and what should operations change?
+
+> **Simulated data.** Everything here comes from a seeded Python generator (`data_gen/generate.py`, seed {{ cfg.sim.seed }}), not from any real company. Assumptions: {{ cfg.sim.n_nodes }} fulfilment nodes in 5 zones, {{ cfg.sim.n_skus }} SKUs in 12 categories, about {{ (cfg.sim.target_orders / 1000) | int }}k orders over {{ cfg.sim.days }} days from {{ cfg.sim.start_date }}, Poisson demand with weekday/weekend hourly curves and rain uplift, pick and rider-wait times driven by queueing on rostered pickers and online riders, weather-dependent travel speed, daily order-up-to replenishment for the {{ cfg.sim.tracked_skus }} fastest SKUs, and refund claims for late, missing, wrong and damaged items. The delivery SLA is a config value ({{ cfg.ops.sla_minutes }} minutes here).
+
+{% if links.pages_url %}**Live dashboard:** {{ links.pages_url }}/p1/  |  {% endif %}Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  KPI exports: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p1_fulfilment_kpis.xlsx`](outputs/p1_fulfilment_kpis.xlsx)
+
+## Headline
+{{ n.pct_within_sla | pct }} of orders were delivered within {{ n.sla_minutes }} minutes (P50 {{ n.p50_delivery_min | num }} min, P90 {{ n.p90_delivery_min | num }} min), ranging from {{ n.worst_node_pct_within_sla | pct }} at {{ n.worst_node }} to {{ n.best_node_pct_within_sla | pct }} at {{ n.best_node }}. {{ n.defect_rate_any | pct }} of delivered orders drew a refund claim and {{ n.cancel_rate | pct(2) }} of orders were cancelled. Fill rate was {{ n.fill_rate | pct(2) }}, rider utilisation {{ n.rider_utilisation | pct(0) }}.
+
+## Findings
+{% for c in f.chronic %}
+{% set understaffed = c.driver_stage == "picking" and c.orders_per_picker > 1.3 * c.peer_orders_per_picker %}
+1. **Chronic {{ "understaffing" if understaffed else c.driver_stage ~ " delay" }} at {{ c.node_id }} ({{ c.hours | join(":00, ") }}:00).** Late rate {{ c.late_rate | pct }} vs {{ c.peer_late_rate | pct }} at peers in the same hours; picking is the driver (+{{ c.pick_excess_min | num }} min per order) with {{ c.orders_per_picker | num }} orders per rostered picker against {{ c.peer_orders_per_picker | num }} at peers. {{ c.recoverable_late_orders | int }} late orders ({{ c.recoverable_share_of_network_late | pct }} of all late orders) were recoverable at peer pick times.
+{% endfor %}
+{% for e in f.episodes[:1] %}
+1. **{{ e.weather | capitalize }} episode {{ e.start_date }} to {{ e.end_date }} at {{ e.node_list | join(", ") }}.** Driven by {{ e.driver_stage }} (+{{ e.wait_excess_min | num }} min per order; picking +{{ e.pick_excess_min | num }}); orders {{ e.orders_vs_history | pct(0) }} above normal for the hour while riders online changed by {{ e.riders_online_vs_history | pct(0) }}. {{ e.late_orders | int }} late orders in {{ e.flagged_hours | int }} flagged node-hours.
+{% endfor %}
+{% for s in f.stockout_clusters %}
+1. **Repeat {{ s.category }} stockouts at {{ s.node_id }}.** {{ s.repeat_skus }} SKUs empty on {{ s.days_with_stockout_share | pct(0) }} of days (first zero around {{ s.mean_first_zero_hour | int }}:00); opening cover {{ s.opening_cover_days | num(2) }} days vs {{ s.other_nodes_cover_days | num(2) }} for the same SKUs elsewhere; {{ s.units_short | int }} units short, {{ s.share_of_missing_refunds | pct }} of missing-item refunds.
+{% endfor %}
+{% for c in f.change_points %}
+1. **Step {{ "improvement" if c.shift_min < 0 else "deterioration" }} at {{ c.node_id }} from {{ c.split_date }}** (permutation p = {{ "%.3f" | format(c.p_value) }}). Median pick {{ c.metrics.median_pick_min.node_before | num }} to {{ c.metrics.median_pick_min.node_after | num }} min; difference-in-differences vs the rest of the network: P90 {{ c.metrics.p90_delivery_min.did | num }} min (95% CI {{ c.metrics.p90_delivery_min.ci_low | num }} to {{ c.metrics.p90_delivery_min.ci_high | num }}), on-time {{ (c.metrics.pct_within_sla.did * 100) | num }} pts.
+{% endfor %}
+1. **Data quality.** {{ dq_issues }} of {{ f.data_quality | length }} checks found issues in the raw feed (duplicate and jittered event re-sends, clock-skewed deliveries, missing rider ids); all are repaired or excluded in the cleaned layer. See [`outputs/data_quality_report.md`](outputs/data_quality_report.md).
+
+Anomaly scan: {{ f.anomaly_counts.cells_scored | int }} node-hours scored, {{ f.anomaly_counts.cells_flagged | int }} flagged, aggregated into {{ f.chronic | length }} chronic pattern(s), {{ f.anomaly_counts.incidents | int }} acute incidents and {{ f.episodes | length }} multi-node episodes.
+
+## Method
+1. **Clean** (`sql/01_dq_checks.sql`, `sql/02_clean.sql`): DQ report, de-duplicated events, one timeline row per order with exact stage minutes (picking, rider wait, travel).
+2. **KPIs** (`sql/10`-`14`): P50/P90 and % within SLA, cancellations, defect rate by type, fill rate, stockout rate, inventory turns and days of cover, rider utilisation and orders per rider-hour, delay decomposition against a same-hour network baseline.
+3. **Anomalies** (`sql/20`-`22`): per node-hour, a robust rolling z-score against the node's own same-hour history and a leave-one-out peer z-score against other nodes in the same hour; flagged cells are decomposed by stage and grouped into chronic patterns, incidents and multi-node episodes.
+4. **Change points and stock** (`sql/23`-`26`, `analysis/change_points.py`): max-|t| split scan with a permutation test, then difference-in-differences before/after; stockout diagnosis on opening cover versus ordered demand; counterfactual recoverable late orders.
+5. **Verification** (`tests/`): generator invariants, SQL KPIs recomputed in pandas, DQ checks on the cleaned layer, anomaly and change-point logic recomputed independently, Excel formulas evaluated and compared with SQL.
+
+Every number in this README and the memo is rendered from `outputs/findings.json`; nothing is typed by hand. Design choices are logged in the repository's `DECISIONS.md`.
+
+## Outputs for BI tools
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The same numbers are exported as CSV (`outputs/kpi/`) and as an Excel workbook whose summary sheet is live `SUMIFS` formulas over the exported facts, ready to load into any BI tool.
+
+## Limitations
+- Simulated data: effects are cleaner than in production and there is no seasonality beyond weekly patterns.
+- Queueing is modelled per node-hour, so backlogs do not carry across hours; recovery after a surge is understated.
+- Stockout rate, turns and days of cover cover only the {{ cfg.sim.tracked_skus }} tracked fast movers; turns are therefore very high and not comparable to whole-store figures.
+- Impact estimates hold other stages constant; the change-point test ignores day-to-day autocorrelation (mitigated by an effect-size floor).
+
+## Run it
+```
+make p1      # from the repository root: generate, SQL, analysis, tests, reports
+```

@@ -246,3 +246,17 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** the dashboards are HTML because BI tools cannot be built headlessly; flat CSVs with one grain per file can be loaded into any BI tool later without touching Python.
 - **Alternatives rejected:** Parquet, because spreadsheet users and most BI desktop tools open CSV directly; one wide denormalised extract, because mixing grains (node, node-day, node-hour) invites double counting.
 - **Trade-off / consequence:** CSV loses column types; the file names and SQL comments document each grain.
+
+### D-036: memo built around actions, with wording that follows the evidence
+- **Project / phase:** p1, phase 7
+- **Decision:** the one-page memo gives the network bottom line, then one block per finding (evidence, impact, action), then "what to copy" for any detected improvement and a caveats line. Headlines and actions are chosen by conditions on the data (e.g. "short of pickers" only if picking drives the delay and orders per picker exceed peers by 30%; "rider-supply failure" only if rider wait drives it and riders online fell), never typed for a known answer.
+- **Why:** an operations lead reads the first line of each block; the conditions keep the prose honest if the data changes (a different seed or SLA could produce a picking-process problem rather than an understaffing one).
+- **Alternatives rejected:** a fixed narrative with numbers slotted in, because it would assert causes the data may not support; a long report, because the brief asks for one page.
+- **Trade-off / consequence:** the conditional phrasing is less polished than hand-written prose, and new kinds of findings need a new template branch.
+
+### D-037: public links in one root file
+- **Project / phase:** all, phase 7
+- **Decision:** repository and Pages URLs live in `portfolio.toml`; templates show the live-dashboard link only when the URL is set.
+- **Why:** the links are known only after publishing, and keeping them out of the templates means publishing changes one file and a rebuild.
+- **Alternatives rejected:** deriving the URL from the git remote at build time, because a fresh clone of a fork would point at the wrong site; hard-coding the URL in templates, because it breaks the "no hand-typed values" rule in spirit.
+- **Trade-off / consequence:** until publishing, READMEs link only to the committed dashboard file.

@@ -51,3 +51,13 @@ def test_dashboard_contains_data():
     assert html.count("Plotly.newPlot") >= 5
     rows = re.search(r'makeTable\("anomalies", (\[.*?\]), \[', html, re.S)
     assert rows and len(json.loads(rows.group(1))) > 100
+
+
+def test_narratives_rendered_and_disclose_simulation():
+    readme, memo = (PROJECT / "README.md").read_text(), (PROJECT / "memo.md").read_text()
+    assert "simulated" in "\n".join(readme.splitlines()[:10]).lower()
+    assert "simulated" in memo.lower()
+    for text in (readme, memo):
+        assert "{{" not in text and "{%" not in text
+    findings = json.loads((PROJECT / "outputs" / "findings.json").read_text())
+    assert f"{findings['network']['pct_within_sla'] * 100:.1f}%" in readme

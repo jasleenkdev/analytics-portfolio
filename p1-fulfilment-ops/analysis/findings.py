@@ -64,6 +64,12 @@ def collect(con, cfg: dict) -> dict:
     chronic = []
     for node, g in chronic_rows.groupby("node_id", sort=True):
         imp = impact.loc[node]
+        # staffing gap: pickers needed to bring orders per picker down to the peer level in those hours
+        staff = con.execute("""
+            SELECT avg(pickers_rostered) AS pickers, avg(orders_placed) AS orders
+            FROM node_hour_cells WHERE node_id = ? AND cell_hour IN (SELECT unnest(?))""",
+            [node, g.cell_hour.tolist()]).fetchone()
+        peer_opp = g.peer_orders_per_picker.mean()
         chronic.append(_clean({
             "node_id": node, "hours": g.cell_hour.tolist(), "driver_stage": g.driver_stage.mode().iloc[0],
             "flagged_day_share": g.flagged_day_share.mean(),
@@ -74,6 +80,9 @@ def collect(con, cfg: dict) -> dict:
             "late_rate": imp.late_rate, "peer_late_rate": imp.peer_late_rate,
             "recoverable_late_orders": int(imp.recoverable_late_orders),
             "recoverable_share_of_network_late": imp.recoverable_late_orders / network["late_orders"],
+            "pickers_rostered": staff[0], "orders_per_hour": staff[1],
+            "extra_pickers_per_hour": max(0.0, staff[1] / peer_opp - staff[0]),
+            "extra_picker_hours_per_week": max(0.0, staff[1] / peer_opp - staff[0]) * len(g) * 7,
         }))
 
     episodes = q("SELECT * FROM anomaly_episodes ORDER BY excess_order_min DESC")

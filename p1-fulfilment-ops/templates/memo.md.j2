@@ -1,0 +1,57 @@
+{% set n = f.network %}
+# Memo: delivery SLA and defects, last {{ n.days }} days
+
+**To:** Operations lead  **From:** Operations analytics  **Data:** simulated (seeded generator, not real company data)
+
+**Bottom line.** {{ (n.pct_within_sla) | pct }} of {{ n.orders_timed | int }} timed orders arrived within the {{ n.sla_minutes }}-minute SLA (P90 {{ n.p90_delivery_min | num }} min); {{ n.late_orders | int }} were late and {{ n.defect_rate_any | pct }} of delivered orders drew a refund claim ({{ n.refund_total | num(0) }} in refunds, {{ n.refund_pct_gmv | pct(2) }} of GMV). The analysis points to the following fixable problems.
+
+{% set k = namespace(i=0) %}
+{% for c in f.chronic %}
+{% set k.i = k.i + 1 %}
+{% set understaffed = c.driver_stage == "picking" and c.orders_per_picker > 1.3 * c.peer_orders_per_picker %}
+### {{ k.i }}. {{ c.node_id }} {{ "is short of pickers" if understaffed else "is chronically slow in " ~ c.driver_stage }} from {{ c.hours | first }}:00 to {{ (c.hours | last) + 1 }}:00 on most days
+- **Evidence:** in those hours {{ c.node_id }} is late on {{ c.late_rate | pct }} of orders versus {{ c.peer_late_rate | pct }} at other nodes in the same hours. The excess is in {{ c.driver_stage }} (+{{ c.pick_excess_min | num }} min per order); rider wait (+{{ c.wait_excess_min | num }}) is small. Each rostered picker faces {{ c.orders_per_picker | num }} orders an hour against {{ c.peer_orders_per_picker | num }} elsewhere.
+- **Impact:** {{ c.recoverable_late_orders | int }} of its {{ c.late_orders | int }} late orders in these hours would have been on time with peer-level pick times ({{ c.recoverable_share_of_network_late | pct }} of all late orders in the network).
+{% if understaffed %}
+- **Action:** roster about {{ c.extra_pickers_per_hour | num }} more pickers per hour in this window (about {{ c.extra_picker_hours_per_week | num(0) }} picker-hours a week), then re-check orders per picker weekly.
+{% else %}
+- **Action:** staffing is in line with peers, so walk the {{ c.driver_stage }} process at {{ c.node_id }} in these hours before adding headcount.
+{% endif %}
+{% endfor %}
+{% if f.episodes %}
+{% set e = f.episodes[0] %}
+{% set k.i = k.i + 1 %}
+
+{% set rider_led = e.driver_stage == "rider wait" and e.riders_online_vs_history < 0 %}
+### {{ k.i }}. {{ e.start_date }}{% if e.days > 1 %} to {{ e.end_date }}{% endif %} ({{ e.weather }}): {{ "a rider-supply failure, not a picking one" if rider_led else e.driver_stage ~ " delays across " ~ (e.node_list | length) ~ " nodes" }}
+- **Evidence:** {{ e.node_list | length }} nodes ({{ e.node_list | join(", ") }}) had {{ e.flagged_hours | int }} abnormal hours. Orders ran {{ e.orders_vs_history | pct(0) }} above the usual level for those hours while riders online were {{ (e.riders_online_vs_history | abs) | pct(0) }} {{ "below" if e.riders_online_vs_history < 0 else "above" }} it. {{ e.driver_stage | capitalize }} added {{ e.wait_excess_min | num }} min per order, travel {{ e.travel_excess_min | num }} and picking only {{ e.pick_excess_min | num }}.
+- **Impact:** {{ e.late_orders | int }} of {{ e.orders_affected | int }} orders in the flagged hours were late ({{ (e.late_orders / e.orders_affected) | pct(0) }}), {{ e.excess_order_min | num(0) }} order-minutes of delay above normal.
+{% if rider_led %}
+- **Action:** a bad-weather rider plan: weather-triggered shift incentives booked the day before, a standby pool shared between neighbouring nodes, and a temporary wider delivery promise in the app when riders online fall below plan.
+{% else %}
+- **Action:** review the {{ e.driver_stage }} stage at these nodes on these days with the site leads.
+{% endif %}
+{% endif %}
+{% if f.stockout_clusters %}
+{% set k.i = k.i + 1 %}
+{% set s = f.stockout_clusters %}
+{% set units = s | sum(attribute="units_short") %}
+{% set refunds = s | sum(attribute="missing_refunds") %}
+
+### {{ k.i }}. The same {{ s[0].category }} SKUs run out most afternoons at {{ s | map(attribute="node_id") | join(" and ") }}
+- **Evidence:** {{ s[0].repeat_skus }} {{ s[0].category }} SKUs hit zero on {{ s[0].days_with_stockout_share | pct(0) }} of days at {{ s[0].node_id }}, typically by {{ s[0].mean_first_zero_hour | int }}:00. The shelf opens with {{ s[0].opening_cover_days | num(2) }} days of demand, against {{ s[0].other_nodes_cover_days | num(2) }} days for the same SKUs at other nodes: a replenishment-level problem, not a demand spike.
+- **Impact:** {{ units | int }} units short and {{ refunds | num(0) }} in missing-item refunds, {{ (s | sum(attribute="share_of_missing_refunds")) | pct(0) }} of all missing-item refunds in the network.
+- **Action:** raise the order-up-to level for these SKUs at these nodes to the network's cover, or add an afternoon top-up; then watch the fill rate of the category at both nodes.
+{% endif %}
+{% for c in f.change_points %}
+
+{% if c.shift_min < 0 %}
+### What to copy: {{ c.node_id }} changed something on {{ c.split_date }}
+{% else %}
+### What to investigate: {{ c.node_id }} got worse from {{ c.split_date }}
+{% endif %}
+Its median pick time moved from {{ c.metrics.median_pick_min.node_before | num }} to {{ c.metrics.median_pick_min.node_after | num }} min (the rest of the network stayed at {{ c.metrics.median_pick_min.rest_after | num }}); relative to the rest of the network, P90 delivery moved {{ c.metrics.p90_delivery_min.did | num }} min (95% CI {{ c.metrics.p90_delivery_min.ci_low | num }} to {{ c.metrics.p90_delivery_min.ci_high | num }}) and on-time share {{ (c.metrics.pct_within_sla.did * 100) | num }} points ({{ (c.metrics.pct_within_sla.ci_low * 100) | num }} to {{ (c.metrics.pct_within_sla.ci_high * 100) | num }}). {% if c.shift_min < 0 %}Find out what changed and pilot it at {{ f.chronic[0].node_id if f.chronic else "the slowest node" }} first.{% else %}Find out what changed there before it spreads.{% endif %}
+{% endfor %}
+
+
+**Caveats.** Impact figures hold the other stages constant, so they are conservative for picking (faster picks also shorten rider waits at the node). {{ dq_excluded | int }} orders with impossible timestamps are excluded from timing metrics only. Full method, data-quality report and dashboard: see the project README.
