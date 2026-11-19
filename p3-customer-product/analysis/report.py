@@ -5,7 +5,7 @@ from pathlib import Path
 
 import json
 
-from analysis import dashboard, narrative, workbook
+from analysis import crosscheck, dashboard, narrative, workbook
 from analysis.run_sql import open_db
 from shared.db import load_config
 from shared.reporting import export_csv, md_table, render
@@ -35,7 +35,7 @@ EXPORTS = {
     "abc_xyz": "SELECT * FROM abc_xyz",
     "abc_xyz_matrix": "SELECT * FROM abc_xyz_matrix",
     "basket_affinity": "SELECT * FROM basket_affinity",
-    "wastage_node_sku": "SELECT * FROM wastage_node_sku ORDER BY waste_cost DESC",
+    "wastage_node_sku": "SELECT * FROM wastage_node_sku ORDER BY waste_cost DESC, node_id, sku_id",
     "wastage_node_category": "SELECT * FROM wastage_node_category",
     "assortment_recommendations": "SELECT * FROM assortment_recommendations ORDER BY node_id, action, sku_id",
     "assortment_node_summary": "SELECT * FROM assortment_node_summary",
@@ -51,6 +51,7 @@ def run() -> None:
         export_csv(con, EXPORTS, OUT / "kpi")
         workbook.build(con, cfg, OUT / "p3_assortment_wastage.xlsx")
         dashboard.build(con, findings, cfg, PROJECT / "docs" / "index.html")
+        crosscheck.run(con, cfg)
         narrative.run(con, findings, cfg)
     finally:
         con.close()

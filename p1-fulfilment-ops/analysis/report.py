@@ -5,7 +5,7 @@ from pathlib import Path
 
 import json
 
-from analysis import dashboard, narrative, workbook
+from analysis import crosscheck, dashboard, narrative, workbook
 from analysis.run_sql import open_db
 from shared.db import load_config
 from shared.reporting import export_csv, md_table, render
@@ -59,6 +59,7 @@ def run() -> None:
         export_csv(con, KPI_EXPORTS, OUT / "kpi")
         workbook.build(con, cfg, OUT / "p1_fulfilment_kpis.xlsx")
         dashboard.build(con, findings, cfg, PROJECT / "docs" / "index.html")
+        crosscheck.run(con, cfg)
         narrative.run(con, findings, cfg)
     finally:
         con.close()

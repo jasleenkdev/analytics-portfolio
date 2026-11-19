@@ -24,4 +24,4 @@ CREATE OR REPLACE TABLE wastage_node_category AS
 SELECT node_id, category, sum(units_wasted) AS units_wasted, sum(waste_cost) AS waste_cost,
        sum(units_wasted) / sum(units_received) AS waste_rate,
        count(*) FILTER (WHERE high_risk) AS high_risk_skus, count(*) AS skus
-FROM wastage_node_sku GROUP BY ALL ORDER BY waste_cost DESC;
+FROM wastage_node_sku GROUP BY ALL ORDER BY waste_cost DESC, node_id, category;

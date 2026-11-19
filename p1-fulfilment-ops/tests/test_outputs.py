@@ -6,6 +6,9 @@ from pathlib import Path
 import pytest
 from pycel import ExcelCompiler
 
+# rendered outputs are checked after the report stage (see Makefile)
+pytestmark = pytest.mark.outputs
+
 PROJECT = Path(__file__).resolve().parents[1]
 WORKBOOK = PROJECT / "outputs" / "p1_fulfilment_kpis.xlsx"
 DASHBOARD = PROJECT / "docs" / "index.html"
@@ -14,7 +17,7 @@ DASHBOARD = PROJECT / "docs" / "index.html"
 @pytest.fixture(scope="module")
 def excel():
     if not WORKBOOK.exists():
-        pytest.skip("workbook is produced by the report stage")
+        pytest.fail("workbook missing: run `python pipeline.py report` first")
     return ExcelCompiler(filename=str(WORKBOOK))
 
 
@@ -45,7 +48,7 @@ def test_workbook_cells_are_formulas(excel):
 
 def test_dashboard_contains_data():
     if not DASHBOARD.exists():
-        pytest.skip("dashboard is produced by the report stage")
+        pytest.fail("dashboard missing: run `python pipeline.py report` first")
     html = DASHBOARD.read_text()
     assert "<title>" in html and "Simulated data" in html
     assert html.count("Plotly.newPlot") >= 5

@@ -92,10 +92,13 @@ def did(panel: pd.DataFrame, metric: str, alpha=0.05) -> dict:
         cov_type="cluster", cov_kwds={"groups": pd.factorize(d.node_id)[0]})
     est, se = res.params["treated_post"], res.bse["treated_post"]
     lo, hi = res.conf_int(alpha).loc["treated_post"]
-    base = d.loc[d.treated & ~d.post, metric].mean()
+    # relative effects use the counterfactual: what treated nodes would have shown after the start without
+    # the pilot (their observed post-period mean minus the effect), not their pre-period level
+    base = d.loc[d.treated & d.post, metric].mean() - est
     return {"metric": metric, "estimate": float(est), "se": float(se), "ci_low": float(lo), "ci_high": float(hi),
             "p_value": float(res.pvalues["treated_post"]), "treated_baseline": float(base),
-            "rel_estimate": float(est / base), "n_obs": int(res.nobs), "n_clusters": int(d.node_id.nunique())}
+            "rel_estimate": float(est / base), "rel_ci_low": float(lo / base), "rel_ci_high": float(hi / base),
+            "n_obs": int(res.nobs), "n_clusters": int(d.node_id.nunique())}
 
 
 def event_study(panel: pd.DataFrame, metric: str, ref_week: int = -1) -> tuple[pd.DataFrame, float]:

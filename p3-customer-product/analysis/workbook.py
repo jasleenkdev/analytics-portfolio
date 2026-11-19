@@ -66,7 +66,7 @@ def build(con, cfg: dict, out: Path) -> Path:
     autosize(mx)
 
     w = con.execute("""SELECT node_id, sku_id, category, shelf_life_days, avg_opening_stock, avg_daily_sold,
-                       units_received, units_wasted, unit_cost FROM wastage_node_sku ORDER BY waste_cost DESC""").df()
+                       units_received, units_wasted, unit_cost FROM wastage_node_sku ORDER BY waste_cost DESC, node_id, sku_id""").df()
     ww = wb.create_sheet("wastage_model")
     write_frame(ww, w, {"avg_opening_stock": NUM2, "avg_daily_sold": NUM2, "unit_cost": MONEY})
     m = len(w)

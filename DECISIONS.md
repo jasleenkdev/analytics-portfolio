@@ -505,3 +505,24 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** a category team plans by node and a growth team by customer group; one page with an appendix table serves both without a second document. Ranges rather than points keep the cannibalisation and substitution assumptions visible.
 - **Alternatives rejected:** separate memos per team, because the findings interact (the payment fault also lowers Android retention); listing every SKU recommendation in the memo, because 490 rows belong in the CSV and dashboard table.
 - **Trade-off / consequence:** SKU-level detail for a node requires opening the dashboard or the CSV.
+
+### D-073: automated found-vs-planted cross-check, isolated from the analysis
+- **Project / phase:** all, phase 20
+- **Decision:** each project has `analysis/crosscheck.py`, the only module allowed to read `plants.toml`, `planted_entities.json` or `GROUND_TRUTH.md` (enforced by `tests/test_isolation.py`). It runs in the report stage after `findings.json` is written, scores each planted effect as hit, partial or miss with the evidence, lists detections that were not planted, and renders a "Found vs planted" table into the README.
+- **Why:** "the analysis found it" must be checkable rather than asserted; scoring in code means the verdicts update if the generator or the analysis changes, and the isolation test makes the "built without reading the ground truth" claim verifiable.
+- **Alternatives rejected:** a hand-written comparison in the README, because it would go stale and invites generous grading; gating `make all` on zero misses, because that rewards tuning the analysis to the plants instead of reporting honestly.
+- **Trade-off / consequence:** the verdict rules (e.g. what counts as a partial) are mine and are visible in code; a stricter reader can tighten them.
+
+### D-074: analysis changes made because of the cross-check
+- **Project / phase:** p1 and p2, phase 20
+- **Decision:** two analysis gaps found during the cross-check were fixed in the analysis (never in the ground truth): (1) p1's chronic-pattern drill-down now compares every quality defect type in the pattern hours with the other nodes in the same hours, using a two-proportion test; (2) p2's relative DiD effects now divide by the treated group's post-period counterfactual instead of its pre-period level. Remaining imperfections are reported as partials rather than tuned away: the storm episode includes one extra node, and the joint pre-trend lead test raises a false alarm.
+- **Why:** (1) an analyst diagnosing understaffing should check whether quality suffers too, and the original drill-down only looked at time; it now finds the planted wrong-item increase and also an elevated damaged-item rate, which the cross-check traces to weather in that node's zone, and the memo wording reports it as co-occurrence, not cause. (2) Costs drift upwards over time, so the pre-period base overstated the saving (-13.0% vs -12.4%), and the CI then excluded the true -12%.
+- **Alternatives rejected:** tightening the episode rule to match storm zones, because it would encode knowledge of the plant; dropping the joint lead test, because hiding a false alarm is worse than explaining it.
+- **Trade-off / consequence:** the p1 memo gained a defects line and the p2 relative figures moved slightly; both are regenerated from code.
+
+### D-075: rendered outputs tested after the report stage
+- **Project / phase:** all, phase 20
+- **Decision:** tests on rendered outputs (Excel formulas, dashboard content, README and memo) carry a pytest `outputs` marker; `make` runs the data and metric tests before the report stage and the output tests after it. Missing outputs fail instead of skipping. Output queries also gained explicit tie-breakers.
+- **Why:** running output tests before the report stage checked the previous run's files; a change to the ordering of tied waste costs made the workbook and the query disagree, which is exactly the kind of stale-artefact failure the split prevents.
+- **Alternatives rejected:** running all tests after the report, because a wrong metric would then be rendered into the README before failing (D-007's reason still holds).
+- **Trade-off / consequence:** two pytest invocations per project; `make test` runs both groups on whatever is on disk.

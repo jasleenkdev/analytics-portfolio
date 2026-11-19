@@ -1,0 +1,52 @@
+{
+  "rows": [
+    {
+      "planted": "1. payment success on android 5.4 from 2025-08-18: 93% to 72%",
+      "found": "1 of 16 segment-steps flagged: android 5.4 payment_success 71.7% vs 93.0%, first seen 2025-08-18",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "2a. churn by channel: referral x0.6 < organic x0.85 < paid_search x1.0 < partner x1.2 < paid_social x1.5",
+      "found": "90-day repeat effect vs organic: referral +2.1 pp, organic +0.0 pp, paid_search -1.6 pp, partner -2.6 pp, paid_social -5.7 pp",
+      "verdict": "hit",
+      "note": "ranking matches exactly"
+    },
+    {
+      "planted": "2b. first-order problem multiplies churn x1.8",
+      "found": "-7.4 pp on 90-day repeat (95% CI -8.6 to -6.1)",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "(not planted as a retention driver)",
+      "found": "Android -1.6 pp on 90-day repeat vs iOS",
+      "verdict": "unplanted",
+      "note": "a knock-on effect of the planted payment fault: failed payments remove orders, including second orders"
+    },
+    {
+      "planted": "3. 6 planted SKU pairs",
+      "found": "6 pairs with lift >= 2.0",
+      "verdict": "hit",
+      "note": "6/6 recovered, 0 extra"
+    },
+    {
+      "planted": "4. 14 overstocked perishable node-SKUs at ['N02', 'N06']",
+      "found": "107 reduce-depth recommendations; the top 14 by waste cost are exactly the planted set",
+      "verdict": "hit",
+      "note": "recall 14/14; the other 93 come from the generator's baseline policy, where safety stock pushes cover past shelf life for 2-5 day products; real in the data but not planted"
+    },
+    {
+      "planted": "5. 6 high-margin premium_deli SKUs ranged at ['N01', 'N05'] only",
+      "found": "6/6 in the add list, ranks [1, 2, 3, 4, 5, 7] of 44 SKUs by impact; network ABC class ['B']",
+      "verdict": "hit",
+      "note": "network ABC alone would not have flagged them; per-ranged-node velocity did"
+    }
+  ],
+  "summary": {
+    "hit": 6,
+    "partial": 0,
+    "miss": 0,
+    "unplanted": 1
+  }
+}

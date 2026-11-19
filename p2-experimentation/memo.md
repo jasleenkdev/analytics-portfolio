@@ -11,7 +11,7 @@
 - **What would change the call:** a test of a smaller threshold cut or a free-delivery offer limited to new customers (the most responsive group), and a longer holdout to see whether the extra orders persist or pull purchases forward. With CUPED (41% variance reduction) this test could detect a 2.3% change in contribution; detecting a 1% change would need about 145,722 users per arm.
 
 ## 2. Rider batching pilot (8 pilot vs 16 control nodes): **DO NOT SCALE AS-IS: FIX THE GUARDRAIL AND EXTEND**
-- **Benefit:** rider cost per order -13.0% (95% CI -13.5% to -12.4%), about 382 per node per day at 510 orders a day.
+- **Benefit:** rider cost per order -12.4% (95% CI -13.0% to -11.9%, relative to what pilot nodes would have cost without batching), about 382 per node per day at 510 orders a day.
 - **Cost:** defect rate 0.60 pp (95% CI 0.49 to 0.71) against a tolerance of 0.3 pp (breached): about 3.1 extra defective orders per node per day. Delivery time 1.5 min; on-time share -1.3 pp (tolerance 2.0 pp, within).
 - **Is the comparison fair?** Yes: no pre-period divergence (linear pre-trend p from 0.48 to 0.80) and placebo tests on a fake start date find nothing (p >= 0.28).
 - **What would change the call:** a batching rule that excludes fragile or chilled items, or caps the wait for a partner order, re-tested on the same pilot and control nodes for 4 to 6 weeks. If the defect increase falls inside the tolerance while the saving holds, scale. With only 8 pilot nodes, a second wave of nodes would also tighten the cluster-level uncertainty.

@@ -1,0 +1,88 @@
+{
+  "rows": [
+    {
+      "planted": "A1. SRM: 1135 control assignments lost on 2026-05-07",
+      "found": "SRM detected (p = 7.5e-05); flagged day(s) ['2026-05-07']; balanced after exclusion (p = 0.52)",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "A2. novelty: order lift by week [0.15, 0.07, 0.03] (+0.08 for new users)",
+      "found": "decay test p 1e-04 or smaller; estimates wk1 +17.8% (+15.2 to +20.4), wk2 +11.3% (+8.8 to +13.9), wk3 +5.0% (+2.5 to +7.5)",
+      "verdict": "hit",
+      "note": "expected given 23% new users: wk1 +16.9%, wk2 +8.9%, wk3 +4.9%; 3/3 weekly CIs contain the expected lift"
+    },
+    {
+      "planted": "A3. heterogeneity: new users respond more; platform and zone do not differ",
+      "found": "interaction tests significant after Holm: ['tenure']",
+      "verdict": "hit",
+      "note": "no false positives on platform or zone"
+    },
+    {
+      "planted": "A4. cannibalisation: high-margin basket probability x0.7",
+      "found": "high-margin share 30.4% to 20.9% (ratio 0.69)",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "A5. bunching: 50% of baskets within 6.0 below the new threshold topped up",
+      "found": "orders just above the new threshold: 18.2% (treatment) vs 9.9% (control); just below: 8.3% vs 16.5%",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "A6. net truth: do not launch",
+      "found": "decision: do not launch",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "B1. rider minutes per order -12%",
+      "found": "cost per order -12.4% (95% CI -13.0 to -11.9)",
+      "verdict": "hit",
+      "note": "first version divided by the pre-period level and overstated the saving (-13.0%); fixed in the cross-check to use the post-period counterfactual"
+    },
+    {
+      "planted": "B2. defect rate pp +0.6",
+      "found": "DiD +0.60 (95% CI +0.49 to +0.71)",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "B2. delivery minutes +1.4",
+      "found": "DiD +1.47 (95% CI +1.39 to +1.54)",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "B2. % within SLA pp -1.5",
+      "found": "DiD -1.33 (95% CI -1.60 to -1.05)",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "B3. parallel trends hold; placebo should be null",
+      "found": "linear pre-trend p >= 0.48; placebo p >= 0.28; joint weekly-lead test p < 0.05 for ['mean_delivery_min']",
+      "verdict": "partial",
+      "note": "the joint lead test raised a false alarm with 24 clusters; the decision gate (slope and placebo) was right"
+    },
+    {
+      "planted": "B4. 3 missing node-days at ['N21']",
+      "found": "3 missing node-days found; panel kept unbalanced",
+      "verdict": "hit",
+      "note": "count found; the node is not named in the report"
+    },
+    {
+      "planted": "B5. net truth: do not scale as-is",
+      "found": "decision: do not scale as-is: fix the guardrail and extend",
+      "verdict": "hit",
+      "note": ""
+    }
+  ],
+  "summary": {
+    "hit": 12,
+    "partial": 1,
+    "miss": 0,
+    "unplanted": 0
+  }
+}

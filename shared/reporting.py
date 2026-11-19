@@ -50,3 +50,8 @@ def export_csv(con, queries: dict[str, str], out_dir: Path) -> dict[str, pd.Data
         df.to_csv(out_dir / f"{name}.csv", index=False, float_format="%.6g")
         frames[name] = df
     return frames
+
+
+def render_shared(name: str, **context) -> str:
+    """Render a template kept in shared/ (used for sections common to all project READMEs)."""
+    return template_env(Path(__file__).resolve().parent).get_template(name).render(**context)

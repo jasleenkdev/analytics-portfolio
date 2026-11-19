@@ -402,16 +402,16 @@
     ],
     "summary": [
       {
-        "action": "drop",
-        "impact_high": 2937.84737,
-        "impact_low": -8776.53526,
-        "recs": 299
-      },
-      {
         "action": "reduce depth",
         "impact_high": 95423.985,
         "impact_low": 53013.325,
         "recs": 107
+      },
+      {
+        "action": "drop",
+        "impact_high": 2937.84737,
+        "impact_low": -8776.53526,
+        "recs": 299
       },
       {
         "action": "add",
@@ -762,58 +762,58 @@
   },
   "rfm": [
     {
-      "customers": 15216,
-      "mean_margin": 93.001186,
-      "mean_orders": 7.693021,
-      "mean_recency_days": 18.250657,
+      "customers": 15217,
+      "mean_margin": 93.003964,
+      "mean_orders": 7.693501,
+      "mean_recency_days": 18.250838,
       "segment": "champions",
-      "share_customers": 0.198957,
-      "share_margin": 0.42434
+      "share_customers": 0.19897,
+      "share_margin": 0.424381
     },
     {
-      "customers": 15866,
-      "mean_margin": 52.126314,
-      "mean_orders": 4.273478,
-      "mean_recency_days": 196.829825,
+      "customers": 15865,
+      "mean_margin": 52.150308,
+      "mean_orders": 4.275575,
+      "mean_recency_days": 196.826915,
       "segment": "at risk",
-      "share_customers": 0.207456,
-      "share_margin": 0.247999
+      "share_customers": 0.207443,
+      "share_margin": 0.248097
     },
     {
       "customers": 14805,
-      "mean_margin": 48.684542,
-      "mean_orders": 4.030665,
-      "mean_recency_days": 56.343465,
+      "mean_margin": 48.653213,
+      "mean_orders": 4.027693,
+      "mean_recency_days": 56.34306,
       "segment": "loyal",
       "share_customers": 0.193583,
-      "share_margin": 0.216135
+      "share_margin": 0.215996
     },
     {
-      "customers": 14726,
-      "mean_margin": 12.160945,
-      "mean_orders": 1.100842,
-      "mean_recency_days": 222.891484,
+      "customers": 14727,
+      "mean_margin": 12.162531,
+      "mean_orders": 1.100903,
+      "mean_recency_days": 222.89285,
       "segment": "hibernating",
-      "share_customers": 0.19255,
-      "share_margin": 0.0537
+      "share_customers": 0.192563,
+      "share_margin": 0.053711
     },
     {
-      "customers": 9728,
-      "mean_margin": 12.15029,
-      "mean_orders": 1.132093,
-      "mean_recency_days": 21.294613,
+      "customers": 9726,
+      "mean_margin": 12.148438,
+      "mean_orders": 1.131812,
+      "mean_recency_days": 21.292206,
       "segment": "new or promising",
-      "share_customers": 0.127198,
-      "share_margin": 0.035443
+      "share_customers": 0.127172,
+      "share_margin": 0.035431
     },
     {
-      "customers": 6138,
-      "mean_margin": 12.160627,
-      "mean_orders": 1.112903,
-      "mean_recency_days": 79.131313,
+      "customers": 6139,
+      "mean_margin": 12.159754,
+      "mean_orders": 1.113211,
+      "mean_recency_days": 79.126731,
       "segment": "needs attention",
-      "share_customers": 0.080257,
-      "share_margin": 0.022382
+      "share_customers": 0.08027,
+      "share_margin": 0.022385
     }
   ],
   "wastage": {
@@ -1108,22 +1108,6 @@
       },
       {
         "action": "reduce depth",
-        "avg_daily_sold": 1.246575,
-        "category": "ready_meals",
-        "days_of_cover": 4.010989,
-        "impact_high": 738.072,
-        "impact_low": 410.04,
-        "node_id": "N06",
-        "risk_score": 1.336996,
-        "shelf_life_days": 3,
-        "sku_id": "S141",
-        "target_cover_days": 1.5,
-        "units_wasted": 153.0,
-        "waste_cost": 820.08,
-        "waste_rate": 0.250409
-      },
-      {
-        "action": "reduce depth",
         "avg_daily_sold": 1.287671,
         "category": "ready_meals",
         "days_of_cover": 3.882979,
@@ -1137,6 +1121,22 @@
         "units_wasted": 153.0,
         "waste_cost": 820.08,
         "waste_rate": 0.243631
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 1.246575,
+        "category": "ready_meals",
+        "days_of_cover": 4.010989,
+        "impact_high": 738.072,
+        "impact_low": 410.04,
+        "node_id": "N06",
+        "risk_score": 1.336996,
+        "shelf_life_days": 3,
+        "sku_id": "S141",
+        "target_cover_days": 1.5,
+        "units_wasted": 153.0,
+        "waste_cost": 820.08,
+        "waste_rate": 0.250409
       }
     ],
     "reduce_cost": 106026.65,

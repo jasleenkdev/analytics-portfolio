@@ -36,3 +36,25 @@ FROM order_timeline t
 JOIN cells c ON t.node_id = c.node_id AND t.order_hour_ts = c.hour_ts
 WHERE t.timing_valid
 GROUP BY t.node_id, c.driver_stage;
+
+-- defects in chronic node-hours vs the other nodes in the same hours of day: does the slow stage also
+-- damage quality (e.g. rushed picking producing wrong items)?
+CREATE OR REPLACE TABLE impact_chronic_defects AS
+WITH chronic AS (SELECT DISTINCT node_id AS chronic_node, cell_hour FROM anomaly_chronic),
+delivered AS (
+    SELECT t.order_id, t.node_id, c.chronic_node, t.node_id = c.chronic_node AS in_pattern
+    FROM order_timeline t JOIN chronic c ON t.order_hour = c.cell_hour
+    WHERE t.status = 'delivered'
+),
+types AS (SELECT DISTINCT defect_type FROM defects)
+SELECT d.chronic_node AS node_id, ty.defect_type,
+       count(DISTINCT x.order_id) FILTER (WHERE d.in_pattern)       AS defects_in_pattern,
+       count(DISTINCT d.order_id) FILTER (WHERE d.in_pattern)       AS orders_in_pattern,
+       count(DISTINCT x.order_id) FILTER (WHERE NOT d.in_pattern)   AS defects_peers,
+       count(DISTINCT d.order_id) FILTER (WHERE NOT d.in_pattern)   AS orders_peers,
+       count(DISTINCT x.order_id) FILTER (WHERE d.in_pattern) / count(DISTINCT d.order_id) FILTER (WHERE d.in_pattern)         AS rate_in_pattern,
+       count(DISTINCT x.order_id) FILTER (WHERE NOT d.in_pattern) / count(DISTINCT d.order_id) FILTER (WHERE NOT d.in_pattern) AS rate_peers
+FROM delivered d CROSS JOIN types ty
+LEFT JOIN defects x ON x.order_id = d.order_id AND x.defect_type = ty.defect_type
+GROUP BY d.chronic_node, ty.defect_type
+ORDER BY node_id, defect_type;

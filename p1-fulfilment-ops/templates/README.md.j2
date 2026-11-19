@@ -13,7 +13,7 @@
 ## Findings
 {% for c in f.chronic %}
 {% set understaffed = c.driver_stage == "picking" and c.orders_per_picker > 1.3 * c.peer_orders_per_picker %}
-1. **Chronic {{ "understaffing" if understaffed else c.driver_stage ~ " delay" }} at {{ c.node_id }} ({{ c.hours | join(":00, ") }}:00).** Late rate {{ c.late_rate | pct }} vs {{ c.peer_late_rate | pct }} at peers in the same hours; picking is the driver (+{{ c.pick_excess_min | num }} min per order) with {{ c.orders_per_picker | num }} orders per rostered picker against {{ c.peer_orders_per_picker | num }} at peers. {{ c.recoverable_late_orders | int }} late orders ({{ c.recoverable_share_of_network_late | pct }} of all late orders) were recoverable at peer pick times.
+1. **Chronic {{ "understaffing" if understaffed else c.driver_stage ~ " delay" }} at {{ c.node_id }} ({{ c.hours | join(":00, ") }}:00).** Late rate {{ c.late_rate | pct }} vs {{ c.peer_late_rate | pct }} at peers in the same hours; picking is the driver (+{{ c.pick_excess_min | num }} min per order) with {{ c.orders_per_picker | num }} orders per rostered picker against {{ c.peer_orders_per_picker | num }} at peers. {{ c.recoverable_late_orders | int }} late orders ({{ c.recoverable_share_of_network_late | pct }} of all late orders) were recoverable at peer pick times.{% for k, v in c.defects.items() | sort %}{% if v.elevated %} {{ k | replace("_", " ") | capitalize }} claims {{ v.rate | pct(2) }} vs {{ v.peer_rate | pct(2) }} at peers (p {{ "< 0.001" if v.p_value < 0.001 else "= %.3f" | format(v.p_value) }}).{% endif %}{% endfor %}
 {% endfor %}
 {% for e in f.episodes[:1] %}
 1. **{{ e.weather | capitalize }} episode {{ e.start_date }} to {{ e.end_date }} at {{ e.node_list | join(", ") }}.** Driven by {{ e.driver_stage }} (+{{ e.wait_excess_min | num }} min per order; picking +{{ e.pick_excess_min | num }}); orders {{ e.orders_vs_history | pct(0) }} above normal for the hour while riders online changed by {{ e.riders_online_vs_history | pct(0) }}. {{ e.late_orders | int }} late orders in {{ e.flagged_hours | int }} flagged node-hours.
@@ -27,6 +27,11 @@
 1. **Data quality.** {{ dq_issues }} of {{ f.data_quality | length }} checks found issues in the raw feed (duplicate and jittered event re-sends, clock-skewed deliveries, missing rider ids); all are repaired or excluded in the cleaned layer. See [`outputs/data_quality_report.md`](outputs/data_quality_report.md).
 
 Anomaly scan: {{ f.anomaly_counts.cells_scored | int }} node-hours scored, {{ f.anomaly_counts.cells_flagged | int }} flagged, aggregated into {{ f.chronic | length }} chronic pattern(s), {{ f.anomaly_counts.incidents | int }} acute incidents and {{ f.episodes | length }} multi-node episodes.
+
+{{ found_vs_planted }}
+{% if storm_row and storm_row.verdict == "partial" %}
+**Commentary.** The storm episode is reported with one node outside the storm zones because that node had its own sustained rider-wait flags on the same days; the episode rule merges by date and driving stage, not by weather, which is deliberate (an operations lead wants all nodes struggling that day) but makes the episode slightly wider than the planted storm. The other multi-node episodes are real in the data (sustained surges at two or three nodes on one day) but were not planted; they are smaller by an order of magnitude. During this cross-check I found that the analysis had not looked at defect types inside the chronic pattern; I added that check (wrong-item claims are elevated, as planted) and it also surfaced elevated damaged-item claims, which the cross-check traces to weather in that zone rather than to understaffing.
+{% endif %}
 
 ## Method
 1. **Clean** (`sql/01_dq_checks.sql`, `sql/02_clean.sql`): DQ report, de-duplicated events, one timeline row per order with exact stage minutes (picking, rider wait, travel).

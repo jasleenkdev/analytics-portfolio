@@ -1,0 +1,82 @@
+{
+  "rows": [
+    {
+      "planted": "A. understaffed picking at N07, hours [18, 19, 20, 21]",
+      "found": "chronic pattern at N07 hours [18, 19, 20, 21], driver picking, orders per picker 15.4 vs 7.2; wrong-item rate 0.96% vs 0.44%",
+      "verdict": "hit",
+      "note": "4/4 planted hours recovered"
+    },
+    {
+      "planted": "B. storm 2026-02-26 to 2026-02-28 at ['N04', 'N05', 'N11', 'N12'], rider-wait driven",
+      "found": "episode 2026-02-26 to 2026-02-28 at ['N04', 'N05', 'N10', 'N11', 'N12'], driver rider wait, riders online -19% vs history, weather storm",
+      "verdict": "partial",
+      "note": "all planted nodes and days found; extra node(s) ['N10'] in the episode"
+    },
+    {
+      "planted": "(none planted)",
+      "found": "rider wait episode 2026-03-22 at ['N03', 'N05', 'N09'] (10 flagged hours, orders +32% vs history)",
+      "verdict": "unplanted",
+      "note": "single-day demand surges outrunning the rider roster; natural Poisson variation in the generator"
+    },
+    {
+      "planted": "(none planted)",
+      "found": "rider wait episode 2026-02-08 at ['N01', 'N04'] (8 flagged hours, orders +41% vs history)",
+      "verdict": "unplanted",
+      "note": "single-day demand surges outrunning the rider roster; natural Poisson variation in the generator"
+    },
+    {
+      "planted": "(none planted)",
+      "found": "rider wait episode 2026-03-15 at ['N01', 'N12'] (7 flagged hours, orders +37% vs history)",
+      "verdict": "unplanted",
+      "note": "single-day demand surges outrunning the rider roster; natural Poisson variation in the generator"
+    },
+    {
+      "planted": "C. repeat dairy stockouts at N03 (12 SKUs)",
+      "found": "cluster of 12 repeat-stockout dairy SKUs, opening cover 0.74 vs 2.11 days elsewhere",
+      "verdict": "hit",
+      "note": "12/12 SKUs matched, 0 extra"
+    },
+    {
+      "planted": "C. repeat dairy stockouts at N09 (12 SKUs)",
+      "found": "cluster of 12 repeat-stockout dairy SKUs, opening cover 0.75 vs 2.11 days elsewhere",
+      "verdict": "hit",
+      "note": "12/12 SKUs matched, 0 extra"
+    },
+    {
+      "planted": "D1. 1599 duplicated event rows",
+      "found": "1599 repeated rows removed",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "D2. 75 delivered-before-placed orders",
+      "found": "75 flagged and excluded",
+      "verdict": "hit",
+      "note": ""
+    },
+    {
+      "planted": "D3. 0.1% null rider ids on assignment events",
+      "found": "420 null rider ids found and repaired",
+      "verdict": "hit",
+      "note": "count includes nulls copied into duplicated rows"
+    },
+    {
+      "planted": "E. process change at N02 on 2026-02-19",
+      "found": "change point at N02 on 2026-02-19, pick time -3.17 min vs other nodes",
+      "verdict": "hit",
+      "note": "exact date"
+    },
+    {
+      "planted": "(not planted as part of A)",
+      "found": "damaged claims elevated in N07's pattern hours (0.51% vs 0.33%)",
+      "verdict": "unplanted",
+      "note": "the generator raises damage in rain; N07's zone (east) was wet in 22% of those hours vs 15% for other zones, so this is weather co-occurring with the pattern, not an understaffing effect"
+    }
+  ],
+  "summary": {
+    "hit": 7,
+    "partial": 1,
+    "miss": 0,
+    "unplanted": 4
+  }
+}

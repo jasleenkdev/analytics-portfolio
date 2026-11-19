@@ -18,6 +18,22 @@ Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.
 1. **Perishable overstock.** 107 node-SKUs hold more cover than shelf life while selling at least 1 unit a day, wasting 106,027 (37% of all waste). Largest: N02/S149 (ready_meals, cover 10.3 days vs 5-day shelf life), N02/S150 (ready_meals, cover 10.2 days vs 5-day shelf life), N06/S149 (ready_meals, cover 10.6 days vs 5-day shelf life), N02/S139 (ready_meals, cover 10.0 days vs 5-day shelf life). Saving from cutting depth: 53,013 to 95,424 a year.
 1. **Drop candidates.** 299 node-SKUs (bottom decile margin at their node, class C, no strong affinity) change annual margin by -8,777 to 2,938 net of waste avoided (negative = margin given up), freeing space for the adds.
 
+## Found vs planted
+The generator plants known effects, listed in [`GROUND_TRUTH.md`](GROUND_TRUTH.md). The analysis was built without reading that file; afterwards `analysis/crosscheck.py` compared the findings with it. Result: **6 hit, 0 partial, 0 missed**, plus 1 detection(s) of things that were not planted.
+
+| Planted | What the analysis found | Verdict | Note |
+|---|---|---|---|
+| 1. payment success on android 5.4 from 2025-08-18: 93% to 72% | 1 of 16 segment-steps flagged: android 5.4 payment_success 71.7% vs 93.0%, first seen 2025-08-18 | hit |  |
+| 2a. churn by channel: referral x0.6 < organic x0.85 < paid_search x1.0 < partner x1.2 < paid_social x1.5 | 90-day repeat effect vs organic: referral +2.1 pp, organic +0.0 pp, paid_search -1.6 pp, partner -2.6 pp, paid_social -5.7 pp | hit | ranking matches exactly |
+| 2b. first-order problem multiplies churn x1.8 | -7.4 pp on 90-day repeat (95% CI -8.6 to -6.1) | hit |  |
+| (not planted as a retention driver) | Android -1.6 pp on 90-day repeat vs iOS | unplanted | a knock-on effect of the planted payment fault: failed payments remove orders, including second orders |
+| 3. 6 planted SKU pairs | 6 pairs with lift >= 2.0 | hit | 6/6 recovered, 0 extra |
+| 4. 14 overstocked perishable node-SKUs at ['N02', 'N06'] | 107 reduce-depth recommendations; the top 14 by waste cost are exactly the planted set | hit | recall 14/14; the other 93 come from the generator's baseline policy, where safety stock pushes cover past shelf life for 2-5 day products; real in the data but not planted |
+| 5. 6 high-margin premium_deli SKUs ranged at ['N01', 'N05'] only | 6/6 in the add list, ranks [1, 2, 3, 4, 5, 7] of 44 SKUs by impact; network ABC class ['B'] | hit | network ABC alone would not have flagged them; per-ranged-node velocity did |
+
+
+**Commentary.** Every planted effect was recovered. The main precision issue is wastage: the reduce-depth list is much longer than the planted overstock because the baseline replenishment policy itself over-covers very short-life products; those recommendations are valid for the simulated data, and ranking by waste cost puts the planted cases first. Two design choices made during the build mattered for the hits: XYZ on node-level variability (network weekly demand was too smooth to classify) and velocity per ranged node (network ABC rates the under-ranged premium SKUs as ordinary).
+
 ## Method
 1. **SQL** (`sql/`): data-quality checks; base layer with order sequence (ROW_NUMBER), days between orders (LAG) and first-order cohorts; funnel by platform x version x month (conditional aggregation); cohort triangle, repeat curve and retention by driver; RFM with NTILE quintiles; ABC on cumulative revenue (window SUM) and XYZ on median node-level weekly CV; pair affinity via a basket self-join (support, confidence, lift); wastage risk as days of cover over shelf life; per-node add / drop / reduce-depth rules with impact ranges.
 2. **Python** (`analysis/findings.py`): two-proportion tests of every segment-step against the rest with Holm correction; logistic regression of 90-day repeat with average marginal effects.

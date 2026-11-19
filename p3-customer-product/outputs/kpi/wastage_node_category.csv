@@ -1,7 +1,7 @@
 node_id,category,units_wasted,waste_cost,waste_rate,high_risk_skus,skus
 N02,ready_meals,10418,42325.2,0.282752,12,23
 N06,ready_meals,7165,28057,0.292461,11,19
-N04,meat_fish,2727,13418.1,0.118164,13,28
+N04,meat_fish,2727,13418.2,0.118164,13,28
 N05,meat_fish,2261,11809.7,0.157693,12,24
 N06,meat_fish,2383,11597.7,0.126058,10,24
 N01,meat_fish,2308,11453.9,0.132911,14,25

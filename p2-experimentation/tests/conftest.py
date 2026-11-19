@@ -24,3 +24,7 @@ def con(cfg):
 
 def scalar(con, sql, params=None):
     return con.execute(sql, params or []).fetchone()[0]
+
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "outputs: checks on rendered reports (run after the report stage)")

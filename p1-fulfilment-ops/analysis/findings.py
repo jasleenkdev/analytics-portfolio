@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from statsmodels.stats.proportion import proportions_ztest
 
 PROJECT = Path(__file__).resolve().parents[1]
 FINDINGS = PROJECT / "outputs" / "findings.json"
@@ -31,6 +32,16 @@ def _clean(v):
 
 def _records(df: pd.DataFrame) -> list[dict]:
     return [_clean(r) for r in df.to_dict("records")]
+
+
+def _defect_gaps(con, node: str) -> dict:
+    """Quality defects (not lateness, which is the delay itself) in the pattern vs peers, two-proportion z-test."""
+    out = {}
+    for r in con.execute("SELECT * FROM impact_chronic_defects WHERE node_id = ? AND defect_type <> 'late'", [node]).df().itertuples():
+        _, p = proportions_ztest([r.defects_in_pattern, r.defects_peers], [r.orders_in_pattern, r.orders_peers])
+        out[r.defect_type] = {"rate": r.rate_in_pattern, "peer_rate": r.rate_peers, "p_value": p,
+                              "elevated": bool(p < 0.01 and r.rate_in_pattern > r.rate_peers)}
+    return out
 
 
 def collect(con, cfg: dict) -> dict:
@@ -83,6 +94,7 @@ def collect(con, cfg: dict) -> dict:
             "pickers_rostered": staff[0], "orders_per_hour": staff[1],
             "extra_pickers_per_hour": max(0.0, staff[1] / peer_opp - staff[0]),
             "extra_picker_hours_per_week": max(0.0, staff[1] / peer_opp - staff[0]) * len(g) * 7,
+            "defects": _defect_gaps(con, node),
         }))
 
     episodes = q("SELECT * FROM anomaly_episodes ORDER BY excess_order_min DESC")

@@ -122,7 +122,7 @@ def collect(con, cfg) -> dict:
     abc = q("SELECT * FROM abc_xyz_matrix")
     aff = q("""SELECT * FROM basket_affinity WHERE lift >= ? ORDER BY lift DESC""", [cfg["analysis"]["affinity_min_lift"]])
     waste = q("SELECT sum(waste_cost) AS cost, sum(units_wasted) / sum(units_received) AS rate FROM wastage_node_sku").iloc[0]
-    reduce_ = q("SELECT * FROM assortment_reduce ORDER BY waste_cost DESC")
+    reduce_ = q("SELECT * FROM assortment_reduce ORDER BY waste_cost DESC, node_id, sku_id")
     adds = q("""SELECT a.*, x.abc, x.units AS network_units FROM assortment_add a JOIN abc_xyz x USING (sku_id)
                 ORDER BY impact_high DESC""")
     add_skus = adds.groupby(["sku_id", "category"]).agg(nodes=("node_id", "count"), impact_low=("impact_low", "sum"),

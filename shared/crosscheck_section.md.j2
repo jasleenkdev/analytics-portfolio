@@ -1,0 +1,8 @@
+## Found vs planted
+The generator plants known effects, listed in [`GROUND_TRUTH.md`](GROUND_TRUTH.md). The analysis was built without reading that file; afterwards `analysis/crosscheck.py` compared the findings with it. Result: **{{ cc.summary.hit }} hit, {{ cc.summary.partial }} partial, {{ cc.summary.miss }} missed**, plus {{ cc.summary.unplanted }} detection(s) of things that were not planted.
+
+| Planted | What the analysis found | Verdict | Note |
+|---|---|---|---|
+{% for r in cc.rows %}
+| {{ r.planted }} | {{ r.found }} | {{ r.verdict }} | {{ r.note }} |
+{% endfor %}

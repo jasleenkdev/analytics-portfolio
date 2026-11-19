@@ -5,6 +5,9 @@ from pathlib import Path
 import pytest
 from pycel import ExcelCompiler
 
+# rendered outputs are checked after the report stage (see Makefile)
+pytestmark = pytest.mark.outputs
+
 PROJECT = Path(__file__).resolve().parents[1]
 WORKBOOK = PROJECT / "outputs" / "p3_assortment_wastage.xlsx"
 DASHBOARD = PROJECT / "docs" / "index.html"
@@ -13,7 +16,7 @@ DASHBOARD = PROJECT / "docs" / "index.html"
 @pytest.fixture(scope="module")
 def excel():
     if not WORKBOOK.exists():
-        pytest.skip("workbook is produced by the report stage")
+        pytest.fail("workbook missing: run `python pipeline.py report` first")
     return ExcelCompiler(filename=str(WORKBOOK))
 
 
@@ -34,7 +37,7 @@ def test_matrix_counts_match_sql(excel, con):
 
 
 def test_wastage_formulas_match_sql(excel, con):
-    sql = con.execute("SELECT node_id, sku_id, risk_score, high_risk, waste_cost FROM wastage_node_sku ORDER BY waste_cost DESC").df()
+    sql = con.execute("SELECT node_id, sku_id, risk_score, high_risk, waste_cost FROM wastage_node_sku ORDER BY waste_cost DESC, node_id, sku_id").df()
     reduce_ = set(map(tuple, con.execute("SELECT node_id, sku_id FROM assortment_reduce").df().values))
     for row in range(2, 60):
         r = sql.iloc[row - 2]
@@ -53,7 +56,7 @@ def test_depth_cut_saving_total(excel, con):
 
 def test_dashboard_contains_data():
     if not DASHBOARD.exists():
-        pytest.skip("dashboard is produced by the report stage")
+        pytest.fail("dashboard missing: run `python pipeline.py report` first")
     html = DASHBOARD.read_text()
     assert "Simulated data" in html and html.count("Plotly.newPlot") >= 7
     assert 'makeTable("recs"' in html

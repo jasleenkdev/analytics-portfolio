@@ -8,14 +8,17 @@ PY := $(VENV)/bin/python
 PYTHON_BOOT ?= $(shell command -v python3.11 || command -v python3.12 || command -v python3.13 || command -v python3)
 PROJECTS := p1-fulfilment-ops p2-experimentation p3-customer-product
 
-# build -> test -> report: reports are only rendered from data that passed the tests
+# build -> test data and metrics -> report -> test rendered outputs: reports are only rendered from
+# data that passed the tests, and the rendered Excel, dashboard and markdown are then checked themselves
 define run_project
 	@echo "==> $(1): build"
 	cd $(1) && PYTHONPATH=$(ROOT) $(PY) pipeline.py build
-	@echo "==> $(1): test"
-	cd $(1) && PYTHONPATH=$(ROOT) $(PY) -m pytest -q -p no:cacheprovider tests
+	@echo "==> $(1): test data and metrics"
+	cd $(1) && PYTHONPATH=$(ROOT) $(PY) -m pytest -q -p no:cacheprovider -m "not outputs" tests
 	@echo "==> $(1): report"
 	cd $(1) && PYTHONPATH=$(ROOT) $(PY) pipeline.py report
+	@echo "==> $(1): test outputs"
+	cd $(1) && PYTHONPATH=$(ROOT) $(PY) -m pytest -q -p no:cacheprovider -m outputs tests
 endef
 
 .PHONY: all setup p1 p2 p3 test site clean

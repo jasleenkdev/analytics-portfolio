@@ -6,6 +6,7 @@
 
 ### 1. N07 is short of pickers from 18:00 to 22:00 on most days
 - **Evidence:** in those hours N07 is late on 36.5% of orders versus 9.5% at other nodes in the same hours. The excess is in picking (+7.0 min per order); rider wait (+0.8) is small. Each rostered picker faces 15.4 orders an hour against 7.2 elsewhere.
+- **Defects in the same hours:** damaged claims run at 0.51% of orders vs 0.33% at peers in the same hours (p < 0.001); wrong item claims run at 0.96% of orders vs 0.44% at peers in the same hours (p < 0.001); other quality defects are in line with peers.
 - **Impact:** 3,179 of its 5,470 late orders in these hours would have been on time with peer-level pick times (6.2% of all late orders in the network).
 - **Action:** roster about 2.9 more pickers per hour in this window (about 81 picker-hours a week), then re-check orders per picker weekly.
 

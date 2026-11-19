@@ -1,10 +1,11 @@
 """Render README.md and memo.md from findings.json."""
 from __future__ import annotations
 
+import json
 import tomllib
 from pathlib import Path
 
-from shared.reporting import render
+from shared.reporting import render, render_shared
 
 PROJECT = Path(__file__).resolve().parents[1]
 
@@ -22,7 +23,9 @@ def context(findings: dict, cfg: dict) -> dict:
         links = tomllib.load(f)["links"]
     return dict(f=findings, p=p, q=q, r=r, full=full, nov=nov, w1=weeks[0], wl=weeks[-1], sig_dims=sig_dims,
                 seg=seg, did=did, cfg=cfg, links=links,
-                dq_issues=[x for x in findings["data_quality"] if x["status"] == "issue"])
+                dq_issues=[x for x in findings["data_quality"] if x["status"] == "issue"],
+                found_vs_planted=render_shared("crosscheck_section.md.j2",
+                                               cc=json.loads((PROJECT / "outputs" / "crosscheck.json").read_text())))
 
 
 def run(findings: dict, cfg: dict) -> None:

@@ -90,9 +90,11 @@
         "pre_trend_joint_p": 0.307061,
         "pre_trend_p": 0.484034,
         "pre_trend_slope_per_day": 0.000591,
-        "rel_estimate": -0.129834,
+        "rel_ci_high": -0.119051,
+        "rel_ci_low": -0.129642,
+        "rel_estimate": -0.124347,
         "se": 0.016258,
-        "treated_baseline": 5.763392
+        "treated_baseline": 6.017723
       },
       {
         "ci_high": 1.544964,
@@ -107,9 +109,11 @@
         "pre_trend_joint_p": 0.0153,
         "pre_trend_p": 0.696558,
         "pre_trend_slope_per_day": 0.00115,
-        "rel_estimate": 0.061607,
+        "rel_ci_high": 0.062386,
+        "rel_ci_low": 0.056207,
+        "rel_estimate": 0.059296,
         "se": 0.03904,
-        "treated_baseline": 23.835809
+        "treated_baseline": 24.764532
       },
       {
         "ci_high": 0.007075,
@@ -124,9 +128,11 @@
         "pre_trend_joint_p": 0.178086,
         "pre_trend_p": 0.601301,
         "pre_trend_slope_per_day": 1.6e-05,
-        "rel_estimate": 0.176228,
+        "rel_ci_high": 0.197844,
+        "rel_ci_low": 0.137968,
+        "rel_estimate": 0.167906,
         "se": 0.000546,
-        "treated_baseline": 0.034072
+        "treated_baseline": 0.035761
       },
       {
         "ci_high": -0.01055,
@@ -141,9 +147,11 @@
         "pre_trend_joint_p": 0.291153,
         "pre_trend_p": 0.79605,
         "pre_trend_slope_per_day": -1.7e-05,
-        "rel_estimate": -0.01503,
+        "rel_ci_high": -0.012027,
+        "rel_ci_low": -0.018277,
+        "rel_estimate": -0.015152,
         "se": 0.001398,
-        "treated_baseline": 0.884268
+        "treated_baseline": 0.87717
       }
     ],
     "extra_defects_per_node_day": 3.064376,

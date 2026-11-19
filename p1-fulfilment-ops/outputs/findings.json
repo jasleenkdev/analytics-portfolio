@@ -184,6 +184,26 @@
   ],
   "chronic": [
     {
+      "defects": {
+        "damaged": {
+          "elevated": true,
+          "p_value": 0.000479,
+          "peer_rate": 0.003346,
+          "rate": 0.005143
+        },
+        "missing_item": {
+          "elevated": false,
+          "p_value": 0.0,
+          "peer_rate": 0.037773,
+          "rate": 0.010619
+        },
+        "wrong_item": {
+          "elevated": true,
+          "p_value": 0.0,
+          "peer_rate": 0.004406,
+          "rate": 0.009551
+        }
+      },
       "driver_stage": "picking",
       "extra_picker_hours_per_week": 81.455625,
       "extra_pickers_per_hour": 2.909129,

@@ -1,12 +1,13 @@
 """Render README.md and memo.md from findings.json."""
 from __future__ import annotations
 
+import json
 import tomllib
 from pathlib import Path
 
 import pandas as pd
 
-from shared.reporting import md_table, render
+from shared.reporting import md_table, render, render_shared
 
 PROJECT = Path(__file__).resolve().parents[1]
 
@@ -35,11 +36,14 @@ def run(con, findings: dict, cfg: dict) -> None:
                round(sum(impact_high) FILTER (WHERE action = 'drop')) AS drop_net_high
         FROM assortment_recommendations GROUP BY node_id ORDER BY node_id""").df().fillna(0)
     fmt = {c: (lambda v: f"{v:,.0f}") for c in appendix.columns if c != "node_id"}
+    cc = json.loads((PROJECT / "outputs" / "crosscheck.json").read_text())
     with open(PROJECT.parent / "portfolio.toml", "rb") as fh:
         links = tomllib.load(fh)["links"]
     ctx = dict(f=f, cfg=cfg, model=model, channels=channels, drivers=drivers, rfm=rfm, summary=summary,
                a_skus=len(a_class) and int(a_class.skus.sum()), a_share=float(a_class.revenue_share.sum()),
                gems=gems, names=names, appendix=md_table(appendix, fmt), links=links,
-               dq_issues=[d for d in f["data_quality"] if d["status"] == "issue"])
+               dq_issues=[d for d in f["data_quality"] if d["status"] == "issue"],
+               found_vs_planted=render_shared("crosscheck_section.md.j2", cc=cc),
+               found_all=cc["summary"]["miss"] == 0 and cc["summary"]["partial"] == 0)
     render(PROJECT / "templates", "memo.md.j2", PROJECT / "memo.md", **ctx)
     render(PROJECT / "templates", "README.md.j2", PROJECT / "README.md", **ctx)
