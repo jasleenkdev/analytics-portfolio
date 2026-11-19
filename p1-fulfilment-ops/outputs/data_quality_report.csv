@@ -1,0 +1,15 @@
+check_name,table_name,failing_rows,total_rows,failing_pct,status,action
+exact duplicate events,order_events,778,1993648,0.039,issue,drop: keep one row per order and event type
+repeated order/event-type rows (incl. jittered re-sends),order_events,1599,1993648,0.0802,issue,drop: keep the earliest timestamp per order and event type
+delivered before placed,order_events,75,397259,0.0189,issue,"exclude from timing KPIs; keep for volume, defect and stock KPIs"
+"stage out of order (picked<placed, picked_up<picked or delivered<picked_up)",order_events,75,397259,0.0189,issue,exclude from timing KPIs
+rider event with null rider_id,order_events,428,1192960,0.0359,issue,fill from the same order's other rider events
+order without a placed event,orders,0,399903,0,pass,exclude
+placed event differs from order header by more than 1 minute,orders,0,399903,0,pass,report only
+delivered status without delivered event,orders,0,397259,0,pass,exclude from timing KPIs
+null keys in orders,orders,0,399903,0,pass,exclude
+order lines with fulfilled > ordered or non-positive quantity,order_items,0,1439730,0,pass,exclude
+order lines whose SKU is missing from the catalogue,order_items,0,1439730,0,pass,exclude
+negative on-hand stock,inventory_snapshots,0,3888000,0,pass,exclude
+refund on a cancelled order,defects,0,28113,0,pass,report only
+non-positive refund amount,defects,0,28113,0,pass,report only

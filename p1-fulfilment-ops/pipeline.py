@@ -5,6 +5,8 @@ import sys
 import time
 from pathlib import Path
 
+from analysis import report as report_stage
+from analysis import run_sql
 from data_gen import ground_truth
 from data_gen.generate import generate
 
@@ -15,10 +17,11 @@ def build() -> None:
     print("generating synthetic data")
     generate(HERE)
     ground_truth.render(HERE)
+    print("running SQL:", ", ".join(run_sql.run()))
 
 
 def report() -> None:
-    print("no report stage yet")
+    report_stage.run()
 
 
 if __name__ == "__main__":

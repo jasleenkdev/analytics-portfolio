@@ -106,3 +106,31 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** every downstream metric assumes these invariants; testing determinism directly is the only way to prove `make all` reproduces the published numbers.
 - **Alternatives rejected:** asserting "no delivery before order" on the raw table, because the raw feed is deliberately dirty and the guarantee belongs to the cleaned layer (tested with the data-quality SQL); comparing whole-table hashes, because floating-point sums are not order-stable in a parallel engine, so the signature uses integer cents.
 - **Trade-off / consequence:** the determinism test regenerates all data and adds about 5 seconds to every test run.
+
+### D-016: de-duplicate events by keeping the earliest row per order and event type
+- **Project / phase:** p1, phase 3
+- **Decision:** `events_clean` keeps one row per (order, event type), the one with the earliest timestamp (ties broken by event id). Both exact re-sends and re-sends with a few seconds of timestamp jitter are removed by this one rule.
+- **Why:** a lifecycle event happens once per order; the first record is the closest to the physical event, and a later re-send can only make a stage look longer than it was.
+- **Alternatives rejected:** `SELECT DISTINCT`, because it misses jittered re-sends (half of the duplicates in this feed); keeping the latest row, because it biases stage durations upwards.
+- **Trade-off / consequence:** if a real business re-opens and re-picks an order, the second pick is lost; this model has no re-picks, and the DQ report counts how many rows were dropped.
+
+### D-017: exclude impossible timelines from timing KPIs only
+- **Project / phase:** p1, phase 3
+- **Decision:** orders whose delivered timestamp precedes placement, or whose stages are out of order, get `timing_valid = false` with an `exclusion_reason`; they are left out of delivery-time, SLA and decomposition metrics but kept in order volume, fill rate, defects and refunds.
+- **Why:** the order, its items and its refunds really happened; only the clock is wrong, so dropping the whole order would understate volume and refund cost.
+- **Alternatives rejected:** imputing the delivered time from the median travel time, because it invents data and hides the clock fault from the people who own it; deleting the orders, because it would bias defect and fill rates.
+- **Trade-off / consequence:** timing KPIs and volume KPIs have slightly different denominators (75 orders apart in this dataset); every export names its base.
+
+### D-018: repair null rider ids from the same order
+- **Project / phase:** p1, phase 3
+- **Decision:** a rider event with a null `rider_id` takes the rider id recorded on the same order's other rider events.
+- **Why:** an order is carried by one rider in this business model, so the other events identify the rider with certainty; leaving the gaps would under-count rider busy time in utilisation.
+- **Alternatives rejected:** dropping those events, because the order would then look like it was never assigned; attributing them to an "unknown" rider, because it creates a fake rider with no shift.
+- **Trade-off / consequence:** in a business with rider hand-overs the rule would be wrong; it would need the hand-over event to be modelled.
+
+### D-019: data-quality checks as a SQL table, recounted independently in tests
+- **Project / phase:** p1, phase 3
+- **Decision:** `sql/01_dq_checks.sql` writes `dq_report` (check, table, failing rows, total, action), exported as CSV and a generated markdown report; `tests/test_data_quality.py` recounts duplicates and clock-skewed orders in pandas and asserts the cleaned layer is unique, repaired, monotone and sums stage minutes exactly to delivery minutes.
+- **Why:** a DQ report that is never checked can silently undercount; recounting in a second engine catches errors in the check SQL itself, and the cleaned-layer tests turn "no impossible timestamps" into a gate for `make all`.
+- **Alternatives rejected:** a data-validation framework (e.g. Great Expectations), because it adds a heavy dependency and its own configuration language for about a dozen checks; assertions inside the SQL, because DuckDB has no portable `ASSERT` and failures would be less readable.
+- **Trade-off / consequence:** new checks have to be added in two places (SQL and, where it matters, the pandas recount).
