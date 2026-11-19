@@ -526,3 +526,10 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** running output tests before the report stage checked the previous run's files; a change to the ordering of tied waste costs made the workbook and the query disagree, which is exactly the kind of stale-artefact failure the split prevents.
 - **Alternatives rejected:** running all tests after the report, because a wrong metric would then be rendered into the README before failing (D-007's reason still holds).
 - **Trade-off / consequence:** two pytest invocations per project; `make test` runs both groups on whatever is on disk.
+
+### D-076: generated, neutral landing page
+- **Project / phase:** all, phase 21
+- **Decision:** the root README is rendered by `shared/landing.py` from the three projects' `findings.json` and `crosscheck.json`: a one-row-per-project table (business question, headline result, found-vs-planted score), links to dashboards, what each project folder contains, how the repository works and how to run it. It contains no resume-style bullets and names no employer.
+- **Why:** the landing page is the first thing a reader sees, so its numbers must be as trustworthy as the project READMEs; generating it keeps it in step with every rebuild, and a neutral description lets the work speak for itself.
+- **Alternatives rejected:** a hand-written landing page, because its headline numbers would drift from the projects; a long narrative, because readers choose a project from a table and then dive in.
+- **Trade-off / consequence:** editing the landing page means editing a template, not the README itself.

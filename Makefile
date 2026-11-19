@@ -21,9 +21,9 @@ define run_project
 	cd $(1) && PYTHONPATH=$(ROOT) $(PY) -m pytest -q -p no:cacheprovider -m outputs tests
 endef
 
-.PHONY: all setup p1 p2 p3 test site clean
+.PHONY: all setup p1 p2 p3 test readme site clean
 
-all: p1 p2 p3 site
+all: p1 p2 p3 readme site
 
 $(VENV)/.installed: requirements.txt
 	$(PYTHON_BOOT) -c 'import sys; assert sys.version_info >= (3, 11), "python 3.11+ is required"'
@@ -45,6 +45,9 @@ p3: setup
 
 test: setup
 	for p in $(PROJECTS); do (cd $$p && PYTHONPATH=$(ROOT) $(PY) -m pytest -q -p no:cacheprovider tests); done
+
+readme: setup
+	PYTHONPATH=$(ROOT) $(PY) -m shared.landing
 
 site: setup
 	PYTHONPATH=$(ROOT) $(PY) -m shared.site
