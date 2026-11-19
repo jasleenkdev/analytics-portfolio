@@ -1,0 +1,4 @@
+node_id,metric,node_before,node_after,rest_before,rest_after,did,ci_low,ci_high,days_before,days_after
+N02,median_pick_min,6.22296,3.065,4.7237,4.7387,-3.17296,-3.37601,-2.96992,45,45
+N02,p90_delivery_min,33.4159,26.4909,31.4548,31.9022,-7.37241,-8.64899,-6.09582,45,45
+N02,pct_within_sla,0.83038,0.94466,0.876312,0.866558,0.124034,0.100715,0.147354,45,45

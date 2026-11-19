@@ -1,0 +1,5 @@
+node_id,cell_hour,flagged_days,flagged_day_share,driver_stage,pick_excess_min,wait_excess_min,travel_excess_min,orders_per_picker,peer_orders_per_picker,late_rate,excess_order_min
+N07,18,23,0.255556,picking,6.44297,1.68982,2.13177,15.7681,7.28491,0.496565,11210.1
+N07,19,37,0.411111,picking,7.08144,0.965875,1.75472,15.7883,7.2571,0.426266,18239.4
+N07,20,42,0.466667,picking,7.30498,0.207394,1.86387,15.0456,7.2298,0.37511,18052.2
+N07,21,46,0.511111,picking,7.12438,0.23388,1.81258,15.1775,7.01242,0.315232,14979

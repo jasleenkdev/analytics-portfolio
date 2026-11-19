@@ -1,0 +1,5 @@
+driver_stage,start_date,end_date,days,flagged_hours,orders_affected,late_orders,excess_order_min,wait_excess_min,pick_excess_min,travel_excess_min,orders_vs_history,riders_online_vs_history,rider_utilisation,weather,nodes
+rider wait,2026-02-26,2026-02-28,3,97,3211,1435,35477.1,7.03697,0.306314,3.62806,0.421389,-0.192653,1.69307,storm,N04 N05 N10 N11 N12
+rider wait,2026-03-22,2026-03-22,1,10,332,89,2640.51,6.14944,1.59818,0.19407,0.323015,-0.0412017,1.10274,clear,N03 N05 N09
+rider wait,2026-02-08,2026-02-08,1,8,268,91,2324.97,6.6145,1.53611,0.760852,0.405062,0.0072432,1.17223,rain,N01 N04
+rider wait,2026-03-15,2026-03-15,1,7,183,56,1788.26,7.5979,2.14138,0.0992065,0.367857,-0.0706349,1.23329,clear,N01 N12

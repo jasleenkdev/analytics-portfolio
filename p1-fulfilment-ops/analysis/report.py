@@ -3,7 +3,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import json
+
+from analysis import dashboard, workbook
 from analysis.run_sql import open_db
+from shared.db import load_config
 from shared.reporting import export_csv, md_table, render
 
 PROJECT = Path(__file__).resolve().parents[1]
@@ -26,9 +30,34 @@ def data_quality(con) -> None:
            table=table, excluded=excluded, excluded_share=share, repaired=repaired)
 
 
+KPI_EXPORTS = {
+    "kpi_delivery_node": "SELECT * FROM kpi_delivery_node",
+    "kpi_delivery_node_day": "SELECT * FROM kpi_delivery_node_day ORDER BY node_id, order_date",
+    "kpi_network_daily": "SELECT * FROM kpi_network_daily",
+    "kpi_node_hour_profile": "SELECT * FROM kpi_node_hour_profile",
+    "kpi_defects_node": "SELECT * FROM kpi_defects_node",
+    "kpi_defects_network": "SELECT coalesce(defect_type, 'ANY') AS defect_type, * EXCLUDE (defect_type) FROM kpi_defects_network",
+    "kpi_fill_node_category": "SELECT * FROM kpi_fill_node_category",
+    "kpi_inventory_node": "SELECT * FROM kpi_inventory_node",
+    "kpi_riders_node": "SELECT * FROM kpi_riders_node",
+    "kpi_delay_decomposition_node": "SELECT * FROM kpi_delay_decomposition_node",
+    "anomaly_chronic": "SELECT * FROM anomaly_chronic",
+    "anomaly_incidents": "SELECT * FROM anomaly_incidents ORDER BY excess_order_min DESC",
+    "anomaly_episodes": "SELECT * EXCLUDE (node_list), array_to_string(node_list, ' ') AS nodes FROM anomaly_episodes",
+    "stockout_clusters": "SELECT * FROM stockout_clusters",
+    "change_point_results": "SELECT * FROM change_point_results ORDER BY node_id",
+    "before_after": "SELECT * FROM before_after",
+}
+
+
 def run() -> None:
+    cfg = load_config(PROJECT)
+    findings = json.loads((OUT / "findings.json").read_text())
     con = open_db(read_only=True)
     try:
         data_quality(con)
+        export_csv(con, KPI_EXPORTS, OUT / "kpi")
+        workbook.build(con, cfg, OUT / "p1_fulfilment_kpis.xlsx")
+        dashboard.build(con, findings, cfg, PROJECT / "docs" / "index.html")
     finally:
         con.close()

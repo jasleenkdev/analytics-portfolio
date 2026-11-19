@@ -225,3 +225,24 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** one source means the memo, README and dashboard cannot disagree, and a diff of one JSON file shows exactly which conclusions moved when the generator or a threshold changes.
 - **Alternatives rejected:** each template querying the database directly, because the same number would be computed in several places and could drift.
 - **Trade-off / consequence:** adding a new number to prose needs a change in two places (collector and template).
+
+### D-033: dashboard content, palette and interaction
+- **Project / phase:** p1, phase 6 (shared by all projects)
+- **Decision:** the dashboard opens with six KPI tiles, then a node x hour heatmap with a metric switcher (late rate, pick, rider wait, P90), a stacked delay decomposition per node, the network SLA trend (daily plus 7-day ratio), the anomaly episode table, a filterable and sortable table of all flagged node-hours, the before/after chart for any detected change point, and the repeat-stockout view. Colours come from one validated palette (categorical slots for the three stages, a single-hue blue ramp for the heatmap) with dark-mode steps; tables are filtered with a few lines of vanilla JavaScript over embedded JSON.
+- **Why:** the order follows the operations lead's questions: how bad, where and when, which stage, which events, what changed; a heatmap is the densest honest view of 12 nodes x 17 hours; filtering in the browser keeps the page a single static file.
+- **Alternatives rejected:** Plotly's own table trace, because it cannot filter; a JavaScript grid library, because it adds another CDN dependency for a 1,400-row table; one chart per node, because twelve small charts hide the comparison the heatmap makes obvious.
+- **Trade-off / consequence:** the flagged-cell table renders at most 500 rows at a time (the filter counts all rows); charts are re-coloured for dark mode by a small script rather than being regenerated.
+
+### D-034: Excel workbook as fact sheets plus a formula-driven summary
+- **Project / phase:** p1, phase 6
+- **Decision:** `outputs/p1_fulfilment_kpis.xlsx` holds node-day, defect, fill and rider facts as values, and a `node_summary` sheet where every count and rate is a `SUMIFS` formula over those facts; an editable SLA target cell drives a "meets/below" column and conditional formatting. P50/P90 are carried as labelled values. A test opens the workbook with a formula engine (pycel) and checks the computed cells against the SQL KPIs.
+- **Why:** the brief asks for live formulas, not pasted values; a reviewer can filter or edit a fact row and watch the summary move, and the test proves the formulas reproduce the SQL rather than just being present.
+- **Alternatives rejected:** writing computed values with a formula-looking format, because it would fail the "live formulas" requirement; recalculating with LibreOffice in CI, because it adds a large system dependency; percentile formulas over order-level data, because 400k rows would make the file heavy and slow.
+- **Trade-off / consequence:** openpyxl does not store cached results, so the file shows values only after the spreadsheet application recalculates on open (Excel and LibreOffice do this automatically).
+
+### D-035: KPI CSV exports with stable names
+- **Project / phase:** p1, phase 6
+- **Decision:** every KPI and analysis table that a BI tool would need is exported to `outputs/kpi/*.csv` with the same name as its DuckDB table, plus the data-quality report.
+- **Why:** the dashboards are HTML because BI tools cannot be built headlessly; flat CSVs with one grain per file can be loaded into any BI tool later without touching Python.
+- **Alternatives rejected:** Parquet, because spreadsheet users and most BI desktop tools open CSV directly; one wide denormalised extract, because mixing grains (node, node-day, node-hour) invites double counting.
+- **Trade-off / consequence:** CSV loses column types; the file names and SQL comments document each grain.
