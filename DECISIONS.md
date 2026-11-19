@@ -316,3 +316,45 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** the randomisation unit is the user, so orders from one user are correlated; treating orders as independent observations would understate the standard error.
 - **Alternatives rejected:** an order-level t-test, because it violates independence and overstates significance; averaging per-user ratios, because users with one order would weigh as much as heavy users and users with no orders would have to be dropped.
 - **Trade-off / consequence:** the delta method is a first-order approximation; with tens of thousands of users per arm the error is negligible.
+
+### D-046: SRM handling: test the split overall and per day, exclude the bad day's cohort
+- **Project / phase:** p2, phase 11
+- **Decision:** a chi-square goodness-of-fit test against the designed 50/50 split runs on the whole assignment log (alarm at p < 0.001) and on each assignment day (Bonferroni across days). If the overall test fails, users assigned on flagged days are removed from both arms, and the split is re-tested on the remaining population; the pre-exclusion estimate is reported alongside for transparency.
+- **Why:** an SRM means the arms are no longer comparable, so no effect estimate can be trusted until the cause is localised; dropping the whole affected cohort from both arms keeps the remaining comparison randomised, while dropping only the over-represented arm would not.
+- **Alternatives rejected:** re-weighting the affected day, because the missing control users are not missing at random from the analyst's point of view (we cannot know who was lost); ignoring the SRM because the estimate barely moves, because in production the size of the bias is unknown in advance; a 0.05 threshold, because SRM checks run on every experiment and a strict alarm avoids constant false stops.
+- **Trade-off / consequence:** about 10% of users are dropped (that day's cohort), which costs power; the readout shows both populations.
+
+### D-047: inference stack for the promotion test
+- **Project / phase:** p2, phase 11
+- **Decision:** Welch t-tests with 95% CIs for every user-level metric; CUPED with the same metric in the 28-day pre-period as covariate (theta pooled across arms) for contribution, orders and GMV; delta-method CIs for per-order ratios; power reported as the minimum detectable effect at 80% power for the realised sample, raw and after CUPED. Primary decision on the CUPED contribution estimate.
+- **Why:** Welch does not assume equal variances, which matters when the treatment changes spend dispersion; CUPED with the pre-period of the same metric is the standard, unbiased variance-reduction method and here removes about 40% of the variance; reporting MDE tells a stakeholder what the test could and could not have seen.
+- **Alternatives rejected:** Mann-Whitney, because it tests distributions rather than the mean that the P&L depends on; regression adjustment with many covariates, because CUPED with one strong covariate captures most of the gain with an easier explanation; a bootstrap for every metric, because the sample is large and the analytical intervals agree with it (tested).
+- **Trade-off / consequence:** CUPED needs pre-period history, so brand-new users get the covariate 0, which weakens the adjustment for them.
+
+### D-048: novelty as effect by week since assignment plus a direct decay test
+- **Project / phase:** p2, phase 11
+- **Decision:** effects are estimated separately for weeks 1, 2 and 3 after each user's assignment, and decay is tested directly as the treatment-control difference in each user's (week 1 minus week 3) orders.
+- **Why:** comparing week-level estimates by eye cannot tell decay from noise; the per-user difference uses each user as their own control and gives one p-value for "the effect is fading".
+- **Alternatives rejected:** calendar-week cuts, because users enter on different days; fitting an exponential decay curve, because three points cannot identify a shape and the decision only needs to know whether week 3 is lower than week 1.
+- **Trade-off / consequence:** the steady-state effect is approximated by week 3; a longer holdout would be needed to know where it settles.
+
+### D-049: segment cuts with CUPED, Holm correction and interaction tests
+- **Project / phase:** p2, phase 11
+- **Decision:** effects are estimated per platform, zone and tenure (new vs established) on CUPED-adjusted outcomes; p-values are Holm-corrected within each metric's family of segment tests; heterogeneity itself is tested with a treatment x segment interaction (robust SE), also Holm-corrected across the three dimensions.
+- **Why:** a large average effect makes every segment "significant", which says nothing about whether segments differ; the interaction test answers the real question (is the effect different here?) and the correction stops one of ten segments from being reported as special by chance.
+- **Alternatives rejected:** Bonferroni, because it is uniformly less powerful than Holm with the same family-wise guarantee; Benjamini-Hochberg, because a launch decision targeting a segment needs family-wise control, not a false discovery rate; no correction, because ten segments at 5% give about a 40% chance of at least one false positive.
+- **Trade-off / consequence:** small segments (web users) have low power, so "no significant difference" there is weak evidence of no difference.
+
+### D-050: pilot evaluated with two-way fixed-effects difference-in-differences
+- **Project / phase:** p2, phase 11
+- **Decision:** each pilot metric is regressed on treated x post with node and date fixed effects and node-clustered standard errors; parallel trends are checked with an event study (weekly leads and lags, joint F test on the leads with cluster degrees of freedom) and a single-parameter linear pre-trend test; a placebo test re-runs the DiD on pre-period data with a fake start 28 days earlier. The parallel-trends gate uses the linear pre-trend and the placebo; the joint lead test is reported.
+- **Why:** date fixed effects absorb the shared seasonality and shocks; clustering by node respects that days within a node are correlated; the event study shows the shape, while the single slope test is the most powerful check against the divergence that would actually bias the estimate. The chi-square version of the joint test rejected for delivery minutes even though no single lead was significant, a known over-rejection with 24 clusters, so I switched to the F version and kept the slope test as the gate.
+- **Alternatives rejected:** a plain before/after on pilot nodes, because shared shocks would be counted as pilot effect; synthetic control, because with 8 treated nodes and a clean randomised control group it adds complexity for no bias reduction; wild cluster bootstrap, because it is not available in the pinned libraries and the CIs are far from the decision thresholds.
+- **Trade-off / consequence:** with 24 clusters the clustered SEs are approximate; conclusions are drawn only where the CI is far from zero and from the guardrail tolerance. I also changed the generator so that busy days add delivery minutes equally at every node (it previously scaled by node level), which matches the stated assumption of a shared shock.
+
+### D-051: decision rules written down before reading the results
+- **Project / phase:** p2, phase 11
+- **Decision:** promotion: launch if the CUPED contribution-per-user CI is above zero and the high-margin-share guardrail is not significantly down; do not launch if the CI is entirely below zero; otherwise extend. Pilot: scale if cost per order falls significantly, no guardrail is breached and parallel trends hold; if cost falls but a guardrail is breached (defect rate up significantly and by more than 0.3 pp, or SLA down significantly and by more than 2 pp), do not scale as-is but fix and extend; otherwise do not scale.
+- **Why:** coding the rule removes the temptation to argue for a result after seeing it, and states the business trade-off (how much defect increase is acceptable for the saving) explicitly for stakeholders to challenge.
+- **Alternatives rejected:** a single p-value threshold on the primary metric, because it ignores guardrails; an expected-value calculation monetising defects, because the cost of a defect (refund plus churn) is not in the data and would be an invented number.
+- **Trade-off / consequence:** the tolerances (0.3 pp defects, 2 pp SLA) are judgement calls held in config; a different business could reasonably set them differently and get a different call.

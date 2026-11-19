@@ -127,7 +127,7 @@ def pilot_panel(rng, cfg, plants):
         orders = rng.poisson(nd["size"] * season * trend * np.exp(shock))
         busy = 1 + 0.6 * (season * trend * np.exp(shock) - 1)    # busier days are slower everywhere
         rmin = node_rmin[i] * busy * (1 + pe["rider_min_per_order"] * on) * rng.lognormal(0, 0.03, days)
-        dmin = node_dmin[i] * busy + pe["delivery_min"] * on + rng.normal(0, 0.6, days)
+        dmin = node_dmin[i] + 22 * (busy - 1) + pe["delivery_min"] * on + rng.normal(0, 0.6, days)
         dp = np.clip(node_def[i] * busy + pe["defect_rate_pp"] / 100 * on, 0.001, 0.2)
         sp = np.clip(node_sla[i] - 0.15 * (busy - 1) + pe["sla_pp"] / 100 * on, 0.5, 0.99)
         rows.append(pd.DataFrame({

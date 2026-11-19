@@ -6,9 +6,10 @@ import time
 from pathlib import Path
 
 from analysis import report as report_stage
-from analysis import run_sql
+from analysis import findings, run_sql
 from data_gen import ground_truth
 from data_gen.generate import generate
+from shared.db import load_config
 
 HERE = Path(__file__).resolve().parent
 
@@ -18,6 +19,11 @@ def build() -> None:
     generate(HERE)
     ground_truth.render(HERE)
     print("running SQL:", ", ".join(run_sql.run()))
+    con = run_sql.open_db()
+    try:
+        findings.run(con, load_config(HERE))
+    finally:
+        con.close()
 
 
 def report() -> None:
