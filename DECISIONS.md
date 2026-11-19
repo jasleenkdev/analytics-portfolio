@@ -372,3 +372,10 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** a forest plot shows sign, size and uncertainty of many metrics at once on one axis; each later chart answers one challenge a stakeholder would raise (is the split valid, will it fade, who responds, are the pilot groups comparable).
 - **Alternatives rejected:** bar charts of arm means, because they hide uncertainty and need one axis per metric; a dual-axis chart of cost and defects, because two scales on one chart invite false visual correlations.
 - **Trade-off / consequence:** relative effects for ratio metrics and share metrics sit on the same axis as money metrics, so the hover text gives the exact meaning of each row.
+
+### D-054: one memo, one call per experiment, each with "what would change the call"
+- **Project / phase:** p2, phase 13
+- **Decision:** the memo gives each experiment a single capitalised call taken from the coded decision rule, then result, mechanism, uncertainty (CI, power, SRM handling, fairness checks) and a "what would change the call" line naming the specific follow-up test or data.
+- **Why:** stakeholders act on the call; the uncertainty line tells them how firm it is, and naming the follow-up turns a "no" into a next step (a targeted offer for the responsive segment, a defect-safe batching rule).
+- **Alternatives rejected:** reporting p-values without a recommendation, because the brief asks for a decision; recommending a specific alternative threshold, because the test did not measure one and the number would be invented.
+- **Trade-off / consequence:** the follow-up suggestions are qualitative; their value can only be known by running them.

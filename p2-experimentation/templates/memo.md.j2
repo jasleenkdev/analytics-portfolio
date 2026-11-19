@@ -1,0 +1,30 @@
+{% set c = r["contribution|CUPED"] %}
+{% set o = r["orders|CUPED"] %}
+{% set g = r["gmv|CUPED"] %}
+{% set fee = r["fee_revenue|difference in means"] %}
+{% set hm = r["high_margin_share|delta method (ratio)"] %}
+{% set cpo = r["contribution_per_order|delta method (ratio)"] %}
+{% set cost = did["cost_per_order"] %}
+{% set dg = q.guardrails.defect_rate %}
+{% set sg = q.guardrails.pct_within_sla %}
+# Memo: free-delivery threshold test and rider-batching pilot
+
+**To:** Growth and operations leads  **From:** Analytics  **Data:** simulated (seeded generator, not real company data)
+
+## 1. Lower free-delivery threshold ({{ p.thresholds.control | int }} to {{ p.thresholds.treatment | int }}): **{{ p.decision | upper }}**
+- **Result:** contribution per user {{ c.rel_diff | pct }} (95% CI {{ c.rel_ci_low | pct }} to {{ c.rel_ci_high | pct }}; {{ c.diff | num(2) }} per user over {{ cfg.sim.observation_days }} days), even though orders rose {{ o.rel_diff | pct }} and GMV {{ g.rel_diff | pct }}.
+- **Why:** delivery-fee revenue fell {{ (fee.rel_diff | abs) | pct(0) }}, and the mix shifted: the high-margin basket share dropped {{ ((hm.diff | abs) * 100) | num }} points ({{ hm.control_mean | pct(0) }} to {{ hm.treatment_mean | pct(0) }}) as customers padded baskets to reach the free threshold ({{ p.bunching.treatment.just_above | pct(0) }} of treatment orders sit just above it vs {{ p.bunching.control.just_above | pct(0) }} in control). Contribution per order fell {{ (cpo.rel_diff | abs) | pct(0) }}.
+- **The lift fades:** the order lift was {{ nov[(w1, "orders")].rel_diff | pct(0) }} in week {{ w1 }} and {{ nov[(wl, "orders")].rel_diff | pct(0) }} in week {{ wl }} (decay test p {{ "< 0.001" if p.novelty_decay_test.p_value < 0.001 else "= %.3f" | format(p.novelty_decay_test.p_value) }}){% if nov[(wl, "contribution")].diff < nov[(w1, "contribution")].diff %}, while the contribution gap widened ({{ nov[(w1, "contribution")].rel_diff | pct(0) }} to {{ nov[(wl, "contribution")].rel_diff | pct(0) }}){% endif %}.
+- **Uncertainty:** the CI excludes zero by a wide margin; to break even, orders would need to rise {{ p.breakeven_order_lift | pct(0) }} at the new contribution per order, against {{ o.rel_diff | pct(0) }} observed. {% if p.srm.detected %}A logging fault on {{ p.srm.flagged_dates | join(", ") }} unbalanced the arms (SRM p = {{ "%.1e" | format(p.srm.overall_p) }}); that day's {{ p.population.excluded_users | int }} users were excluded and the split is clean afterwards (p = {{ p.srm.after_exclusion_p | num(2) }}). Without CUPED, the estimate is {{ full.rel_diff | pct }} before exclusion and {{ r["contribution|difference in means"].rel_diff | pct }} after.{% endif %}
+
+{% if sig_dims %}
+- **Segments:** only {{ sig_dims | map(attribute="dimension") | unique | join(", ") }} shows a genuinely different response after Holm correction{% set n = seg[("orders", "tenure", "new (<90 days)")] %}{% if n %} (new customers' order lift {{ n.rel_diff | pct(0) }} vs {{ seg[("orders", "tenure", "established")].rel_diff | pct(0) }} for established){% endif %}; platform and zone differences are within noise.
+{% endif %}
+- **What would change the call:** a test of a smaller threshold cut or a free-delivery offer limited to new customers (the most responsive group), and a longer holdout to see whether the extra orders persist or pull purchases forward. With CUPED ({{ p.power.variance_reduction | pct(0) }} variance reduction) this test could detect a {{ p.power.mde_rel_cuped | pct }} change in contribution; detecting a 1% change would need about {{ p.power.n_for_1pct_cuped | int }} users per arm.
+
+## 2. Rider batching pilot ({{ q.treated_nodes }} pilot vs {{ q.control_nodes }} control nodes): **{{ q.decision | upper }}**
+- **Benefit:** rider cost per order {{ cost.rel_estimate | pct }} (95% CI {{ (cost.ci_low / cost.treated_baseline) | pct }} to {{ (cost.ci_high / cost.treated_baseline) | pct }}), about {{ q.saving_per_node_day | num(0) }} per node per day at {{ q.orders_per_node_day | num(0) }} orders a day.
+- **Cost:** defect rate {{ dg.estimate_pp | num(2) }} pp (95% CI {{ dg.ci_low_pp | num(2) }} to {{ dg.ci_high_pp | num(2) }}) against a tolerance of {{ dg.tolerance_pp }} pp{% if dg.breached %} (breached){% endif %}: about {{ q.extra_defects_per_node_day | num(1) }} extra defective orders per node per day. Delivery time {{ did.mean_delivery_min.estimate | num(1) }} min; on-time share {{ sg.estimate_pp | num(1) }} pp (tolerance {{ sg.tolerance_pp }} pp{% if sg.breached %}, breached{% else %}, within{% endif %}).
+- **Is the comparison fair?** {% if q.parallel_trends_ok %}Yes: no pre-period divergence (linear pre-trend p from {{ q.did | map(attribute="pre_trend_p") | min | num(2) }} to {{ q.did | map(attribute="pre_trend_p") | max | num(2) }}) and placebo tests on a fake start date find nothing (p >= {{ q.did | map(attribute="placebo_p") | min | num(2) }}).{% else %}Not fully: at least one pre-trend or placebo check failed, so the estimates need caution.{% endif %}
+
+- **What would change the call:** a batching rule that excludes fragile or chilled items, or caps the wait for a partner order, re-tested on the same pilot and control nodes for 4 to 6 weeks. If the defect increase falls inside the tolerance while the saving holds, scale. With only {{ q.treated_nodes }} pilot nodes, a second wave of nodes would also tighten the cluster-level uncertainty.

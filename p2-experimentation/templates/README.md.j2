@@ -1,0 +1,56 @@
+{% set c = r["contribution|CUPED"] %}
+{% set o = r["orders|CUPED"] %}
+{% set cost = did["cost_per_order"] %}
+# Experimentation and pilot evaluation
+
+**Business questions:** should we launch a lower free-delivery threshold, and should we scale a rider-batching pilot?
+
+> **Simulated data.** Everything comes from a seeded Python generator (`data_gen/generate.py`, seed {{ cfg.sim.seed }}), not from any real company. Assumptions: {{ cfg.sim.users }} users with gamma-Poisson order rates, lognormal basket sizes and a propensity for small high-margin baskets; a {{ cfg.sim.pre_period_days }}-day pre-period under the current policy; users randomised 50/50 on first visit during a {{ cfg.sim.assignment_days }}-day assignment week and observed for {{ cfg.sim.observation_days }} days; delivery fee {{ cfg.promo.delivery_fee }} below the free threshold and a cost to serve of {{ cfg.promo.delivery_cost }} per order. The pilot is a daily panel of {{ cfg.sim.pilot_nodes }} nodes ({{ cfg.sim.pilot_treated }} randomly chosen for batching) over {{ cfg.sim.pilot_pre_days }} days before and {{ cfg.sim.pilot_post_days }} after the switch-on, with shared seasonality and shocks.
+
+{% if links.pages_url %}**Live dashboard:** {{ links.pages_url }}/p2/  |  {% endif %}Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  CSV: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p2_experiment_readout.xlsx`](outputs/p2_experiment_readout.xlsx)
+
+## Answers
+| Question | Call | Key evidence |
+|---|---|---|
+| Lower free-delivery threshold {{ p.thresholds.control | int }} to {{ p.thresholds.treatment | int }} | **{{ p.decision }}** | contribution per user {{ c.rel_diff | pct }} (95% CI {{ c.rel_ci_low | pct }} to {{ c.rel_ci_high | pct }}) despite orders {{ o.rel_diff | pct }} |
+| Scale rider batching | **{{ q.decision }}** | cost per order {{ cost.rel_estimate | pct }}, defect rate {{ q.guardrails.defect_rate.estimate_pp | num(2) }} pp vs {{ q.guardrails.defect_rate.tolerance_pp }} pp tolerance |
+
+## Findings: promotion test
+1. **Sample-ratio mismatch.** {% if p.srm.detected %}The overall split ({{ p.srm.overall_control | int }} control vs {{ p.srm.overall_treatment | int }} treatment) fails the SRM test (p = {{ "%.1e" | format(p.srm.overall_p) }}). The per-day test isolates {{ p.srm.flagged_dates | join(", ") }}; the data-quality check also finds {{ (dq_issues | selectattr("table_name", "equalto", "orders") | first).failing_rows | int }} users who ordered during the test with no assignment record, consistent with lost control logs. Excluding that day's cohort from both arms restores balance (p = {{ p.srm.after_exclusion_p | num(2) }}).{% else %}No mismatch (p = {{ p.srm.overall_p | num(3) }}).{% endif %}
+
+1. **Primary metric.** Contribution per user {{ c.diff | num(2) }} ({{ c.rel_diff | pct }}, 95% CI {{ c.rel_ci_low | pct }} to {{ c.rel_ci_high | pct }}) with CUPED, which cut variance by {{ p.power.variance_reduction | pct(0) }}. The minimum detectable effect was {{ p.power.mde_rel | pct }} raw and {{ p.power.mde_rel_cuped | pct }} with CUPED, so the test was well powered.
+1. **Volume up, economics down.** Orders {{ o.rel_diff | pct }}, GMV {{ r["gmv|CUPED"].rel_diff | pct }}, share of users ordering {{ (r["converted|difference in means"].diff * 100) | num(1) }} pts; but fee revenue {{ r["fee_revenue|difference in means"].rel_diff | pct(0) }} and contribution per order {{ r["contribution_per_order|delta method (ratio)"].rel_diff | pct(0) }}. Break-even would need {{ p.breakeven_order_lift | pct(0) }} more orders.
+1. **Cannibalisation of high-margin baskets.** High-margin basket share {{ r["high_margin_share|delta method (ratio)"].control_mean | pct }} in control vs {{ r["high_margin_share|delta method (ratio)"].treatment_mean | pct }} in treatment (delta-method CI {{ (r["high_margin_share|delta method (ratio)"].ci_low * 100) | num(1) }} to {{ (r["high_margin_share|delta method (ratio)"].ci_high * 100) | num(1) }} pts). Baskets bunch just above the new threshold: {{ p.bunching.treatment.just_above | pct(1) }} of treatment orders vs {{ p.bunching.control.just_above | pct(1) }} of control orders fall in the 4 units above it.
+1. **Novelty.** Order lift by week since assignment: {% for w in range(w1, wl + 1) %}week {{ w }} {{ nov[(w, "orders")].rel_diff | pct(1) }}{{ ", " if not loop.last }}{% endfor %} (decay test p {{ "< 0.001" if p.novelty_decay_test.p_value < 0.001 else "= %.3f" | format(p.novelty_decay_test.p_value) }}). Contribution effect by week: {% for w in range(w1, wl + 1) %}{{ nov[(w, "contribution")].rel_diff | pct(1) }}{{ ", " if not loop.last }}{% endfor %}.
+1. **Segments.** {% for x in p.interactions %}{{ x.metric }} x {{ x.dimension }}: Holm p = {{ x.p_adjusted | num(3) }}{{ "; " if not loop.last }}{% endfor %}. {% if sig_dims %}Only {{ sig_dims | map(attribute="dimension") | unique | join(", ") }} differs after correction{% set n = seg[("orders", "tenure", "new (<90 days)")] %}{% if n %}: new customers' order lift {{ n.rel_diff | pct(1) }} vs {{ seg[("orders", "tenure", "established")].rel_diff | pct(1) }} for established customers{% endif %}.{% else %}No segment differs after correction.{% endif %}
+
+
+## Findings: rider-batching pilot
+| Metric | DiD estimate | 95% CI | Relative | Pre-trend p | Placebo p |
+|---|---|---|---|---|---|
+{% for m, x in did.items() %}
+| {{ m }} | {{ "%.4f" | format(x.estimate) }} | {{ "%.4f" | format(x.ci_low) }} to {{ "%.4f" | format(x.ci_high) }} | {{ x.rel_estimate | pct(1) }} | {{ x.pre_trend_p | num(2) }} | {{ x.placebo_p | num(2) }} |
+{% endfor %}
+
+Two-way fixed effects (node and date) with node-clustered errors; {{ q.treated_nodes }} pilot and {{ q.control_nodes }} control nodes. The cost saving is real, but the defect guardrail is {{ "breached" if q.guardrails.defect_rate.breached else "not breached" }}{% if q.guardrails.defect_rate.breached %}: its whole CI lies above zero and the estimate exceeds the {{ q.guardrails.defect_rate.tolerance_pp }} pp tolerance{% endif %}. Parallel trends {{ "hold" if q.parallel_trends_ok else "are doubtful" }} on the linear pre-trend and placebo tests; the joint test of weekly leads gives p between {{ q.did | map(attribute="pre_trend_joint_p") | min | num(3) }} and {{ q.did | map(attribute="pre_trend_joint_p") | max | num(2) }} across metrics with no individual pre-period week significant (see the event-study chart).
+
+## Method
+1. **SQL** (`sql/`): data-quality checks and daily arm counts; experiment tables (one row per assigned user with pre-period covariates and 21-day window metrics; user x week for novelty); sufficient statistics per arm, week and segment; per-order ratio moments; pilot node-day panel, weekly series and the raw 2x2.
+2. **Statistics** (`analysis/stats.py`, `analysis/findings.py`): chi-square SRM test overall and per day; power and minimum detectable effect; Welch difference in means with 95% CIs; CUPED; delta-method ratios; novelty by week with a per-user decay test; segment effects with Holm correction and interaction tests; two-way fixed-effects DiD with node-clustered errors, event study, linear pre-trend test and placebo; guardrails and decision rules fixed in code (`analysis/findings.py`).
+3. **Verification** (`tests/`): generator invariants; SQL metrics recomputed in pandas from raw tables; statistics checked against scipy, a bootstrap, an A/A simulation and synthetic panels with a known effect; Excel formulas evaluated and compared with the Python readout.
+
+Every number in this README and the memo is rendered from `outputs/findings.json`. Design choices are logged in the repository's `DECISIONS.md`.
+
+## Outputs for BI tools
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The sufficient statistics and results are exported as CSV (`outputs/kpi/`) and as an Excel workbook where CIs, p-values, power, SRM tests and the raw DiD are live formulas.
+
+## Limitations
+- Simulated data: no churn, no long-term habit change, and users do not interact with each other (no network effects or rider-capacity spillovers between arms).
+- 21-day windows cannot show whether the extra orders are pulled forward from later weeks.
+- 8 treated clusters make cluster-robust errors approximate; conclusions are drawn only where intervals are far from decision thresholds.
+- Guardrail tolerances are business judgements held in config; a different tolerance can change the pilot call.
+
+## Run it
+```
+make p2      # from the repository root
+```
