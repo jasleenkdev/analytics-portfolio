@@ -18,8 +18,18 @@ xyz_x_cv = 0.5                # weekly demand coefficient of variation closing c
 xyz_y_cv = 1.0                # ... and class Y
 affinity_min_orders = 100     # pair must co-occur in at least this many orders
 affinity_min_lift = 2.0
-wastage_risk_threshold = 0.8  # days of cover / shelf life above which waste risk is high
+wastage_risk_threshold = 1.0  # days of cover / shelf life at or above which the oldest units must expire
 target_cover_share = 0.5      # recommended cover as a share of shelf life for perishables
 add_min_ranged_nodes = 1      # an SKU must be ranged somewhere to be an "add" candidate
 funnel_min_sessions = 2000    # smallest segment-month shown in funnel cuts
 rfm_bins = 5
+alpha = 0.05
+
+[assortment]
+cannibalisation_low = 0.30    # share of an added SKU's sales assumed to come from existing SKUs (pessimistic end)
+transfer_low = 0.50           # share of a dropped SKU's margin that moves to substitutes (optimistic end)
+drop_margin_percentile = 0.10 # bottom share of a node's ranged SKUs by weekly margin considered for drop
+reduce_min_daily_units = 1.0  # below this, depth cannot be cut further and the SKU is a range question instead
+waste_saving_low = 0.5        # share of current waste cost saved by cutting depth (pessimistic)
+waste_saving_high = 0.9
+funnel_min_gap_pp = 3.0       # smallest step-conversion gap (percentage points) reported as a drop-off

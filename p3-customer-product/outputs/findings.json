@@ -1,0 +1,1203 @@
+{
+  "abc_xyz": [
+    {
+      "abc": "A",
+      "revenue_share": 0.547566,
+      "skus": 67,
+      "xyz": "X"
+    },
+    {
+      "abc": "A",
+      "revenue_share": 0.253683,
+      "skus": 79,
+      "xyz": "Y"
+    },
+    {
+      "abc": "B",
+      "revenue_share": 0.009709,
+      "skus": 7,
+      "xyz": "X"
+    },
+    {
+      "abc": "B",
+      "revenue_share": 0.139677,
+      "skus": 122,
+      "xyz": "Y"
+    },
+    {
+      "abc": "C",
+      "revenue_share": 0.042109,
+      "skus": 109,
+      "xyz": "Y"
+    },
+    {
+      "abc": "C",
+      "revenue_share": 0.007256,
+      "skus": 36,
+      "xyz": "Z"
+    }
+  ],
+  "affinity": [
+    {
+      "category_a": "meat_fish",
+      "category_b": "pet",
+      "confidence_a_to_b": 0.205055,
+      "confidence_b_to_a": 0.461196,
+      "lift": 28.238286,
+      "sku_a": "S114",
+      "sku_b": "S390",
+      "support": 0.003349,
+      "together": 933
+    },
+    {
+      "category_a": "frozen",
+      "category_b": "snacks",
+      "confidence_a_to_b": 0.394474,
+      "confidence_b_to_a": 0.399859,
+      "lift": 25.864003,
+      "sku_a": "S158",
+      "sku_b": "S217",
+      "support": 0.006099,
+      "together": 1699
+    },
+    {
+      "category_a": "produce",
+      "category_b": "bakery",
+      "confidence_a_to_b": 0.46257,
+      "confidence_b_to_a": 0.188569,
+      "lift": 22.731875,
+      "sku_a": "S005",
+      "sku_b": "S082",
+      "support": 0.003837,
+      "together": 1069
+    },
+    {
+      "category_a": "baby",
+      "category_b": "premium_deli",
+      "confidence_a_to_b": 0.468783,
+      "confidence_b_to_a": 0.132834,
+      "lift": 13.053254,
+      "sku_a": "S365",
+      "sku_b": "S410",
+      "support": 0.00477,
+      "together": 1329
+    },
+    {
+      "category_a": "pantry",
+      "category_b": "baby",
+      "confidence_a_to_b": 0.085146,
+      "confidence_b_to_a": 0.472253,
+      "lift": 8.83458,
+      "sku_a": "S262",
+      "sku_b": "S372",
+      "support": 0.004552,
+      "together": 1268
+    },
+    {
+      "category_a": "baby",
+      "category_b": "pet",
+      "confidence_a_to_b": 0.455505,
+      "confidence_b_to_a": 0.883,
+      "lift": 5.792867,
+      "sku_a": "S374",
+      "sku_b": "S391",
+      "support": 0.069432,
+      "together": 19343
+    }
+  ],
+  "affinity_pairs_strong": 6,
+  "assortment": {
+    "add_skus": [
+      {
+        "abc": "B",
+        "category": "premium_deli",
+        "impact_high": 33564.992451,
+        "impact_low": 21817.354257,
+        "margin_rate": 0.520241,
+        "nodes": 6,
+        "ranged_nodes": 2,
+        "sku_id": "S401"
+      },
+      {
+        "abc": "B",
+        "category": "premium_deli",
+        "impact_high": 29730.581061,
+        "impact_low": 19913.009565,
+        "margin_rate": 0.520428,
+        "nodes": 6,
+        "ranged_nodes": 2,
+        "sku_id": "S402"
+      },
+      {
+        "abc": "B",
+        "category": "premium_deli",
+        "impact_high": 25988.4388,
+        "impact_low": 16831.994983,
+        "margin_rate": 0.520408,
+        "nodes": 6,
+        "ranged_nodes": 2,
+        "sku_id": "S403"
+      },
+      {
+        "abc": "B",
+        "category": "premium_deli",
+        "impact_high": 19782.903041,
+        "impact_low": 12951.512349,
+        "margin_rate": 0.520223,
+        "nodes": 6,
+        "ranged_nodes": 2,
+        "sku_id": "S399"
+      },
+      {
+        "abc": "B",
+        "category": "premium_deli",
+        "impact_high": 19573.637357,
+        "impact_low": 13667.096708,
+        "margin_rate": 0.519537,
+        "nodes": 6,
+        "ranged_nodes": 2,
+        "sku_id": "S400"
+      },
+      {
+        "abc": "A",
+        "category": "premium_deli",
+        "impact_high": 16280.470748,
+        "impact_low": 10487.925576,
+        "margin_rate": 0.473029,
+        "nodes": 2,
+        "ranged_nodes": 6,
+        "sku_id": "S414"
+      },
+      {
+        "abc": "B",
+        "category": "premium_deli",
+        "impact_high": 14159.990906,
+        "impact_low": 9775.37296,
+        "margin_rate": 0.520154,
+        "nodes": 6,
+        "ranged_nodes": 2,
+        "sku_id": "S404"
+      },
+      {
+        "abc": "A",
+        "category": "ready_meals",
+        "impact_high": 5358.452212,
+        "impact_low": 3370.88954,
+        "margin_rate": 0.376357,
+        "nodes": 1,
+        "ranged_nodes": 7,
+        "sku_id": "S150"
+      },
+      {
+        "abc": "A",
+        "category": "pet",
+        "impact_high": 5160.3429,
+        "impact_low": 3236.626548,
+        "margin_rate": 0.453718,
+        "nodes": 1,
+        "ranged_nodes": 7,
+        "sku_id": "S382"
+      },
+      {
+        "abc": "A",
+        "category": "beverages",
+        "impact_high": 3905.722906,
+        "impact_low": 2549.073614,
+        "margin_rate": 0.360406,
+        "nodes": 1,
+        "ranged_nodes": 7,
+        "sku_id": "S199"
+      },
+      {
+        "abc": "A",
+        "category": "ready_meals",
+        "impact_high": 3454.682169,
+        "impact_low": 1883.489808,
+        "margin_rate": 0.431507,
+        "nodes": 1,
+        "ranged_nodes": 7,
+        "sku_id": "S146"
+      },
+      {
+        "abc": "A",
+        "category": "meat_fish",
+        "impact_high": 3335.368664,
+        "impact_low": 2113.466843,
+        "margin_rate": 0.287805,
+        "nodes": 3,
+        "ranged_nodes": 5,
+        "sku_id": "S110"
+      }
+    ],
+    "median_velocity": 8.031221,
+    "per_node": [
+      {
+        "action": "add",
+        "impact_high": 16882.047862,
+        "impact_low": 10213.805738,
+        "node_id": "N01",
+        "skus": 8
+      },
+      {
+        "action": "drop",
+        "impact_high": 892.537589,
+        "impact_low": -515.264822,
+        "node_id": "N01",
+        "skus": 37
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 5567.814,
+        "impact_low": 3093.23,
+        "node_id": "N01",
+        "skus": 14
+      },
+      {
+        "action": "add",
+        "impact_high": 41324.868458,
+        "impact_low": 26706.774127,
+        "node_id": "N02",
+        "skus": 12
+      },
+      {
+        "action": "drop",
+        "impact_high": 219.530411,
+        "impact_low": -1478.679178,
+        "node_id": "N02",
+        "skus": 38
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 41738.058,
+        "impact_low": 23187.81,
+        "node_id": "N02",
+        "skus": 22
+      },
+      {
+        "action": "add",
+        "impact_high": 25219.426925,
+        "impact_low": 16066.739415,
+        "node_id": "N03",
+        "skus": 14
+      },
+      {
+        "action": "drop",
+        "impact_high": 922.578192,
+        "impact_low": -221.543616,
+        "node_id": "N03",
+        "skus": 37
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 4086.819,
+        "impact_low": 2270.455,
+        "node_id": "N03",
+        "skus": 12
+      },
+      {
+        "action": "add",
+        "impact_high": 31273.990584,
+        "impact_low": 20434.140092,
+        "node_id": "N04",
+        "skus": 12
+      },
+      {
+        "action": "drop",
+        "impact_high": 252.068027,
+        "impact_low": -1392.493945,
+        "node_id": "N04",
+        "skus": 38
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 2570.859,
+        "impact_low": 1428.255,
+        "node_id": "N04",
+        "skus": 7
+      },
+      {
+        "action": "add",
+        "impact_high": 6980.486331,
+        "impact_low": 3807.939915,
+        "node_id": "N05",
+        "skus": 6
+      },
+      {
+        "action": "drop",
+        "impact_high": 728.072685,
+        "impact_low": -392.20463,
+        "node_id": "N05",
+        "skus": 37
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 3236.265,
+        "impact_low": 1797.925,
+        "node_id": "N05",
+        "skus": 9
+      },
+      {
+        "action": "add",
+        "impact_high": 35717.37222,
+        "impact_low": 23224.747884,
+        "node_id": "N06",
+        "skus": 11
+      },
+      {
+        "action": "drop",
+        "impact_high": 197.117808,
+        "impact_low": -1147.064384,
+        "node_id": "N06",
+        "skus": 37
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 29073.636,
+        "impact_low": 16152.02,
+        "node_id": "N06",
+        "skus": 18
+      },
+      {
+        "action": "add",
+        "impact_high": 40801.817451,
+        "impact_low": 26607.793125,
+        "node_id": "N07",
+        "skus": 14
+      },
+      {
+        "action": "drop",
+        "impact_high": -939.605589,
+        "impact_low": -3017.831178,
+        "node_id": "N07",
+        "skus": 37
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 4849.92,
+        "impact_low": 2694.4,
+        "node_id": "N07",
+        "skus": 14
+      },
+      {
+        "action": "add",
+        "impact_high": 22198.346312,
+        "impact_low": 14583.685048,
+        "node_id": "N08",
+        "skus": 9
+      },
+      {
+        "action": "drop",
+        "impact_high": 665.548247,
+        "impact_low": -611.453507,
+        "node_id": "N08",
+        "skus": 38
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 4300.614,
+        "impact_low": 2389.23,
+        "node_id": "N08",
+        "skus": 11
+      }
+    ],
+    "summary": [
+      {
+        "action": "drop",
+        "impact_high": 2937.84737,
+        "impact_low": -8776.53526,
+        "recs": 299
+      },
+      {
+        "action": "reduce depth",
+        "impact_high": 95423.985,
+        "impact_low": 53013.325,
+        "recs": 107
+      },
+      {
+        "action": "add",
+        "impact_high": 220398.356143,
+        "impact_low": 141645.625343,
+        "recs": 86
+      }
+    ]
+  },
+  "data_quality": [
+    {
+      "action": "exclude",
+      "check_name": "orders placed before the customer signed up",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 278589
+    },
+    {
+      "action": "exclude",
+      "check_name": "orders without basket lines",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 278589
+    },
+    {
+      "action": "use line totals",
+      "check_name": "order value differs from the sum of its lines by more than 0.01",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 278589
+    },
+    {
+      "action": "report",
+      "check_name": "basket lines for SKUs the node does not range",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "order_lines",
+      "total_rows": 1507961
+    },
+    {
+      "action": "report",
+      "check_name": "basket lines priced differently from the catalogue",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "order_lines",
+      "total_rows": 1507961
+    },
+    {
+      "action": "keep first",
+      "check_name": "duplicate funnel events (session, step)",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "funnel_events",
+      "total_rows": 2682759
+    },
+    {
+      "action": "exclude from funnel",
+      "check_name": "sessions with a step missing before a later step",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "funnel_events",
+      "total_rows": 701407
+    },
+    {
+      "action": "report",
+      "check_name": "orders whose session never reached order_placed",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 278589
+    },
+    {
+      "action": "exclude",
+      "check_name": "stock ledger does not balance (closing <> opening - sold - wasted)",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "inventory_daily",
+      "total_rows": 1078575
+    },
+    {
+      "action": "exclude",
+      "check_name": "negative stock",
+      "failing_pct": 0.0,
+      "failing_rows": 0,
+      "status": "pass",
+      "table_name": "inventory_daily",
+      "total_rows": 1078575
+    },
+    {
+      "action": "report: short-shipped units",
+      "check_name": "node-days with lost sales (units ordered but not in stock)",
+      "failing_pct": 0.7757,
+      "failing_rows": 8366,
+      "status": "issue",
+      "table_name": "inventory_daily",
+      "total_rows": 1078575
+    },
+    {
+      "action": "keep: counts in funnel and acquisition, not retention",
+      "check_name": "customers who signed up but never ordered",
+      "failing_pct": 4.4013,
+      "failing_rows": 3521,
+      "status": "issue",
+      "table_name": "customers",
+      "total_rows": 80000
+    }
+  ],
+  "funnel": {
+    "dropoff": {
+      "aov": 35.731115,
+      "app_version": "5.4",
+      "entering": 70177,
+      "first_day": "2025-08-18",
+      "flagged": true,
+      "gap_pp": -21.321266,
+      "lost_orders": 14962.624924,
+      "lost_revenue": 534631.270954,
+      "others_rate": 0.930014,
+      "p_adjusted": 0.0,
+      "p_value": 0.0,
+      "platform": "android",
+      "platform_success_after_full_adoption": 0.716279,
+      "platform_success_before": 0.928348,
+      "rate": 0.716802,
+      "step": "payment_success"
+    },
+    "flagged": [
+      {
+        "app_version": "5.4",
+        "entering": 70177,
+        "flagged": true,
+        "gap_pp": -21.321266,
+        "others_rate": 0.930014,
+        "p_adjusted": 0.0,
+        "p_value": 0.0,
+        "platform": "android",
+        "rate": 0.716802,
+        "step": "payment_success"
+      }
+    ],
+    "overall": [
+      {
+        "sessions": 701407,
+        "share_of_visits": 1.0,
+        "step": "visit",
+        "step_conversion": null
+      },
+      {
+        "sessions": 585987,
+        "share_of_visits": 0.835445,
+        "step": "browse",
+        "step_conversion": 0.835445
+      },
+      {
+        "sessions": 446991,
+        "share_of_visits": 0.637278,
+        "step": "add_to_cart",
+        "step_conversion": 0.7628
+      },
+      {
+        "sessions": 354143,
+        "share_of_visits": 0.504904,
+        "step": "checkout",
+        "step_conversion": 0.792282
+      },
+      {
+        "sessions": 315642,
+        "share_of_visits": 0.450013,
+        "step": "payment_attempt",
+        "step_conversion": 0.891284
+      },
+      {
+        "sessions": 278589,
+        "share_of_visits": 0.397186,
+        "step": "order_placed",
+        "step_conversion": 0.882611
+      }
+    ],
+    "tests": 16
+  },
+  "retention": {
+    "cohort_curve": {
+      "0": 1.0,
+      "1": 0.433142,
+      "10": 0.087931,
+      "11": 0.070774,
+      "2": 0.360711,
+      "3": 0.294022,
+      "4": 0.245663,
+      "5": 0.205349,
+      "6": 0.170162,
+      "7": 0.138002,
+      "8": 0.120176,
+      "9": 0.101417
+    },
+    "customers": 76479,
+    "drivers": [
+      {
+        "customers": 7518,
+        "driver": "acquisition_channel",
+        "level": "referral",
+        "repeat_rate_90d": 0.70564
+      },
+      {
+        "customers": 18309,
+        "driver": "acquisition_channel",
+        "level": "organic",
+        "repeat_rate_90d": 0.685018
+      },
+      {
+        "customers": 11767,
+        "driver": "acquisition_channel",
+        "level": "paid_search",
+        "repeat_rate_90d": 0.66882
+      },
+      {
+        "customers": 5356,
+        "driver": "acquisition_channel",
+        "level": "partner",
+        "repeat_rate_90d": 0.658701
+      },
+      {
+        "customers": 10681,
+        "driver": "acquisition_channel",
+        "level": "paid_social",
+        "repeat_rate_90d": 0.626814
+      },
+      {
+        "customers": 48271,
+        "driver": "first_order_experience",
+        "level": "clean first order",
+        "repeat_rate_90d": 0.67784
+      },
+      {
+        "customers": 5360,
+        "driver": "first_order_experience",
+        "level": "problem on first order",
+        "repeat_rate_90d": 0.600746
+      },
+      {
+        "customers": 22772,
+        "driver": "platform",
+        "level": "ios",
+        "repeat_rate_90d": 0.677982
+      },
+      {
+        "customers": 8039,
+        "driver": "platform",
+        "level": "web",
+        "repeat_rate_90d": 0.67185
+      },
+      {
+        "customers": 22820,
+        "driver": "platform",
+        "level": "android",
+        "repeat_rate_90d": 0.6617
+      }
+    ],
+    "model": [
+      {
+        "ci_high_pp": -0.553735,
+        "ci_low_pp": -2.730537,
+        "marginal_effect_pp": -1.642136,
+        "odds_ratio": 0.92802,
+        "p_value": 0.003105,
+        "term": "channel: paid_search (vs organic)"
+      },
+      {
+        "ci_high_pp": -4.585338,
+        "ci_low_pp": -6.783581,
+        "marginal_effect_pp": -5.684459,
+        "odds_ratio": 0.772139,
+        "p_value": 0.0,
+        "term": "channel: paid_social (vs organic)"
+      },
+      {
+        "ci_high_pp": -1.223411,
+        "ci_low_pp": -4.062627,
+        "marginal_effect_pp": -2.643019,
+        "odds_ratio": 0.886713,
+        "p_value": 0.000263,
+        "term": "channel: partner (vs organic)"
+      },
+      {
+        "ci_high_pp": 3.426936,
+        "ci_low_pp": 0.84866,
+        "marginal_effect_pp": 2.137798,
+        "odds_ratio": 1.102136,
+        "p_value": 0.001153,
+        "term": "channel: referral (vs organic)"
+      },
+      {
+        "ci_high_pp": -0.786722,
+        "ci_low_pp": -2.507292,
+        "marginal_effect_pp": -1.647007,
+        "odds_ratio": 0.927814,
+        "p_value": 0.000175,
+        "term": "platform: android (vs ios)"
+      },
+      {
+        "ci_high_pp": 0.537937,
+        "ci_low_pp": -1.852251,
+        "marginal_effect_pp": -0.657157,
+        "odds_ratio": 0.970548,
+        "p_value": 0.281148,
+        "term": "platform: web (vs ios)"
+      },
+      {
+        "ci_high_pp": -6.101724,
+        "ci_low_pp": -8.640622,
+        "marginal_effect_pp": -7.371173,
+        "odds_ratio": 0.715108,
+        "p_value": 0.0,
+        "term": "first_order_issue"
+      },
+      {
+        "ci_high_pp": 0.853595,
+        "ci_low_pp": -0.542288,
+        "marginal_effect_pp": 0.155653,
+        "odds_ratio": 1.007106,
+        "p_value": 0.662034,
+        "term": "log_first_basket"
+      }
+    ],
+    "model_base_rate": 0.670135,
+    "model_n": 53631,
+    "repeat_curve": {
+      "120": 0.700476,
+      "14": 0.302745,
+      "180": 0.728803,
+      "30": 0.467295,
+      "60": 0.608507,
+      "7": 0.188283,
+      "90": 0.670135
+    }
+  },
+  "rfm": [
+    {
+      "customers": 15216,
+      "mean_margin": 93.001186,
+      "mean_orders": 7.693021,
+      "mean_recency_days": 18.250657,
+      "segment": "champions",
+      "share_customers": 0.198957,
+      "share_margin": 0.42434
+    },
+    {
+      "customers": 15866,
+      "mean_margin": 52.126314,
+      "mean_orders": 4.273478,
+      "mean_recency_days": 196.829825,
+      "segment": "at risk",
+      "share_customers": 0.207456,
+      "share_margin": 0.247999
+    },
+    {
+      "customers": 14805,
+      "mean_margin": 48.684542,
+      "mean_orders": 4.030665,
+      "mean_recency_days": 56.343465,
+      "segment": "loyal",
+      "share_customers": 0.193583,
+      "share_margin": 0.216135
+    },
+    {
+      "customers": 14726,
+      "mean_margin": 12.160945,
+      "mean_orders": 1.100842,
+      "mean_recency_days": 222.891484,
+      "segment": "hibernating",
+      "share_customers": 0.19255,
+      "share_margin": 0.0537
+    },
+    {
+      "customers": 9728,
+      "mean_margin": 12.15029,
+      "mean_orders": 1.132093,
+      "mean_recency_days": 21.294613,
+      "segment": "new or promising",
+      "share_customers": 0.127198,
+      "share_margin": 0.035443
+    },
+    {
+      "customers": 6138,
+      "mean_margin": 12.160627,
+      "mean_orders": 1.112903,
+      "mean_recency_days": 79.131313,
+      "segment": "needs attention",
+      "share_customers": 0.080257,
+      "share_margin": 0.022382
+    }
+  ],
+  "wastage": {
+    "reduce": [
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 5.539726,
+        "category": "ready_meals",
+        "days_of_cover": 10.289318,
+        "impact_high": 8287.29,
+        "impact_low": 4604.05,
+        "node_id": "N02",
+        "risk_score": 2.057864,
+        "shelf_life_days": 5,
+        "sku_id": "S149",
+        "target_cover_days": 2.5,
+        "units_wasted": 1522.0,
+        "waste_cost": 9208.1,
+        "waste_rate": 0.423013
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 5.693151,
+        "category": "ready_meals",
+        "days_of_cover": 10.18768,
+        "impact_high": 7133.049,
+        "impact_low": 3962.805,
+        "node_id": "N02",
+        "risk_score": 2.037536,
+        "shelf_life_days": 5,
+        "sku_id": "S150",
+        "target_cover_days": 2.5,
+        "units_wasted": 1533.0,
+        "waste_cost": 7925.61,
+        "waste_rate": 0.419081
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 4.041096,
+        "category": "ready_meals",
+        "days_of_cover": 10.640678,
+        "impact_high": 6550.335,
+        "impact_low": 3639.075,
+        "node_id": "N06",
+        "risk_score": 2.128136,
+        "shelf_life_days": 5,
+        "sku_id": "S149",
+        "target_cover_days": 2.5,
+        "units_wasted": 1203.0,
+        "waste_cost": 7278.15,
+        "waste_rate": 0.443094
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 8.589041,
+        "category": "ready_meals",
+        "days_of_cover": 10.012759,
+        "impact_high": 6087.78,
+        "impact_low": 3382.1,
+        "node_id": "N02",
+        "risk_score": 2.002552,
+        "shelf_life_days": 5,
+        "sku_id": "S139",
+        "target_cover_days": 2.5,
+        "units_wasted": 2182.0,
+        "waste_cost": 6764.2,
+        "waste_rate": 0.405124
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 5.936986,
+        "category": "ready_meals",
+        "days_of_cover": 10.274573,
+        "impact_high": 5038.722,
+        "impact_low": 2799.29,
+        "node_id": "N02",
+        "risk_score": 2.054915,
+        "shelf_life_days": 5,
+        "sku_id": "S129",
+        "target_cover_days": 2.5,
+        "units_wasted": 1586.0,
+        "waste_cost": 5598.58,
+        "waste_rate": 0.417149
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 7.890411,
+        "category": "ready_meals",
+        "days_of_cover": 6.210069,
+        "impact_high": 5029.992,
+        "impact_low": 2794.44,
+        "node_id": "N02",
+        "risk_score": 2.070023,
+        "shelf_life_days": 3,
+        "sku_id": "S130",
+        "target_cover_days": 1.5,
+        "units_wasted": 1752.0,
+        "waste_cost": 5588.88,
+        "waste_rate": 0.375563
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 6.479452,
+        "category": "ready_meals",
+        "days_of_cover": 10.186047,
+        "impact_high": 4849.02,
+        "impact_low": 2693.9,
+        "node_id": "N06",
+        "risk_score": 2.037209,
+        "shelf_life_days": 5,
+        "sku_id": "S139",
+        "target_cover_days": 2.5,
+        "units_wasted": 1738.0,
+        "waste_cost": 5387.8,
+        "waste_rate": 0.418694
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 6.479452,
+        "category": "ready_meals",
+        "days_of_cover": 6.327696,
+        "impact_high": 4277.79,
+        "impact_low": 2376.55,
+        "node_id": "N06",
+        "risk_score": 2.109232,
+        "shelf_life_days": 3,
+        "sku_id": "S130",
+        "target_cover_days": 1.5,
+        "units_wasted": 1490.0,
+        "waste_cost": 4753.1,
+        "waste_rate": 0.383823
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 4.156164,
+        "category": "ready_meals",
+        "days_of_cover": 10.586684,
+        "impact_high": 3888.648,
+        "impact_low": 2160.36,
+        "node_id": "N06",
+        "risk_score": 2.117337,
+        "shelf_life_days": 5,
+        "sku_id": "S129",
+        "target_cover_days": 2.5,
+        "units_wasted": 1224.0,
+        "waste_cost": 4320.72,
+        "waste_rate": 0.440922
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 6.816438,
+        "category": "bakery",
+        "days_of_cover": 10.122588,
+        "impact_high": 2274.129,
+        "impact_low": 1263.405,
+        "node_id": "N02",
+        "risk_score": 2.024518,
+        "shelf_life_days": 5,
+        "sku_id": "S093",
+        "target_cover_days": 2.5,
+        "units_wasted": 1767.0,
+        "waste_cost": 2526.81,
+        "waste_rate": 0.409692
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 7.043836,
+        "category": "bakery",
+        "days_of_cover": 10.079736,
+        "impact_high": 1988.514,
+        "impact_low": 1104.73,
+        "node_id": "N02",
+        "risk_score": 2.015947,
+        "shelf_life_days": 5,
+        "sku_id": "S081",
+        "target_cover_days": 2.5,
+        "units_wasted": 1826.0,
+        "waste_cost": 2209.46,
+        "waste_rate": 0.409969
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 5.386301,
+        "category": "bakery",
+        "days_of_cover": 10.396745,
+        "impact_high": 1931.787,
+        "impact_low": 1073.215,
+        "node_id": "N06",
+        "risk_score": 2.079349,
+        "shelf_life_days": 5,
+        "sku_id": "S093",
+        "target_cover_days": 2.5,
+        "units_wasted": 1501.0,
+        "waste_cost": 2146.43,
+        "waste_rate": 0.427635
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 5.353425,
+        "category": "bakery",
+        "days_of_cover": 10.273797,
+        "impact_high": 1577.961,
+        "impact_low": 876.645,
+        "node_id": "N06",
+        "risk_score": 2.054759,
+        "shelf_life_days": 5,
+        "sku_id": "S081",
+        "target_cover_days": 2.5,
+        "units_wasted": 1449.0,
+        "waste_cost": 1753.29,
+        "waste_rate": 0.419878
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 4.054795,
+        "category": "bakery",
+        "days_of_cover": 4.685811,
+        "impact_high": 1314.9,
+        "impact_low": 730.5,
+        "node_id": "N06",
+        "risk_score": 2.342905,
+        "shelf_life_days": 2,
+        "sku_id": "S078",
+        "target_cover_days": 1.0,
+        "units_wasted": 974.0,
+        "waste_cost": 1461.0,
+        "waste_rate": 0.394812
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 1.008219,
+        "category": "meat_fish",
+        "days_of_cover": 3.967391,
+        "impact_high": 1001.268,
+        "impact_low": 556.26,
+        "node_id": "N02",
+        "risk_score": 1.322464,
+        "shelf_life_days": 3,
+        "sku_id": "S110",
+        "target_cover_days": 1.5,
+        "units_wasted": 127.0,
+        "waste_cost": 1112.52,
+        "waste_rate": 0.25502
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 1.268493,
+        "category": "ready_meals",
+        "days_of_cover": 3.941685,
+        "impact_high": 871.641,
+        "impact_low": 484.245,
+        "node_id": "N05",
+        "risk_score": 1.313895,
+        "shelf_life_days": 3,
+        "sku_id": "S138",
+        "target_cover_days": 1.5,
+        "units_wasted": 153.0,
+        "waste_cost": 968.49,
+        "waste_rate": 0.246377
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 1.821918,
+        "category": "ready_meals",
+        "days_of_cover": 3.293233,
+        "impact_high": 797.58,
+        "impact_low": 443.1,
+        "node_id": "N06",
+        "risk_score": 1.097744,
+        "shelf_life_days": 3,
+        "sku_id": "S138",
+        "target_cover_days": 1.5,
+        "units_wasted": 140.0,
+        "waste_cost": 886.2,
+        "waste_rate": 0.173482
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 1.843836,
+        "category": "meat_fish",
+        "days_of_cover": 3.254086,
+        "impact_high": 741.312,
+        "impact_low": 411.84,
+        "node_id": "N08",
+        "risk_score": 1.084695,
+        "shelf_life_days": 3,
+        "sku_id": "S101",
+        "target_cover_days": 1.5,
+        "units_wasted": 144.0,
+        "waste_cost": 823.68,
+        "waste_rate": 0.176255
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 1.246575,
+        "category": "ready_meals",
+        "days_of_cover": 4.010989,
+        "impact_high": 738.072,
+        "impact_low": 410.04,
+        "node_id": "N06",
+        "risk_score": 1.336996,
+        "shelf_life_days": 3,
+        "sku_id": "S141",
+        "target_cover_days": 1.5,
+        "units_wasted": 153.0,
+        "waste_cost": 820.08,
+        "waste_rate": 0.250409
+      },
+      {
+        "action": "reduce depth",
+        "avg_daily_sold": 1.287671,
+        "category": "ready_meals",
+        "days_of_cover": 3.882979,
+        "impact_high": 738.072,
+        "impact_low": 410.04,
+        "node_id": "N04",
+        "risk_score": 1.294326,
+        "shelf_life_days": 3,
+        "sku_id": "S141",
+        "target_cover_days": 1.5,
+        "units_wasted": 153.0,
+        "waste_cost": 820.08,
+        "waste_rate": 0.243631
+      }
+    ],
+    "reduce_cost": 106026.65,
+    "reduce_count": 107,
+    "top_node_category": [
+      {
+        "category": "ready_meals",
+        "high_risk_skus": 12,
+        "node_id": "N02",
+        "skus": 23,
+        "units_wasted": 10418.0,
+        "waste_cost": 42325.17,
+        "waste_rate": 0.282752
+      },
+      {
+        "category": "ready_meals",
+        "high_risk_skus": 11,
+        "node_id": "N06",
+        "skus": 19,
+        "units_wasted": 7165.0,
+        "waste_cost": 28057.04,
+        "waste_rate": 0.292461
+      },
+      {
+        "category": "meat_fish",
+        "high_risk_skus": 13,
+        "node_id": "N04",
+        "skus": 28,
+        "units_wasted": 2727.0,
+        "waste_cost": 13418.15,
+        "waste_rate": 0.118164
+      },
+      {
+        "category": "meat_fish",
+        "high_risk_skus": 12,
+        "node_id": "N05",
+        "skus": 24,
+        "units_wasted": 2261.0,
+        "waste_cost": 11809.74,
+        "waste_rate": 0.157693
+      },
+      {
+        "category": "meat_fish",
+        "high_risk_skus": 10,
+        "node_id": "N06",
+        "skus": 24,
+        "units_wasted": 2383.0,
+        "waste_cost": 11597.67,
+        "waste_rate": 0.126058
+      },
+      {
+        "category": "meat_fish",
+        "high_risk_skus": 14,
+        "node_id": "N01",
+        "skus": 25,
+        "units_wasted": 2308.0,
+        "waste_cost": 11453.9,
+        "waste_rate": 0.132911
+      }
+    ],
+    "total_cost": 284289.66,
+    "waste_rate": 0.102148
+  }
+}

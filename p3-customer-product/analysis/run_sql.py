@@ -10,7 +10,7 @@ DB = PROJECT / "data" / "customer_product.duckdb"
 
 
 def sql_vars(cfg: dict) -> dict:
-    return {"start_date": cfg["sim"]["start_date"], "days": cfg["sim"]["days"], **cfg["analysis"]}
+    return {"start_date": cfg["sim"]["start_date"], "days": cfg["sim"]["days"], **cfg["analysis"], **cfg["assortment"]}
 
 
 def open_db(read_only: bool = False):

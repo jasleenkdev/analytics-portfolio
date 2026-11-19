@@ -463,3 +463,24 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** cover above shelf life guarantees that the oldest units expire; the score is predictive (it can be computed before waste happens) and maps directly to the replenishment parameter a planner changes.
 - **Alternatives rejected:** waste rate alone, because very slow SKUs waste a large share of a tiny presentation stock while costing little; forecasting-based safety-stock optimisation, because the decision here is ranging and depth, not a new replenishment engine.
 - **Trade-off / consequence:** the score ignores intra-week demand peaks, so it is a screening tool; actions are sized on actual waste cost.
+
+### D-067: assortment recommendations as rules with impact ranges
+- **Project / phase:** p3, phase 17
+- **Decision:** per node, `sql/20_assortment.sql` proposes: **add** an unranged SKU if, where ranged, it earns at least this node's category median weekly margin (normalised by node size) and has an above-median margin rate, with impact from the weakest other node's result less 30% cannibalisation to the strongest node's result; **drop** a ranged SKU in the bottom 10% of the node's weekly margin that is class C and not part of a strong affinity pair, with margin given up from 50% (half moves to substitutes) to 100%; **reduce depth** for perishables whose cover is at or above shelf life and that sell at least one unit a day, with saving from 50% to 90% of current waste cost.
+- **Why:** category managers accept transparent rules more readily than a model score, and every number traces to an observed result at another node or to current waste; ranges make the uncertainty from cannibalisation and substitution explicit instead of hiding it in a point estimate. The affinity guard keeps "traffic-driving" partners on the shelf even if they look weak alone.
+- **Alternatives rejected:** a demand-transfer model fitted to ranging changes, because the data has no ranging changes to learn from; ranking by network revenue (ABC), because it recommends dropping exactly the under-ranged high-margin SKUs the network view under-rates; optimisation over shelf space, because there is no space data.
+- **Trade-off / consequence:** the 30%, 50% and 50-90% assumptions are judgement calls held in config; the add rule ignores local taste differences between nodes beyond size.
+
+### D-068: retention drivers with a logistic model reported as marginal effects
+- **Project / phase:** p3, phase 17
+- **Decision:** 90-day repeat (customers observable for 90 days) is modelled with logistic regression on acquisition channel (vs organic), first-order problem, platform (vs iOS) and log first-basket value; results are reported as average marginal effects in percentage points with 95% CIs, alongside the raw rates by driver.
+- **Why:** raw rates by one driver can be confounded by another (channel mix differs by platform); a joint model separates them, and percentage-point effects are what a growth team can weigh against acquisition cost or service fixes.
+- **Alternatives rejected:** a Cox model on time to second order, because the business target is a 90-day repeat and hazard ratios are harder to communicate; gradient-boosted trees with SHAP, because with five categorical drivers they add opacity without accuracy that matters here.
+- **Trade-off / consequence:** the model is associational; the first-order effect is causal in this simulation but in real data would need an experiment (e.g. proactive credits after a bad first order) to confirm.
+
+### D-069: funnel drop-off found by testing every segment-step against the rest
+- **Project / phase:** p3, phase 17
+- **Decision:** for every platform x app version and each step transition, conversion is compared with all other segments pooled (two-proportion z-test), Holm-corrected across all tests; a drop-off is reported if significant and at least 3 percentage points below the rest. For a flagged segment, the onset is the first day the version took payments, and the cost is the shortfall in conversion times the attempts entering the step, valued at the platform's average order value.
+- **Why:** this finds where and for whom the funnel broke without knowing in advance which step to look at; the effect-size floor keeps large samples from flagging trivial differences.
+- **Alternatives rejected:** monitoring overall conversion only, because a fault in one version on one platform is diluted below noise in the total; a change-point scan per segment, because the version field already marks the onset precisely.
+- **Trade-off / consequence:** pooling "all other segments" as the reference assumes they are healthy; if two segments broke at once, each would be compared with a partly broken baseline.
