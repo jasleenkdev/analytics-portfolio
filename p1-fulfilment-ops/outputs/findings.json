@@ -1,0 +1,520 @@
+{
+  "anomaly_counts": {
+    "by_type": {
+      "both": 241,
+      "peer": 388,
+      "temporal": 760
+    },
+    "cells_flagged": 1389,
+    "cells_scored": 17147,
+    "incidents": 55
+  },
+  "change_point_scan": [
+    {
+      "detected": false,
+      "node_id": "N01",
+      "p_value": 0.004995,
+      "shift_min": 0.258712,
+      "shift_rel": 0.055045,
+      "split_date": "2026-02-18",
+      "split_day_idx": 44,
+      "welch_t": 4.171452
+    },
+    {
+      "detected": true,
+      "node_id": "N02",
+      "p_value": 0.000999,
+      "shift_min": -3.172963,
+      "shift_rel": -0.675099,
+      "split_date": "2026-02-19",
+      "split_day_idx": 45,
+      "welch_t": -31.446269
+    },
+    {
+      "detected": false,
+      "node_id": "N03",
+      "p_value": 0.012987,
+      "shift_min": 0.193889,
+      "shift_rel": 0.041253,
+      "split_date": "2026-02-19",
+      "split_day_idx": 45,
+      "welch_t": 3.676949
+    },
+    {
+      "detected": false,
+      "node_id": "N04",
+      "p_value": 0.004995,
+      "shift_min": 0.225832,
+      "shift_rel": 0.048049,
+      "split_date": "2026-02-18",
+      "split_day_idx": 44,
+      "welch_t": 4.188757
+    },
+    {
+      "detected": false,
+      "node_id": "N05",
+      "p_value": 0.064935,
+      "shift_min": 0.187407,
+      "shift_rel": 0.039874,
+      "split_date": "2026-02-19",
+      "split_day_idx": 45,
+      "welch_t": 2.954052
+    },
+    {
+      "detected": false,
+      "node_id": "N06",
+      "p_value": 0.335664,
+      "shift_min": 0.159398,
+      "shift_rel": 0.033915,
+      "split_date": "2026-01-19",
+      "split_day_idx": 14,
+      "welch_t": 2.016628
+    },
+    {
+      "detected": false,
+      "node_id": "N07",
+      "p_value": 0.000999,
+      "shift_min": 0.517593,
+      "shift_rel": 0.110126,
+      "split_date": "2026-02-19",
+      "split_day_idx": 45,
+      "welch_t": 5.947845
+    },
+    {
+      "detected": false,
+      "node_id": "N08",
+      "p_value": 0.000999,
+      "shift_min": 0.256319,
+      "shift_rel": 0.054536,
+      "split_date": "2026-02-27",
+      "split_day_idx": 53,
+      "welch_t": 5.127223
+    },
+    {
+      "detected": false,
+      "node_id": "N09",
+      "p_value": 0.000999,
+      "shift_min": 0.305096,
+      "shift_rel": 0.064914,
+      "split_date": "2026-02-21",
+      "split_day_idx": 47,
+      "welch_t": 6.241597
+    },
+    {
+      "detected": false,
+      "node_id": "N10",
+      "p_value": 0.000999,
+      "shift_min": 0.302585,
+      "shift_rel": 0.06438,
+      "split_date": "2026-02-21",
+      "split_day_idx": 47,
+      "welch_t": 5.858254
+    },
+    {
+      "detected": false,
+      "node_id": "N11",
+      "p_value": 0.063936,
+      "shift_min": 0.162145,
+      "shift_rel": 0.034499,
+      "split_date": "2026-02-15",
+      "split_day_idx": 41,
+      "welch_t": 2.982826
+    },
+    {
+      "detected": false,
+      "node_id": "N12",
+      "p_value": 0.000999,
+      "shift_min": 0.301111,
+      "shift_rel": 0.064066,
+      "split_date": "2026-02-04",
+      "split_day_idx": 30,
+      "welch_t": 5.276596
+    }
+  ],
+  "change_points": [
+    {
+      "metrics": {
+        "median_pick_min": {
+          "ci_high": -2.969917,
+          "ci_low": -3.376009,
+          "days_after": 45,
+          "days_before": 45,
+          "did": -3.172963,
+          "metric": "median_pick_min",
+          "node_after": 3.065,
+          "node_before": 6.222963,
+          "node_id": "N02",
+          "rest_after": 4.738704,
+          "rest_before": 4.723704
+        },
+        "p90_delivery_min": {
+          "ci_high": -6.095822,
+          "ci_low": -8.648993,
+          "days_after": 45,
+          "days_before": 45,
+          "did": -7.372407,
+          "metric": "p90_delivery_min",
+          "node_after": 26.490889,
+          "node_before": 33.415852,
+          "node_id": "N02",
+          "rest_after": 31.902222,
+          "rest_before": 31.454778
+        },
+        "pct_within_sla": {
+          "ci_high": 0.147354,
+          "ci_low": 0.100715,
+          "days_after": 45,
+          "days_before": 45,
+          "did": 0.124034,
+          "metric": "pct_within_sla",
+          "node_after": 0.94466,
+          "node_before": 0.83038,
+          "node_id": "N02",
+          "rest_after": 0.866558,
+          "rest_before": 0.876312
+        }
+      },
+      "node_id": "N02",
+      "p_value": 0.000999,
+      "shift_min": -3.172963,
+      "shift_rel": -0.675099,
+      "split_date": "2026-02-19",
+      "welch_t": -31.446269
+    }
+  ],
+  "chronic": [
+    {
+      "driver_stage": "picking",
+      "flagged_day_share": 0.411111,
+      "hours": [
+        18,
+        19,
+        20,
+        21
+      ],
+      "late_orders": 5470,
+      "late_rate": 0.365373,
+      "node_id": "N07",
+      "orders_per_picker": 15.444894,
+      "orders_timed": 14971,
+      "peer_late_rate": 0.094614,
+      "peer_orders_per_picker": 7.196058,
+      "pick_excess_min": 6.988441,
+      "recoverable_late_orders": 3179,
+      "recoverable_share_of_network_late": 0.062383,
+      "travel_excess_min": 1.890736,
+      "wait_excess_min": 0.774242
+    }
+  ],
+  "data_quality": [
+    {
+      "action": "drop: keep one row per order and event type",
+      "check_name": "exact duplicate events",
+      "failing_pct": 0.0399,
+      "failing_rows": 796.0,
+      "status": "issue",
+      "table_name": "order_events",
+      "total_rows": 1993618
+    },
+    {
+      "action": "drop: keep the earliest timestamp per order and event type",
+      "check_name": "repeated order/event-type rows (incl. jittered re-sends)",
+      "failing_pct": 0.0802,
+      "failing_rows": 1599.0,
+      "status": "issue",
+      "table_name": "order_events",
+      "total_rows": 1993618
+    },
+    {
+      "action": "exclude from timing KPIs; keep for volume, defect and stock KPIs",
+      "check_name": "delivered before placed",
+      "failing_pct": 0.0189,
+      "failing_rows": 75.0,
+      "status": "issue",
+      "table_name": "order_events",
+      "total_rows": 397229
+    },
+    {
+      "action": "exclude from timing KPIs",
+      "check_name": "stage out of order (picked<placed, picked_up<picked or delivered<picked_up)",
+      "failing_pct": 0.0189,
+      "failing_rows": 75.0,
+      "status": "issue",
+      "table_name": "order_events",
+      "total_rows": 397229
+    },
+    {
+      "action": "fill from the same order's other rider events",
+      "check_name": "rider event with null rider_id",
+      "failing_pct": 0.0352,
+      "failing_rows": 420.0,
+      "status": "issue",
+      "table_name": "order_events",
+      "total_rows": 1192876
+    },
+    {
+      "action": "exclude",
+      "check_name": "order without a placed event",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 399903
+    },
+    {
+      "action": "report only",
+      "check_name": "placed event differs from order header by more than 1 minute",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 399903
+    },
+    {
+      "action": "exclude from timing KPIs",
+      "check_name": "delivered status without delivered event",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 397229
+    },
+    {
+      "action": "exclude",
+      "check_name": "null keys in orders",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "orders",
+      "total_rows": 399903
+    },
+    {
+      "action": "exclude",
+      "check_name": "order lines with fulfilled > ordered or non-positive quantity",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "order_items",
+      "total_rows": 1439005
+    },
+    {
+      "action": "exclude",
+      "check_name": "order lines whose SKU is missing from the catalogue",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "order_items",
+      "total_rows": 1439005
+    },
+    {
+      "action": "exclude",
+      "check_name": "negative on-hand stock",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "inventory_snapshots",
+      "total_rows": 3888000
+    },
+    {
+      "action": "report only",
+      "check_name": "refund on a cancelled order",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "defects",
+      "total_rows": 28228
+    },
+    {
+      "action": "report only",
+      "check_name": "non-positive refund amount",
+      "failing_pct": 0.0,
+      "failing_rows": 0.0,
+      "status": "pass",
+      "table_name": "defects",
+      "total_rows": 28228
+    }
+  ],
+  "defect_types": [
+    {
+      "defect_rate": 0.03832,
+      "defect_type": "late",
+      "orders_with_defect": 15222,
+      "refund_amount": 47745.22,
+      "refund_pct_gmv": 0.006177
+    },
+    {
+      "defect_rate": 0.023541,
+      "defect_type": "missing_item",
+      "orders_with_defect": 9351,
+      "refund_amount": 44513.6,
+      "refund_pct_gmv": 0.005758
+    },
+    {
+      "defect_rate": 0.004536,
+      "defect_type": "wrong_item",
+      "orders_with_defect": 1802,
+      "refund_amount": 7025.28,
+      "refund_pct_gmv": 0.000909
+    },
+    {
+      "defect_rate": 0.003537,
+      "defect_type": "damaged",
+      "orders_with_defect": 1405,
+      "refund_amount": 4222.48,
+      "refund_pct_gmv": 0.000546
+    }
+  ],
+  "episodes": [
+    {
+      "days": 3,
+      "driver_share": 0.641395,
+      "driver_stage": "rider wait",
+      "end_date": "2026-02-28",
+      "excess_order_min": 35477.090347,
+      "flagged_hours": 97.0,
+      "late_orders": 1435.0,
+      "node_list": [
+        "N04",
+        "N05",
+        "N10",
+        "N11",
+        "N12"
+      ],
+      "orders_affected": 3211.0,
+      "orders_vs_history": 0.421389,
+      "pick_excess_min": 0.306314,
+      "rider_utilisation": 1.693068,
+      "riders_online_vs_history": -0.192653,
+      "start_date": "2026-02-26",
+      "travel_excess_min": 3.628063,
+      "wait_excess_min": 7.036965,
+      "weather": "storm"
+    },
+    {
+      "days": 1,
+      "driver_share": 0.774324,
+      "driver_stage": "rider wait",
+      "end_date": "2026-03-22",
+      "excess_order_min": 2640.505306,
+      "flagged_hours": 10.0,
+      "late_orders": 89.0,
+      "node_list": [
+        "N03",
+        "N05",
+        "N09"
+      ],
+      "orders_affected": 332.0,
+      "orders_vs_history": 0.323015,
+      "pick_excess_min": 1.598182,
+      "rider_utilisation": 1.102744,
+      "riders_online_vs_history": -0.041202,
+      "start_date": "2026-03-22",
+      "travel_excess_min": 0.19407,
+      "wait_excess_min": 6.149438,
+      "weather": "clear"
+    },
+    {
+      "days": 1,
+      "driver_share": 0.742246,
+      "driver_stage": "rider wait",
+      "end_date": "2026-02-08",
+      "excess_order_min": 2324.968565,
+      "flagged_hours": 8.0,
+      "late_orders": 91.0,
+      "node_list": [
+        "N01",
+        "N04"
+      ],
+      "orders_affected": 268.0,
+      "orders_vs_history": 0.405062,
+      "pick_excess_min": 1.536112,
+      "rider_utilisation": 1.172227,
+      "riders_online_vs_history": 0.007243,
+      "start_date": "2026-02-08",
+      "travel_excess_min": 0.760852,
+      "wait_excess_min": 6.614502,
+      "weather": "rain"
+    },
+    {
+      "days": 1,
+      "driver_share": 0.772263,
+      "driver_stage": "rider wait",
+      "end_date": "2026-03-15",
+      "excess_order_min": 1788.26444,
+      "flagged_hours": 7.0,
+      "late_orders": 56.0,
+      "node_list": [
+        "N01",
+        "N12"
+      ],
+      "orders_affected": 183.0,
+      "orders_vs_history": 0.367857,
+      "pick_excess_min": 2.141376,
+      "rider_utilisation": 1.233291,
+      "riders_online_vs_history": -0.070635,
+      "start_date": "2026-03-15",
+      "travel_excess_min": 0.099207,
+      "wait_excess_min": 7.597903,
+      "weather": "clear"
+    }
+  ],
+  "network": {
+    "best_node": "N01",
+    "best_node_pct_within_sla": 0.93058,
+    "cancel_rate": 0.006687,
+    "days": 90,
+    "defect_rate_any": 0.06853,
+    "fill_rate": 0.993256,
+    "late_orders": 50959,
+    "nodes": 12,
+    "orders_per_rider_hour": 1.332459,
+    "orders_placed": 399903,
+    "orders_timed": 397154,
+    "p50_delivery_min": 19.45,
+    "p90_delivery_min": 31.716667,
+    "pct_within_sla": 0.87169,
+    "refund_pct_gmv": 0.01339,
+    "refund_total": 103506.58,
+    "rider_utilisation": 0.697962,
+    "short_value": 44513.6,
+    "sla_minutes": 30,
+    "worst_node": "N07",
+    "worst_node_pct_within_sla": 0.772069
+  },
+  "stockout_clusters": [
+    {
+      "category": "dairy",
+      "days_with_stockout_share": 0.771296,
+      "mean_first_zero_hour": 17.500146,
+      "missing_claims": 2620,
+      "missing_refunds": 9710.91,
+      "node_id": "N03",
+      "opening_cover_days": 0.741343,
+      "other_nodes_cover_days": 2.110722,
+      "other_nodes_stockout_rate": 0.027238,
+      "repeat_skus": 12,
+      "share_of_missing_refunds": 0.218156,
+      "short_value": 9710.91,
+      "sku_ids": "S0097, S0098, S0099, S0102, S0109, S0111, S0118, S0120, S0128, S0131, S0136, S0150",
+      "stockout_rate": 0.294608,
+      "units_short": 3611.0
+    },
+    {
+      "category": "dairy",
+      "days_with_stockout_share": 0.746296,
+      "mean_first_zero_hour": 17.298691,
+      "missing_claims": 2235,
+      "missing_refunds": 8230.37,
+      "node_id": "N09",
+      "opening_cover_days": 0.750794,
+      "other_nodes_cover_days": 2.109863,
+      "other_nodes_stockout_rate": 0.027293,
+      "repeat_skus": 12,
+      "share_of_missing_refunds": 0.184896,
+      "short_value": 8230.37,
+      "sku_ids": "S0097, S0098, S0099, S0102, S0109, S0111, S0118, S0120, S0128, S0131, S0136, S0150",
+      "stockout_rate": 0.294009,
+      "units_short": 3050.0
+    }
+  ]
+}

@@ -176,3 +176,52 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** operations teams target "orders with a problem", and one order with two missing lines is one unhappy customer, not two.
 - **Alternatives rejected:** claims per order, because multi-line shortages would inflate missing-item rates; including cancelled orders in the denominator, because they cannot carry a delivery defect.
 - **Trade-off / consequence:** line-level shortage severity is captured in fill rate and refund value rather than in the defect rate.
+
+### D-026: two complementary z-scores per node-hour
+- **Project / phase:** p1, phase 5
+- **Decision:** every node-hour with at least 8 timed orders gets (1) a temporal modified z-score against the same node, hour of day and day type (weekday/weekend) over the previous 14 such cells, using rolling median and 1.4826 x MAD, flagged at 3.5; and (2) a peer z-score against the other nodes in the same date-hour (leave-one-out mean and SD), flagged at 3.0. Only slow-side deviations are flagged.
+- **Why:** the two questions are different: "is this node worse than it usually is?" catches acute events such as a storm, while "is this node worse than everyone else right now?" catches chronic problems that a node's own history has normalised. My first version used a plain mean/SD temporal window across all days; it flagged weekends against weekday history and let the first storm day inflate the baseline so the second storm day was missed. Median/MAD and day-type partitioning fixed both; 3.5 is the conventional cut-off for MAD-based modified z-scores (Iglewicz and Hoaglin).
+- **Alternatives rejected:** seasonal decomposition or a forecasting model per node-hour, because it needs far more history than 90 days and is hard to express in SQL; isolation forest, because it gives no stage-level explanation and no business-readable threshold; a single network-wide z, because it cannot tell chronic from acute.
+- **Trade-off / consequence:** queueing makes delays heavy-tailed, so roughly 8% of cells still clear a threshold; individual flags are therefore aggregated (D-027) before anything reaches the memo, and the dashboard table is filterable.
+
+### D-027: chronic patterns, acute incidents, network events and episodes
+- **Project / phase:** p1, phase 5
+- **Decision:** a node-hour of day flagged on at least 25% of days is a chronic pattern; remaining flags form acute incidents only when one node has at least 3 flagged hours on a day with the same driving stage; incidents at 2 or more nodes on the same day with the same driver form a network event; consecutive event days with the same driver are merged into an episode (gaps and islands).
+- **Why:** an operations lead acts on patterns ("evenings at node X", "the storm on these days"), not on 1,400 cells; sustained multi-hour, multi-node clusters are far less likely to be noise than single cells, and separating chronic hours stops a permanent problem from dominating every daily incident list.
+- **Alternatives rejected:** ranking raw cells by z, because the top of the list was dominated by small, noisy cells; clustering flags with DBSCAN over (node, time), because the rules above are explainable in one sentence and live in SQL.
+- **Trade-off / consequence:** a genuine one-off problem lasting under 3 hours at a single node is not escalated as an incident (it stays visible in the dashboard table); the 25% and 3-hour rules are config values.
+
+### D-028: drill-down against the baseline the cell was flagged on, impact in recoverable orders
+- **Project / phase:** p1, phase 5
+- **Decision:** a flagged cell's excess minutes are split into pick, rider-wait and travel excess against its own history for temporal flags and against peers for peer-only flags; the driver is the stage with the largest excess. Impact is reported as excess order-minutes and, for chronic patterns, as late orders that would have been on time had the driving stage matched the other nodes at the same hour.
+- **Why:** the comparison that triggered the flag is the right reference for explaining it; "recoverable late orders" is a number an operations lead can weigh against the cost of extra staff.
+- **Alternatives rejected:** one fixed network baseline for all cells, because a node that always travels further would always look travel-driven; impact as z-score sums, because z has no business unit.
+- **Trade-off / consequence:** the counterfactual assumes fixing the stage leaves the others unchanged; in reality faster picking would also shorten rider waiting at the node, so the recoverable count is conservative.
+
+### D-029: change points by a SQL max-|t| scan with a permutation test
+- **Project / phase:** p1, phase 5
+- **Decision:** for each node, the daily median pick time minus the other nodes' daily median (leave-one-out) is split at every day with at least 14 days either side; the split with the largest Welch t is the candidate. Significance comes from 1,000 day-shuffled permutations of the same scan; a change is reported only if p < 0.01 and the shift is at least 15% of the network median pick time.
+- **Why:** taking the maximum over 60 candidate splits inflates t, and a permutation test of the same max statistic gives an honest p-value; differencing against other nodes removes weather and network-wide demand swings; the effect-size floor stops tiny but significant shifts from being reported (one node's real step moves every other node's benchmark slightly, which shows up as small significant shifts elsewhere).
+- **Alternatives rejected:** CUSUM charts, because they need a known in-control mean and a tuning constant; PELT or binary segmentation from a change-point library, because one step per node is the question and the scan is transparent SQL; testing a pre-announced date only, because the brief asks to find the change from data.
+- **Trade-off / consequence:** one change point per node; a node with two shifts would show only the larger one. Day shuffling ignores autocorrelation, which makes p-values somewhat optimistic; the effect-size floor guards against that.
+
+### D-030: before/after as a difference-in-differences against the rest of the network
+- **Project / phase:** p1, phase 5
+- **Decision:** for nodes with a detected change, daily median pick, P90 delivery and % within SLA are compared before vs after the change date relative to the rest of the network on the same days; the estimate is the change in the daily node-minus-rest gap with a Welch 95% CI.
+- **Why:** a plain before/after would credit the node with any network-wide drift (demand growth, weather); differencing against the same days elsewhere removes it.
+- **Alternatives rejected:** synthetic control, because with 11 donor nodes and one change it adds weighting machinery without changing the answer; regression with node and day fixed effects, because with one treated unit it reduces to the same difference with harder-to-read output.
+- **Trade-off / consequence:** the CI treats days as independent; daily gaps are mildly autocorrelated, so the interval is somewhat narrow. The effect is many times its standard error here, so the conclusion does not hinge on that.
+
+### D-031: stockout diagnosis on opening cover measured against ordered demand
+- **Project / phase:** p1, phase 5
+- **Decision:** for every tracked node-SKU I compute opening cover = stock on the shelf at opening / mean daily units ordered, the mean hour the shelf first empties, and short units and value; repeat-stockout SKUs are grouped by node and category and compared with the same SKUs at other nodes.
+- **Why:** sales are capped by the stockout itself, so cover measured against sales would look healthy exactly where the shelf is too small; comparing with the same SKUs elsewhere separates "this SKU is volatile everywhere" from "this node's replenishment level is set too low".
+- **Alternatives rejected:** demand-forecast error analysis, because the feed has no forecast table; flagging single SKUs, because a buyer or planner acts on a category-at-node pattern.
+- **Trade-off / consequence:** missing items for untracked SKUs cannot be diagnosed this way and remain in the "random shorts" background.
+
+### D-032: one findings file feeds every narrative
+- **Project / phase:** p1, phase 5
+- **Decision:** `analysis/findings.py` collects network KPIs, chronic patterns, episodes, stockout clusters, change points and DQ into `outputs/findings.json` (sorted keys, rounded floats); the README, memo and dashboard read from it.
+- **Why:** one source means the memo, README and dashboard cannot disagree, and a diff of one JSON file shows exactly which conclusions moved when the generator or a threshold changes.
+- **Alternatives rejected:** each template querying the database directly, because the same number would be computed in several places and could drift.
+- **Trade-off / consequence:** adding a new number to prose needs a change in two places (collector and template).

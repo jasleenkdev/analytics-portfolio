@@ -4,6 +4,8 @@
 -- busy minutes   = rider_assigned -> delivered plus an equal-length return leg (travel time),
 --                  attributed to the hour of assignment
 -- utilisation    = busy minutes / online minutes; orders per rider-hour = delivered orders / online hours
+--                  (at hourly grain the ratio can exceed 1: trips that run into the next hour count in
+--                  the hour they were assigned, so values above 1 mean demand outran online riders)
 -- Variables: none.
 
 CREATE OR REPLACE TABLE rider_online_node_hour AS

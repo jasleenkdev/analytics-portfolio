@@ -19,9 +19,14 @@ picker_target_utilisation = 0.70
 rider_target_utilisation = 0.75
 
 [analysis]
-zscore_threshold = 3.0       # |z| above this flags a node-hour cell
-rolling_window_days = 14     # trailing same-hour window for the temporal z-score
+zscore_threshold = 3.0       # peer z (mean/sd) at or above this flags a node-hour cell
+robust_z_threshold = 3.5     # temporal modified z (median/MAD) threshold, the Iglewicz-Hoaglin convention
+min_incident_hours = 3       # an acute incident needs this many flagged hours at one node on one day
+rolling_window_obs = 14      # previous same-hour, same-day-type cells in the temporal z-score baseline
 min_orders_per_cell = 8      # node-hour cells with fewer delivered orders are not scored
+chronic_min_day_share = 0.25 # a node-hour of day flagged on at least this share of days is a chronic pattern
 change_min_segment_days = 14 # shortest segment allowed either side of a candidate change point
-change_min_effect = 0.15     # minimum relative shift in daily median pick time to report a change point
+change_min_effect = 0.15     # minimum shift in daily median pick time, relative to the network median, to report
+change_p_value = 0.01        # permutation p-value threshold for the max-|t| change-point scan
+n_permutations = 1000
 stockout_repeat_days = 0.5   # a node-SKU is a repeat stockout if it hits zero on at least this share of days
