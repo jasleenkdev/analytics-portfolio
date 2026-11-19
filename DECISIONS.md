@@ -414,3 +414,10 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** it is a stronger test of assortment analysis: network-level ABC puts these SKUs in class C, and only a per-ranged-node view reveals they deserve more space, which is exactly the trap a real category team falls into.
 - **Alternatives rejected:** planting SKUs that are slow everywhere, because the correct action (drop) is obvious from any velocity table and tests nothing beyond sorting.
 - **Trade-off / consequence:** the analysis needs a velocity-per-ranged-node metric and a ranging table, which adds a join to every assortment query.
+
+### D-060: base layer with order sequence, gaps and first-order experience
+- **Project / phase:** p3, phase 15
+- **Decision:** `sql/02_base.sql` builds `order_facts` (ROW_NUMBER order sequence, LAG days since previous order, cohort month of the first order, months since first order, issue flag), `customer_facts` (one row per ordering customer with channel, platform, first-order experience and totals) and `line_facts` (revenue and gross margin per line). Cohorts are defined by first order, not signup.
+- **Why:** every retention, RFM and repeat-purchase query needs the same sequence and cohort logic; computing it once in SQL keeps the definitions identical across analyses. Cohorting on first order measures retention of customers who actually bought, while signups who never ordered belong in the funnel and acquisition view.
+- **Alternatives rejected:** cohorting on signup date, because the 4% of signups who never order would show as month-0 churn and blur the retention drivers; recomputing sequence numbers inside each analysis, because subtle differences (ties, ordering) would make numbers disagree.
+- **Trade-off / consequence:** a customer who signs up in March and first orders in May is a May cohort member, which is what the retention question needs but differs from a marketing view of acquisition month.

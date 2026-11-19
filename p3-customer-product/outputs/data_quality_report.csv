@@ -1,0 +1,13 @@
+check_name,table_name,failing_rows,total_rows,failing_pct,status,action
+orders placed before the customer signed up,orders,0,278589,0,pass,exclude
+orders without basket lines,orders,0,278589,0,pass,exclude
+order value differs from the sum of its lines by more than 0.01,orders,0,278589,0,pass,use line totals
+basket lines for SKUs the node does not range,order_lines,0,1507964,0,pass,report
+basket lines priced differently from the catalogue,order_lines,0,1507964,0,pass,report
+"duplicate funnel events (session, step)",funnel_events,0,2682759,0,pass,keep first
+sessions with a step missing before a later step,funnel_events,0,701407,0,pass,exclude from funnel
+orders whose session never reached order_placed,orders,0,278589,0,pass,report
+stock ledger does not balance (closing <> opening - sold - wasted),inventory_daily,0,1078575,0,pass,exclude
+negative stock,inventory_daily,0,1078575,0,pass,exclude
+node-days with lost sales (units ordered but not in stock),inventory_daily,8364,1078575,0.7755,issue,report: short-shipped units
+customers who signed up but never ordered,customers,3521,80000,4.4013,issue,"keep: counts in funnel and acquisition, not retention"
