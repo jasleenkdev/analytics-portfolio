@@ -379,3 +379,38 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** stakeholders act on the call; the uncertainty line tells them how firm it is, and naming the follow-up turns a "no" into a next step (a targeted offer for the responsive segment, a defect-safe batching rule).
 - **Alternatives rejected:** reporting p-values without a recommendation, because the brief asks for a decision; recommending a specific alternative threshold, because the test did not measure one and the number would be invented.
 - **Trade-off / consequence:** the follow-up suggestions are qualitative; their value can only be known by running them.
+
+### D-055: customer lifecycle model with explicit retention drivers
+- **Project / phase:** p3, phase 14
+- **Decision:** about 80k customers sign up through the year (growing), each with an acquisition channel, platform and home node; the first order happens at signup, later orders follow a Poisson process with a gamma-distributed personal rate while the customer is active; activity ends after an exponential lifetime set by a monthly churn hazard that depends on channel and on whether the first order had a problem.
+- **Why:** "which customers retain and why" needs drivers that exist before the outcome (channel, first experience) so retention analysis can attribute rather than just describe; monthly signup cohorts across one year give a full cohort triangle.
+- **Alternatives rejected:** a BG/NBD-style latent-attrition model, because its parameters are harder to explain and plant; independent purchases with no churn, because cohort curves would then be flat.
+- **Trade-off / consequence:** churn is permanent (no win-back) and the drivers are multiplicative and independent, so there are no interaction effects to discover.
+
+### D-056: baskets from a personal repertoire plus popularity within the node's range
+- **Project / phase:** p3, phase 14
+- **Decision:** each basket has 1 + Poisson(4.8) lines; 55% come from the customer's 12 favourite SKUs (drawn once from what the home node ranges), the rest by popularity within the node's range; planted SKU pairs add the partner on purpose. A node-range table decides what each node can sell.
+- **Why:** repertoire buying is what makes grocery reorder rates and repeat-purchase curves realistic; a range table is what makes assortment questions ("add / drop at this node") answerable at all.
+- **Alternatives rejected:** independent draws by popularity, because repeat purchase and affinity would be pure chance; a full catalogue at every node, because add/drop recommendations would be meaningless.
+- **Trade-off / consequence:** repertoires do not drift over time, so seasonal or life-stage shifts in what customers buy are absent.
+
+### D-057: funnel as sessions with step prefixes, and lost payments remove real orders
+- **Project / phase:** p3, phase 14
+- **Decision:** every intended order is a session that reaches payment; if payment fails, the session ends there and the order never exists. Non-buying sessions (1.4 per intended order) stop at visit, browse, cart or checkout. Events are stored long (session, step, timestamp), each session holding a prefix of the six steps.
+- **Why:** the long event format is what product analytics teams query, and making a payment failure delete the order means the funnel drop-off has a measurable revenue cost rather than being a cosmetic step rate.
+- **Alternatives rejected:** a single "furthest step" column, because it hides the SQL pattern (conditional aggregation over events) the brief wants to show; independent step rates with orders generated separately, because funnel and order volumes would not reconcile.
+- **Trade-off / consequence:** there are no retries within a session, so a failed payment is a fully lost order; in reality some customers retry, which would make the true loss smaller.
+
+### D-058: FIFO perishable inventory with daily order-up-to replenishment
+- **Project / phase:** p3, phase 14
+- **Decision:** each ranged node-SKU is replenished daily to an order-up-to level (ambient goods: 4 days of cover with generous safety stock; perishables: the lesser of 2 days or half the shelf life, with thin safety stock); perishable units are held in daily age buckets, sold oldest first and written off when older than their shelf life. The daily ledger records opening stock, receipts, sales, lost sales, waste and closing stock.
+- **Why:** waste only emerges from a model where stock ages; FIFO with age buckets is the simplest mechanism that produces realistic waste as a function of cover versus shelf life. My first calibration used ambient-style safety stock for perishables, which created high bakery waste at every node and would have hidden any real overstock; thin perishable safety stock is also the realistic policy.
+- **Alternatives rejected:** a waste rate drawn per SKU, because it would have no link to cover and the "days of cover vs shelf life" analysis would be circular; lot-level tracking, because daily age buckets give the same answer far faster.
+- **Trade-off / consequence:** very slow perishables still waste a large share of a small minimum stock; analysis must rank waste by cost, not by rate, to separate real overstock from presentation stock.
+
+### D-059: "high-margin low-velocity SKUs" planted as under-ranged winners
+- **Project / phase:** p3, phase 14
+- **Decision:** instead of SKUs that are simply slow everywhere, six high-margin premium SKUs are ranged at only two nodes but sell well where ranged. This deviates from the brief's wording ("a few high-margin low-velocity SKUs"); the slow-everywhere tail still exists naturally.
+- **Why:** it is a stronger test of assortment analysis: network-level ABC puts these SKUs in class C, and only a per-ranged-node view reveals they deserve more space, which is exactly the trap a real category team falls into.
+- **Alternatives rejected:** planting SKUs that are slow everywhere, because the correct action (drop) is obvious from any velocity table and tests nothing beyond sorting.
+- **Trade-off / consequence:** the analysis needs a velocity-per-ranged-node metric and a ranging table, which adds a join to every assortment query.

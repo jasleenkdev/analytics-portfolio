@@ -1,0 +1,25 @@
+# Project 3 configuration. Planted effects live in data_gen/plants.toml (generator only).
+
+[sim]
+seed = 20250101
+start_date = "2025-01-01"
+days = 365
+customers = 80000
+n_nodes = 8
+n_skus = 420
+repertoire_size = 12          # favourite SKUs per customer (drives reordering)
+repertoire_share = 0.55       # share of basket lines drawn from the repertoire
+
+[analysis]
+as_of_date = "2025-12-31"
+abc_a_share = 0.80            # cumulative revenue share closing class A
+abc_b_share = 0.95            # ... and class B
+xyz_x_cv = 0.5                # weekly demand coefficient of variation closing class X
+xyz_y_cv = 1.0                # ... and class Y
+affinity_min_orders = 100     # pair must co-occur in at least this many orders
+affinity_min_lift = 2.0
+wastage_risk_threshold = 0.8  # days of cover / shelf life above which waste risk is high
+target_cover_share = 0.5      # recommended cover as a share of shelf life for perishables
+add_min_ranged_nodes = 1      # an SKU must be ranged somewhere to be an "add" candidate
+funnel_min_sessions = 2000    # smallest segment-month shown in funnel cuts
+rfm_bins = 5

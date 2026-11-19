@@ -1,0 +1,30 @@
+# Planted effects for project 3. Read ONLY by the generator and the final cross-check.
+
+[funnel_dropoff]
+platform = "android"
+app_version = "5.4"
+release_day = 229             # 2025-08-18
+adoption_days = 14            # days for the new version to reach full adoption
+payment_success_before = 0.93
+payment_success_after = 0.72
+
+[retention]
+base_monthly_churn = 0.17
+channel_multiplier = { referral = 0.6, organic = 0.85, paid_search = 1.0, paid_social = 1.5, partner = 1.2 }
+first_order_issue_multiplier = 1.8   # churn hazard multiplier when the first order had a problem
+
+[affinity]
+pairs = 6                     # SKU pairs bought together on purpose
+p_add_partner = 0.45          # chance the partner joins when the anchor SKU is in the basket
+
+[wastage]
+nodes = ["N02", "N06"]
+categories = ["bakery", "ready_meals"]
+skus_per_node = 7
+cover_vs_shelf_life = 1.8     # replenishment covers this multiple of shelf life (overstock)
+
+[hidden_gems]
+n_skus = 6                    # high-margin SKUs ranged at only two nodes but selling well there
+category = "premium_deli"
+nodes = ["N01", "N05"]
+margin = 0.52
