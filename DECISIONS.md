@@ -302,3 +302,17 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** an experiment readout is only as trustworthy as its assignment log; "active but unassigned" users are a direct symptom of a logging bug on one arm, and the daily split localises it. Fixed-effects regression handles an unbalanced panel natively, so imputing three days would only add invented data.
 - **Alternatives rejected:** checking the overall split only, because it detects but cannot localise a one-day bug; forward-filling missing pilot days, because it would understate variance.
 - **Trade-off / consequence:** the "active but unassigned" check needs the full user list; in production this would come from the exposure log rather than the user table.
+
+### D-044: SQL produces sufficient statistics, Python does the inference
+- **Project / phase:** p2, phase 10
+- **Decision:** the SQL layer returns, per arm (and per week, segment, pilot group), the count, mean, variance and totals of every metric, plus for per-order ratios the per-user numerator and denominator moments (means, variances, covariance). Statistical tests read these tables or the user-level table; nothing statistical is computed in SQL.
+- **Why:** sufficient statistics are exactly what a warehouse is good at and what a stats library needs; keeping tests in Python (scipy/statsmodels) avoids re-implementing t-distributions in SQL and keeps every test independently checkable.
+- **Alternatives rejected:** pulling raw orders into pandas and aggregating there, because it hides the metric definitions from the SQL review; computing z-tests in SQL, because the CI and correction logic would be untestable against reference implementations.
+- **Trade-off / consequence:** two layers to read; each SQL file states which Python step consumes it.
+
+### D-045: per-order ratio metrics analysed with the delta method
+- **Project / phase:** p2, phase 10
+- **Decision:** metrics such as basket value per order, contribution per order and high-margin basket share are ratios of per-user sums (sum of numerators / sum of denominators); their variance uses the delta method on per-user numerator and denominator moments.
+- **Why:** the randomisation unit is the user, so orders from one user are correlated; treating orders as independent observations would understate the standard error.
+- **Alternatives rejected:** an order-level t-test, because it violates independence and overstates significance; averaging per-user ratios, because users with one order would weigh as much as heavy users and users with no orders would have to be dropped.
+- **Trade-off / consequence:** the delta method is a first-order approximation; with tens of thousands of users per arm the error is negligible.
