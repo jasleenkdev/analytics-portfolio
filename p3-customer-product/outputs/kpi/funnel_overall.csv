@@ -1,0 +1,7 @@
+step,sessions,share_of_visits,step_conversion
+visit,701407,1,
+browse,585987,0.835445,0.835445
+add_to_cart,446991,0.637278,0.7628
+checkout,354143,0.504904,0.792282
+payment_attempt,315642,0.450013,0.891284
+order_placed,278589,0.397186,0.882611

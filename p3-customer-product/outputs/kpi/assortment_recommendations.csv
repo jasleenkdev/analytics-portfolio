@@ -1,0 +1,493 @@
+node_id,sku_id,category,action,impact_low,impact_high,impact_metric
+N01,S241,snacks,add,243.997,436.195,annual gross margin gained
+N01,S335,household,add,528.152,1016.22,annual gross margin gained
+N01,S342,personal_care,add,821.25,1378.33,annual gross margin gained
+N01,S353,personal_care,add,2022.1,3325.25,annual gross margin gained
+N01,S364,baby,add,1118.01,1918.27,annual gross margin gained
+N01,S382,pet,add,3236.63,5160.34,annual gross margin gained
+N01,S384,pet,add,1786.87,2826.01,annual gross margin gained
+N01,S389,pet,add,456.799,821.434,annual gross margin gained
+N01,S007,produce,drop,42.5661,80.0831,annual gross margin change (negative = given up; frees space)
+N01,S012,produce,drop,-32.0927,25.6637,annual gross margin change (negative = given up; frees space)
+N01,S027,produce,drop,-51.4406,-7.8703,annual gross margin change (negative = given up; frees space)
+N01,S031,produce,drop,-29.9167,12.5416,annual gross margin change (negative = given up; frees space)
+N01,S044,dairy,drop,28.1238,54.2919,annual gross margin change (negative = given up; frees space)
+N01,S054,dairy,drop,-0.894247,40.1929,annual gross margin change (negative = given up; frees space)
+N01,S055,dairy,drop,-4.80882,19.0656,annual gross margin change (negative = given up; frees space)
+N01,S057,dairy,drop,-23.7033,2.99836,annual gross margin change (negative = given up; frees space)
+N01,S061,dairy,drop,-13.4773,10.6814,annual gross margin change (negative = given up; frees space)
+N01,S068,dairy,drop,7.67055,33.2503,annual gross margin change (negative = given up; frees space)
+N01,S070,dairy,drop,39.9554,66.4177,annual gross margin change (negative = given up; frees space)
+N01,S072,dairy,drop,18.4187,38.2094,annual gross margin change (negative = given up; frees space)
+N01,S080,bakery,drop,177.124,228.732,annual gross margin change (negative = given up; frees space)
+N01,S094,bakery,drop,9.08748,59.5887,annual gross margin change (negative = given up; frees space)
+N01,S097,bakery,drop,58.7671,107.384,annual gross margin change (negative = given up; frees space)
+N01,S098,bakery,drop,59.3523,83.4362,annual gross margin change (negative = given up; frees space)
+N01,S106,meat_fish,drop,217.275,267.358,annual gross margin change (negative = given up; frees space)
+N01,S123,meat_fish,drop,151.703,188.601,annual gross margin change (negative = given up; frees space)
+N01,S125,meat_fish,drop,219.262,276.031,annual gross margin change (negative = given up; frees space)
+N01,S169,frozen,drop,-112.81,-56.405,annual gross margin change (negative = given up; frees space)
+N01,S174,frozen,drop,-45.6346,-22.8173,annual gross margin change (negative = given up; frees space)
+N01,S181,beverages,drop,-95.2184,-47.6092,annual gross margin change (negative = given up; frees space)
+N01,S194,beverages,drop,-98.5293,-49.2647,annual gross margin change (negative = given up; frees space)
+N01,S196,beverages,drop,-105.73,-52.8648,annual gross margin change (negative = given up; frees space)
+N01,S197,beverages,drop,-78.983,-39.4915,annual gross margin change (negative = given up; frees space)
+N01,S198,beverages,drop,-102.419,-51.2093,annual gross margin change (negative = given up; frees space)
+N01,S201,beverages,drop,-41.2866,-20.6433,annual gross margin change (negative = given up; frees space)
+N01,S213,beverages,drop,-116.281,-58.1403,annual gross margin change (negative = given up; frees space)
+N01,S218,snacks,drop,-92.2067,-46.1033,annual gross margin change (negative = given up; frees space)
+N01,S235,snacks,drop,-38.5341,-19.2671,annual gross margin change (negative = given up; frees space)
+N01,S242,snacks,drop,-97.7315,-48.8658,annual gross margin change (negative = given up; frees space)
+N01,S268,pantry,drop,-44.5376,-22.2688,annual gross margin change (negative = given up; frees space)
+N01,S276,pantry,drop,-57.0433,-28.5216,annual gross margin change (negative = given up; frees space)
+N01,S281,pantry,drop,-25.5797,-12.7899,annual gross margin change (negative = given up; frees space)
+N01,S307,breakfast,drop,-77.906,-38.953,annual gross margin change (negative = given up; frees space)
+N01,S379,pet,drop,-109.509,-54.7546,annual gross margin change (negative = given up; frees space)
+N01,S398,pet,drop,-48.2973,-24.1487,annual gross margin change (negative = given up; frees space)
+N01,S078,bakery,reduce depth,122.25,220.05,annual waste cost saved
+N01,S083,bakery,reduce depth,77.52,139.536,annual waste cost saved
+N01,S087,bakery,reduce depth,88.33,158.994,annual waste cost saved
+N01,S089,bakery,reduce depth,93.8,168.84,annual waste cost saved
+N01,S092,bakery,reduce depth,73.005,131.409,annual waste cost saved
+N01,S096,bakery,reduce depth,149.31,268.758,annual waste cost saved
+N01,S101,meat_fish,reduce depth,408.98,736.164,annual waste cost saved
+N01,S108,meat_fish,reduce depth,377.19,678.942,annual waste cost saved
+N01,S114,meat_fish,reduce depth,213.605,384.489,annual waste cost saved
+N01,S131,ready_meals,reduce depth,227.255,409.059,annual waste cost saved
+N01,S140,ready_meals,reduce depth,305.73,550.314,annual waste cost saved
+N01,S141,ready_meals,reduce depth,359.12,646.416,annual waste cost saved
+N01,S146,ready_meals,reduce depth,354.41,637.938,annual waste cost saved
+N01,S148,ready_meals,reduce depth,242.725,436.905,annual waste cost saved
+N02,S014,produce,add,358.11,589.905,annual gross margin gained
+N02,S036,produce,add,296.869,526.212,annual gross margin gained
+N02,S077,bakery,add,328.891,654.75,annual gross margin gained
+N02,S102,meat_fish,add,449.783,1230.98,annual gross margin gained
+N02,S200,beverages,add,245.827,394.81,annual gross margin gained
+N02,S399,premium_deli,add,2594.97,3963.7,annual gross margin gained
+N02,S400,premium_deli,add,2738.34,3921.78,annual gross margin gained
+N02,S401,premium_deli,add,4371.33,6725.09,annual gross margin gained
+N02,S402,premium_deli,add,3989.77,5956.82,annual gross margin gained
+N02,S403,premium_deli,add,3372.46,5207.05,annual gross margin gained
+N02,S404,premium_deli,add,1958.59,2837.1,annual gross margin gained
+N02,S414,premium_deli,add,6001.83,9316.68,annual gross margin gained
+N02,S007,produce,drop,-23.5672,33.3664,annual gross margin change (negative = given up; frees space)
+N02,S019,produce,drop,14.5073,54.0536,annual gross margin change (negative = given up; frees space)
+N02,S023,produce,drop,-61.1816,-3.23079,annual gross margin change (negative = given up; frees space)
+N02,S024,produce,drop,-65.3169,-17.4335,annual gross margin change (negative = given up; frees space)
+N02,S027,produce,drop,-93.3098,-36.8549,annual gross margin change (negative = given up; frees space)
+N02,S031,produce,drop,-86.1241,-26.8121,annual gross margin change (negative = given up; frees space)
+N02,S055,dairy,drop,-39.6565,-6.26827,annual gross margin change (negative = given up; frees space)
+N02,S057,dairy,drop,-33.9581,-2.67907,annual gross margin change (negative = given up; frees space)
+N02,S061,dairy,drop,-29.4345,0.692767,annual gross margin change (negative = given up; frees space)
+N02,S068,dairy,drop,-27.8277,7.17616,annual gross margin change (negative = given up; frees space)
+N02,S070,dairy,drop,-23.2664,28.3568,annual gross margin change (negative = given up; frees space)
+N02,S072,dairy,drop,36.7322,58.9661,annual gross margin change (negative = given up; frees space)
+N02,S094,bakery,drop,0.097726,56.1039,annual gross margin change (negative = given up; frees space)
+N02,S097,bakery,drop,79.0329,121.416,annual gross margin change (negative = given up; frees space)
+N02,S098,bakery,drop,85.1392,101.37,annual gross margin change (negative = given up; frees space)
+N02,S100,bakery,drop,36.658,90.899,annual gross margin change (negative = given up; frees space)
+N02,S123,meat_fish,drop,212.03,268.375,annual gross margin change (negative = given up; frees space)
+N02,S126,meat_fish,drop,197.215,258.097,annual gross margin change (negative = given up; frees space)
+N02,S174,frozen,drop,-39.4117,-19.7059,annual gross margin change (negative = given up; frees space)
+N02,S175,frozen,drop,-107.864,-53.9318,annual gross margin change (negative = given up; frees space)
+N02,S191,beverages,drop,-72.3413,-36.1706,annual gross margin change (negative = given up; frees space)
+N02,S194,beverages,drop,-116.679,-58.3397,annual gross margin change (negative = given up; frees space)
+N02,S196,beverages,drop,-136.645,-68.3223,annual gross margin change (negative = given up; frees space)
+N02,S198,beverages,drop,-120.569,-60.2844,annual gross margin change (negative = given up; frees space)
+N02,S201,beverages,drop,-59.1774,-29.5887,annual gross margin change (negative = given up; frees space)
+N02,S210,beverages,drop,-114.087,-57.0433,annual gross margin change (negative = given up; frees space)
+N02,S213,beverages,drop,-124.508,-62.254,annual gross margin change (negative = given up; frees space)
+N02,S235,snacks,drop,-57.8012,-28.9006,annual gross margin change (negative = given up; frees space)
+N02,S242,snacks,drop,-126.074,-63.0368,annual gross margin change (negative = given up; frees space)
+N02,S243,snacks,drop,-100.973,-50.4863,annual gross margin change (negative = given up; frees space)
+N02,S252,pantry,drop,-117.278,-58.6389,annual gross margin change (negative = given up; frees space)
+N02,S253,pantry,drop,-100.524,-50.2619,annual gross margin change (negative = given up; frees space)
+N02,S269,pantry,drop,-46.0734,-23.0367,annual gross margin change (negative = given up; frees space)
+N02,S276,pantry,drop,-72.4011,-36.2005,annual gross margin change (negative = given up; frees space)
+N02,S281,pantry,drop,-49.3644,-24.6822,annual gross margin change (negative = given up; frees space)
+N02,S302,breakfast,drop,-108.602,-54.3008,annual gross margin change (negative = given up; frees space)
+N02,S398,pet,drop,-96.5946,-48.2973,annual gross margin change (negative = given up; frees space)
+N02,S411,premium_deli,drop,110.518,117.419,annual gross margin change (negative = given up; frees space)
+N02,S075,bakery,reduce depth,107.21,192.978,annual waste cost saved
+N02,S081,bakery,reduce depth,1104.73,1988.51,annual waste cost saved
+N02,S083,bakery,reduce depth,81.09,145.962,annual waste cost saved
+N02,S084,bakery,reduce depth,290.445,522.801,annual waste cost saved
+N02,S089,bakery,reduce depth,100.5,180.9,annual waste cost saved
+N02,S090,bakery,reduce depth,182,327.6,annual waste cost saved
+N02,S091,bakery,reduce depth,159.72,287.496,annual waste cost saved
+N02,S092,bakery,reduce depth,55.8,100.44,annual waste cost saved
+N02,S093,bakery,reduce depth,1263.4,2274.13,annual waste cost saved
+N02,S096,bakery,reduce depth,129.165,232.497,annual waste cost saved
+N02,S110,meat_fish,reduce depth,556.26,1001.27,annual waste cost saved
+N02,S111,meat_fish,reduce depth,250.1,450.18,annual waste cost saved
+N02,S117,meat_fish,reduce depth,316.575,569.835,annual waste cost saved
+N02,S120,meat_fish,reduce depth,205.92,370.656,annual waste cost saved
+N02,S129,ready_meals,reduce depth,2799.29,5038.72,annual waste cost saved
+N02,S130,ready_meals,reduce depth,2794.44,5029.99,annual waste cost saved
+N02,S139,ready_meals,reduce depth,3382.1,6087.78,annual waste cost saved
+N02,S140,ready_meals,reduce depth,372.09,669.762,annual waste cost saved
+N02,S141,ready_meals,reduce depth,289.44,520.992,annual waste cost saved
+N02,S148,ready_meals,reduce depth,180.675,325.215,annual waste cost saved
+N02,S149,ready_meals,reduce depth,4604.05,8287.29,annual waste cost saved
+N02,S150,ready_meals,reduce depth,3962.8,7133.05,annual waste cost saved
+N03,S036,produce,add,189.117,335.217,annual gross margin gained
+N03,S050,dairy,add,338.885,550.761,annual gross margin gained
+N03,S102,meat_fish,add,286.529,784.183,annual gross margin gained
+N03,S110,meat_fish,add,572.875,904.083,annual gross margin gained
+N03,S112,meat_fish,add,568.424,963.811,annual gross margin gained
+N03,S134,ready_meals,add,1307.83,2234.7,annual gross margin gained
+N03,S236,snacks,add,281.915,537.019,annual gross margin gained
+N03,S390,pet,add,401.216,683.005,annual gross margin gained
+N03,S399,premium_deli,add,1653.09,2525.03,annual gross margin gained
+N03,S400,premium_deli,add,1744.43,2498.32,annual gross margin gained
+N03,S401,premium_deli,add,2784.7,4284.14,annual gross margin gained
+N03,S402,premium_deli,add,2541.64,3794.72,annual gross margin gained
+N03,S403,premium_deli,add,2148.39,3317.09,annual gross margin gained
+N03,S404,premium_deli,add,1247.7,1807.34,annual gross margin gained
+N03,S007,produce,drop,32.5678,74.0339,annual gross margin change (negative = given up; frees space)
+N03,S019,produce,drop,41.0978,75.2689,annual gross margin change (negative = given up; frees space)
+N03,S024,produce,drop,-37.3665,-2.15326,annual gross margin change (negative = given up; frees space)
+N03,S027,produce,drop,-50.0187,-6.10937,annual gross margin change (negative = given up; frees space)
+N03,S044,dairy,drop,44.2024,84.6812,annual gross margin change (negative = given up; frees space)
+N03,S054,dairy,drop,3.38795,44.874,annual gross margin change (negative = given up; frees space)
+N03,S055,dairy,drop,-12.0421,14.884,annual gross margin change (negative = given up; frees space)
+N03,S057,dairy,drop,-5.74844,16.3758,annual gross margin change (negative = given up; frees space)
+N03,S068,dairy,drop,17.5434,38.1867,annual gross margin change (negative = given up; frees space)
+N03,S072,dairy,drop,54.8764,65.1382,annual gross margin change (negative = given up; frees space)
+N03,S094,bakery,drop,19.6812,56.3006,annual gross margin change (negative = given up; frees space)
+N03,S097,bakery,drop,106.785,142.313,annual gross margin change (negative = given up; frees space)
+N03,S098,bakery,drop,71.0893,90.9847,annual gross margin change (negative = given up; frees space)
+N03,S100,bakery,drop,47.6033,79.1517,annual gross margin change (negative = given up; frees space)
+N03,S125,meat_fish,drop,284.484,321.642,annual gross margin change (negative = given up; frees space)
+N03,S126,meat_fish,drop,315.401,348.31,annual gross margin change (negative = given up; frees space)
+N03,S174,frozen,drop,-31.1145,-15.5573,annual gross margin change (negative = given up; frees space)
+N03,S175,frozen,drop,-79.2124,-39.6062,annual gross margin change (negative = given up; frees space)
+N03,S181,beverages,drop,-83.371,-41.6855,annual gross margin change (negative = given up; frees space)
+N03,S191,beverages,drop,-46.9909,-23.4955,annual gross margin change (negative = given up; frees space)
+N03,S194,beverages,drop,-73.897,-36.9485,annual gross margin change (negative = given up; frees space)
+N03,S196,beverages,drop,-77.2877,-38.6438,annual gross margin change (negative = given up; frees space)
+N03,S198,beverages,drop,-70.0077,-35.0038,annual gross margin change (negative = given up; frees space)
+N03,S201,beverages,drop,-36.6992,-18.3496,annual gross margin change (negative = given up; frees space)
+N03,S213,beverages,drop,-77.3375,-38.6688,annual gross margin change (negative = given up; frees space)
+N03,S235,snacks,drop,-39.9104,-19.9552,annual gross margin change (negative = given up; frees space)
+N03,S243,snacks,drop,-83.0219,-41.511,annual gross margin change (negative = given up; frees space)
+N03,S253,pantry,drop,-53.4033,-26.7016,annual gross margin change (negative = given up; frees space)
+N03,S264,pantry,drop,-86.4026,-43.2013,annual gross margin change (negative = given up; frees space)
+N03,S268,pantry,drop,-53.7523,-26.8762,annual gross margin change (negative = given up; frees space)
+N03,S269,pantry,drop,-37.6964,-18.8482,annual gross margin change (negative = given up; frees space)
+N03,S272,pantry,drop,-75.9513,-37.9757,annual gross margin change (negative = given up; frees space)
+N03,S276,pantry,drop,-35.1036,-17.5518,annual gross margin change (negative = given up; frees space)
+N03,S302,breakfast,drop,-72.4011,-36.2005,annual gross margin change (negative = given up; frees space)
+N03,S306,breakfast,drop,-71.2044,-35.6022,annual gross margin change (negative = given up; frees space)
+N03,S398,pet,drop,-48.2973,-24.1487,annual gross margin change (negative = given up; frees space)
+N03,S411,premium_deli,drop,77.9748,95.2274,annual gross margin change (negative = given up; frees space)
+N03,S075,bakery,reduce depth,95.13,171.234,annual waste cost saved
+N03,S078,bakery,reduce depth,85.5,153.9,annual waste cost saved
+N03,S083,bakery,reduce depth,65.28,117.504,annual waste cost saved
+N03,S087,bakery,reduce depth,74.46,134.028,annual waste cost saved
+N03,S092,bakery,reduce depth,48.36,87.048,annual waste cost saved
+N03,S096,bakery,reduce depth,154.05,277.29,annual waste cost saved
+N03,S108,meat_fish,reduce depth,320.76,577.368,annual waste cost saved
+N03,S111,meat_fish,reduce depth,225.5,405.9,annual waste cost saved
+N03,S114,meat_fish,reduce depth,220.785,397.413,annual waste cost saved
+N03,S138,ready_meals,reduce depth,373.47,672.246,annual waste cost saved
+N03,S140,ready_meals,reduce depth,270.18,486.324,annual waste cost saved
+N03,S146,ready_meals,reduce depth,336.98,606.564,annual waste cost saved
+N04,S014,produce,add,319.928,527.008,annual gross margin gained
+N04,S046,dairy,add,237.354,465.422,annual gross margin gained
+N04,S051,dairy,add,340.655,542.7,annual gross margin gained
+N04,S085,bakery,add,369.88,789.978,annual gross margin gained
+N04,S230,snacks,add,669.902,1052.89,annual gross margin gained
+N04,S257,pantry,add,1499.49,2335.08,annual gross margin gained
+N04,S399,premium_deli,add,2318.29,3541.09,annual gross margin gained
+N04,S400,premium_deli,add,2446.37,3503.63,annual gross margin gained
+N04,S401,premium_deli,add,3905.25,6008.04,annual gross margin gained
+N04,S402,premium_deli,add,3564.38,5321.69,annual gross margin gained
+N04,S403,premium_deli,add,3012.88,4651.86,annual gross margin gained
+N04,S404,premium_deli,add,1749.77,2534.6,annual gross margin gained
+N04,S007,produce,drop,10.7532,56.8266,annual gross margin change (negative = given up; frees space)
+N04,S012,produce,drop,-39.3561,26.882,annual gross margin change (negative = given up; frees space)
+N04,S019,produce,drop,-19.3773,32.0713,annual gross margin change (negative = given up; frees space)
+N04,S023,produce,drop,-42.6915,9.81425,annual gross margin change (negative = given up; frees space)
+N04,S024,produce,drop,-89.9536,-32.3618,annual gross margin change (negative = given up; frees space)
+N04,S027,produce,drop,-82.2521,-22.5761,annual gross margin change (negative = given up; frees space)
+N04,S031,produce,drop,-73.6705,-13.7103,annual gross margin change (negative = given up; frees space)
+N04,S055,dairy,drop,-35.1365,-1.74827,annual gross margin change (negative = given up; frees space)
+N04,S057,dairy,drop,-56.1592,-15.9796,annual gross margin change (negative = given up; frees space)
+N04,S061,dairy,drop,-14.3701,12.915,annual gross margin change (negative = given up; frees space)
+N04,S068,dairy,drop,-3.68959,23.6852,annual gross margin change (negative = given up; frees space)
+N04,S070,dairy,drop,-23.3806,34.7497,annual gross margin change (negative = given up; frees space)
+N04,S072,dairy,drop,37.2048,59.9274,annual gross margin change (negative = given up; frees space)
+N04,S097,bakery,drop,96.8126,137.326,annual gross margin change (negative = given up; frees space)
+N04,S098,bakery,drop,66.7551,87.6975,annual gross margin change (negative = given up; frees space)
+N04,S123,meat_fish,drop,257.085,308.942,annual gross margin change (negative = given up; frees space)
+N04,S126,meat_fish,drop,257.506,307.693,annual gross margin change (negative = given up; frees space)
+N04,S174,frozen,drop,-112.012,-56.0061,annual gross margin change (negative = given up; frees space)
+N04,S181,beverages,drop,-111.454,-55.7269,annual gross margin change (negative = given up; frees space)
+N04,S191,beverages,drop,-47.6092,-23.8046,annual gross margin change (negative = given up; frees space)
+N04,S194,beverages,drop,-101.77,-50.8852,annual gross margin change (negative = given up; frees space)
+N04,S198,beverages,drop,-106.956,-53.4781,annual gross margin change (negative = given up; frees space)
+N04,S210,beverages,drop,-139.098,-69.5489,annual gross margin change (negative = given up; frees space)
+N04,S235,snacks,drop,-68.811,-34.4055,annual gross margin change (negative = given up; frees space)
+N04,S242,snacks,drop,-119.721,-59.8605,annual gross margin change (negative = given up; frees space)
+N04,S243,snacks,drop,-64.3233,-32.1616,annual gross margin change (negative = given up; frees space)
+N04,S252,pantry,drop,-93.4034,-46.7017,annual gross margin change (negative = given up; frees space)
+N04,S253,pantry,drop,-72.2515,-36.1258,annual gross margin change (negative = given up; frees space)
+N04,S268,pantry,drop,-66.0386,-33.0193,annual gross margin change (negative = given up; frees space)
+N04,S269,pantry,drop,-69.529,-34.7645,annual gross margin change (negative = given up; frees space)
+N04,S272,pantry,drop,-74.7646,-37.3823,annual gross margin change (negative = given up; frees space)
+N04,S276,pantry,drop,-41.6855,-20.8427,annual gross margin change (negative = given up; frees space)
+N04,S281,pantry,drop,-47.5693,-23.7847,annual gross margin change (negative = given up; frees space)
+N04,S295,breakfast,drop,-116.679,-58.3397,annual gross margin change (negative = given up; frees space)
+N04,S306,breakfast,drop,-59.337,-29.6685,annual gross margin change (negative = given up; frees space)
+N04,S379,pet,drop,-124.757,-62.3786,annual gross margin change (negative = given up; frees space)
+N04,S398,pet,drop,-91.5984,-45.7992,annual gross margin change (negative = given up; frees space)
+N04,S411,premium_deli,drop,90.7958,104.598,annual gross margin change (negative = given up; frees space)
+N04,S075,bakery,reduce depth,92.865,167.157,annual waste cost saved
+N04,S083,bakery,reduce depth,59.67,107.406,annual waste cost saved
+N04,S089,bakery,reduce depth,79.06,142.308,annual waste cost saved
+N04,S096,bakery,reduce depth,187.23,337.014,annual waste cost saved
+N04,S111,meat_fish,reduce depth,274.7,494.46,annual waste cost saved
+N04,S140,ready_meals,reduce depth,324.69,584.442,annual waste cost saved
+N04,S141,ready_meals,reduce depth,410.04,738.072,annual waste cost saved
+N05,S028,produce,add,236.174,428.473,annual gross margin gained
+N05,S112,meat_fish,add,508.29,861.849,annual gross margin gained
+N05,S146,ready_meals,add,1883.49,3454.68,annual gross margin gained
+N05,S192,beverages,add,194.366,329.453,annual gross margin gained
+N05,S244,snacks,add,418.672,769.679,annual gross margin gained
+N05,S328,household,add,566.947,1136.35,annual gross margin gained
+N05,S007,produce,drop,28.3201,55.635,annual gross margin change (negative = given up; frees space)
+N05,S027,produce,drop,-35.0123,2.79386,annual gross margin change (negative = given up; frees space)
+N05,S031,produce,drop,-3.20233,32.7738,annual gross margin change (negative = given up; frees space)
+N05,S044,dairy,drop,40.8615,66.6208,annual gross margin change (negative = given up; frees space)
+N05,S054,dairy,drop,3.09479,42.1874,annual gross margin change (negative = given up; frees space)
+N05,S055,dairy,drop,-13.943,12.8035,annual gross margin change (negative = given up; frees space)
+N05,S057,dairy,drop,-12.0764,4.96181,annual gross margin change (negative = given up; frees space)
+N05,S061,dairy,drop,-1.37786,15.3911,annual gross margin change (negative = given up; frees space)
+N05,S068,dairy,drop,9.70192,33.711,annual gross margin change (negative = given up; frees space)
+N05,S070,dairy,drop,14.9088,47.4444,annual gross margin change (negative = given up; frees space)
+N05,S094,bakery,drop,45.257,75.6535,annual gross margin change (negative = given up; frees space)
+N05,S098,bakery,drop,85.0663,100.773,annual gross margin change (negative = given up; frees space)
+N05,S100,bakery,drop,16.6081,58.119,annual gross margin change (negative = given up; frees space)
+N05,S125,meat_fish,drop,293.891,334.146,annual gross margin change (negative = given up; frees space)
+N05,S126,meat_fish,drop,371.203,391.772,annual gross margin change (negative = given up; frees space)
+N05,S175,frozen,drop,-58.9879,-29.494,annual gross margin change (negative = given up; frees space)
+N05,S182,beverages,drop,-82.0945,-41.0472,annual gross margin change (negative = given up; frees space)
+N05,S191,beverages,drop,-25.3504,-12.6752,annual gross margin change (negative = given up; frees space)
+N05,S194,beverages,drop,-77.1381,-38.569,annual gross margin change (negative = given up; frees space)
+N05,S196,beverages,drop,-77.2877,-38.6438,annual gross margin change (negative = given up; frees space)
+N05,S197,beverages,drop,-81.3764,-40.6882,annual gross margin change (negative = given up; frees space)
+N05,S198,beverages,drop,-59.6362,-29.8181,annual gross margin change (negative = given up; frees space)
+N05,S201,beverages,drop,-41.7453,-20.8727,annual gross margin change (negative = given up; frees space)
+N05,S210,beverages,drop,-93.4632,-46.7316,annual gross margin change (negative = given up; frees space)
+N05,S213,beverages,drop,-81.7255,-40.8627,annual gross margin change (negative = given up; frees space)
+N05,S221,snacks,drop,-83.2313,-41.6157,annual gross margin change (negative = given up; frees space)
+N05,S235,snacks,drop,-44.7271,-22.3636,annual gross margin change (negative = given up; frees space)
+N05,S242,snacks,drop,-95.7769,-47.8884,annual gross margin change (negative = given up; frees space)
+N05,S243,snacks,drop,-80.7781,-40.389,annual gross margin change (negative = given up; frees space)
+N05,S252,pantry,drop,-46.9111,-23.4556,annual gross margin change (negative = given up; frees space)
+N05,S268,pantry,drop,-27.6441,-13.822,annual gross margin change (negative = given up; frees space)
+N05,S269,pantry,drop,-36.021,-18.0105,annual gross margin change (negative = given up; frees space)
+N05,S272,pantry,drop,-40.3492,-20.1746,annual gross margin change (negative = given up; frees space)
+N05,S276,pantry,drop,-49.3644,-24.6822,annual gross margin change (negative = given up; frees space)
+N05,S292,breakfast,drop,-96.8838,-48.4419,annual gross margin change (negative = given up; frees space)
+N05,S306,breakfast,drop,-90.1922,-45.0961,annual gross margin change (negative = given up; frees space)
+N05,S411,premium_deli,drop,135.179,138.629,annual gross margin change (negative = given up; frees space)
+N05,S078,bakery,reduce depth,103.5,186.3,annual waste cost saved
+N05,S083,bakery,reduce depth,86.7,156.06,annual waste cost saved
+N05,S087,bakery,reduce depth,94.9,170.82,annual waste cost saved
+N05,S092,bakery,reduce depth,69.75,125.55,annual waste cost saved
+N05,S096,bakery,reduce depth,149.31,268.758,annual waste cost saved
+N05,S108,meat_fish,reduce depth,383.13,689.634,annual waste cost saved
+N05,S114,meat_fish,reduce depth,217.195,390.951,annual waste cost saved
+N05,S131,ready_meals,reduce depth,209.195,376.551,annual waste cost saved
+N05,S138,ready_meals,reduce depth,484.245,871.641,annual waste cost saved
+N06,S021,produce,add,165.787,352.929,annual gross margin gained
+N06,S150,ready_meals,add,3370.89,5358.45,annual gross margin gained
+N06,S255,pantry,add,466.826,807.555,annual gross margin gained
+N06,S300,breakfast,add,514.488,848.832,annual gross margin gained
+N06,S399,premium_deli,add,1939.62,2962.69,annual gross margin gained
+N06,S400,premium_deli,add,2046.78,2931.35,annual gross margin gained
+N06,S401,premium_deli,add,3267.37,5026.69,annual gross margin gained
+N06,S402,premium_deli,add,2982.17,4452.45,annual gross margin gained
+N06,S403,premium_deli,add,2520.76,3892.03,annual gross margin gained
+N06,S404,premium_deli,add,1463.96,2120.6,annual gross margin gained
+N06,S414,premium_deli,add,4486.09,6963.79,annual gross margin gained
+N06,S019,produce,drop,2.984,31.012,annual gross margin change (negative = given up; frees space)
+N06,S024,produce,drop,-95.5972,-38.6636,annual gross margin change (negative = given up; frees space)
+N06,S027,produce,drop,-39.6718,1.86411,annual gross margin change (negative = given up; frees space)
+N06,S031,produce,drop,-68.9937,-13.2468,annual gross margin change (negative = given up; frees space)
+N06,S044,dairy,drop,58.631,93.3855,annual gross margin change (negative = given up; frees space)
+N06,S055,dairy,drop,3.15414,27.5671,annual gross margin change (negative = given up; frees space)
+N06,S057,dairy,drop,-35.8151,-5.80756,annual gross margin change (negative = given up; frees space)
+N06,S061,dairy,drop,-6.90005,11.29,annual gross margin change (negative = given up; frees space)
+N06,S072,dairy,drop,12.1301,32.165,annual gross margin change (negative = given up; frees space)
+N06,S097,bakery,drop,131.111,162.276,annual gross margin change (negative = given up; frees space)
+N06,S098,bakery,drop,64.6608,86.6504,annual gross margin change (negative = given up; frees space)
+N06,S100,bakery,drop,75.5238,99.8769,annual gross margin change (negative = given up; frees space)
+N06,S106,meat_fish,drop,194.517,252.138,annual gross margin change (negative = given up; frees space)
+N06,S123,meat_fish,drop,161.765,202.652,annual gross margin change (negative = given up; frees space)
+N06,S174,frozen,drop,-60.1547,-30.0774,annual gross margin change (negative = given up; frees space)
+N06,S181,beverages,drop,-101.8,-50.9002,annual gross margin change (negative = given up; frees space)
+N06,S182,beverages,drop,-98.0107,-49.0054,annual gross margin change (negative = given up; frees space)
+N06,S191,beverages,drop,-53.1739,-26.587,annual gross margin change (negative = given up; frees space)
+N06,S196,beverages,drop,-102.638,-51.319,annual gross margin change (negative = given up; frees space)
+N06,S198,beverages,drop,-100.474,-50.237,annual gross margin change (negative = given up; frees space)
+N06,S201,beverages,drop,-51.3788,-25.6894,annual gross margin change (negative = given up; frees space)
+N06,S210,beverages,drop,-86.4425,-43.2213,annual gross margin change (negative = given up; frees space)
+N06,S213,beverages,drop,-107.505,-53.7523,annual gross margin change (negative = given up; frees space)
+N06,S235,snacks,drop,-46.7915,-23.3957,annual gross margin change (negative = given up; frees space)
+N06,S242,snacks,drop,-93.8222,-46.9111,annual gross margin change (negative = given up; frees space)
+N06,S243,snacks,drop,-80.7781,-40.389,annual gross margin change (negative = given up; frees space)
+N06,S252,pantry,drop,-65.7593,-32.8797,annual gross margin change (negative = given up; frees space)
+N06,S253,pantry,drop,-46.0734,-23.0367,annual gross margin change (negative = given up; frees space)
+N06,S264,pantry,drop,-114.825,-57.4123,annual gross margin change (negative = given up; frees space)
+N06,S268,pantry,drop,-40.6982,-20.3491,annual gross margin change (negative = given up; frees space)
+N06,S272,pantry,drop,-67.6442,-33.8221,annual gross margin change (negative = given up; frees space)
+N06,S276,pantry,drop,-63.6252,-31.8126,annual gross margin change (negative = given up; frees space)
+N06,S281,pantry,drop,-23.3359,-11.6679,annual gross margin change (negative = given up; frees space)
+N06,S306,breakfast,drop,-60.5237,-30.2619,annual gross margin change (negative = given up; frees space)
+N06,S307,breakfast,drop,-110.576,-55.2881,annual gross margin change (negative = given up; frees space)
+N06,S311,household,drop,-92.7053,-46.3527,annual gross margin change (negative = given up; frees space)
+N06,S411,premium_deli,drop,64.1727,88.3264,annual gross margin change (negative = given up; frees space)
+N06,S075,bakery,reduce depth,95.13,171.234,annual waste cost saved
+N06,S078,bakery,reduce depth,730.5,1314.9,annual waste cost saved
+N06,S081,bakery,reduce depth,876.645,1577.96,annual waste cost saved
+N06,S083,bakery,reduce depth,71.4,128.52,annual waste cost saved
+N06,S087,bakery,reduce depth,92.71,166.878,annual waste cost saved
+N06,S092,bakery,reduce depth,62.31,112.158,annual waste cost saved
+N06,S093,bakery,reduce depth,1073.21,1931.79,annual waste cost saved
+N06,S096,bakery,reduce depth,178.935,322.083,annual waste cost saved
+N06,S108,meat_fish,reduce depth,374.22,673.596,annual waste cost saved
+N06,S111,meat_fish,reduce depth,338.25,608.85,annual waste cost saved
+N06,S129,ready_meals,reduce depth,2160.36,3888.65,annual waste cost saved
+N06,S130,ready_meals,reduce depth,2376.55,4277.79,annual waste cost saved
+N06,S138,ready_meals,reduce depth,443.1,797.58,annual waste cost saved
+N06,S139,ready_meals,reduce depth,2693.9,4849.02,annual waste cost saved
+N06,S140,ready_meals,reduce depth,305.73,550.314,annual waste cost saved
+N06,S141,ready_meals,reduce depth,410.04,738.072,annual waste cost saved
+N06,S148,ready_meals,reduce depth,229.95,413.91,annual waste cost saved
+N06,S149,ready_meals,reduce depth,3639.07,6550.34,annual waste cost saved
+N07,S014,produce,add,373.179,614.728,annual gross margin gained
+N07,S028,produce,add,432.044,783.824,annual gross margin gained
+N07,S069,dairy,add,1111.25,1794.7,annual gross margin gained
+N07,S110,meat_fish,add,937.119,1478.91,annual gross margin gained
+N07,S199,beverages,add,2549.07,3905.72,annual gross margin gained
+N07,S200,beverages,add,256.171,411.423,annual gross margin gained
+N07,S217,snacks,add,776.288,1318.73,annual gross margin gained
+N07,S284,pantry,add,346.642,678.304,annual gross margin gained
+N07,S399,premium_deli,add,2704.16,4130.49,annual gross margin gained
+N07,S400,premium_deli,add,2853.57,4086.8,annual gross margin gained
+N07,S401,premium_deli,add,4555.27,7008.07,annual gross margin gained
+N07,S402,premium_deli,add,4157.66,6207.48,annual gross margin gained
+N07,S403,premium_deli,add,3514.37,5426.15,annual gross margin gained
+N07,S404,premium_deli,add,2041.01,2956.48,annual gross margin gained
+N07,S007,produce,drop,1.67942,50.7147,annual gross margin change (negative = given up; frees space)
+N07,S023,produce,drop,-119.236,-38.3378,annual gross margin change (negative = given up; frees space)
+N07,S027,produce,drop,-121.113,-50.7567,annual gross margin change (negative = given up; frees space)
+N07,S031,produce,drop,-93.8563,-31.3032,annual gross margin change (negative = given up; frees space)
+N07,S044,dairy,drop,-27.1575,33.3562,annual gross margin change (negative = given up; frees space)
+N07,S055,dairy,drop,-62.1155,-15.8028,annual gross margin change (negative = given up; frees space)
+N07,S057,dairy,drop,-48.956,-11.828,annual gross margin change (negative = given up; frees space)
+N07,S061,dairy,drop,-7.26537,11.7773,annual gross margin change (negative = given up; frees space)
+N07,S068,dairy,drop,-4.79959,22.5752,annual gross margin change (negative = given up; frees space)
+N07,S070,dairy,drop,-105.416,-28.1979,annual gross margin change (negative = given up; frees space)
+N07,S097,bakery,drop,125.249,185.084,annual gross margin change (negative = given up; frees space)
+N07,S100,bakery,drop,56.4607,105.72,annual gross margin change (negative = given up; frees space)
+N07,S123,meat_fish,drop,114.506,190.298,annual gross margin change (negative = given up; frees space)
+N07,S174,frozen,drop,-43.5603,-21.7802,annual gross margin change (negative = given up; frees space)
+N07,S175,frozen,drop,-97.7515,-48.8757,annual gross margin change (negative = given up; frees space)
+N07,S181,beverages,drop,-126.812,-63.4058,annual gross margin change (negative = given up; frees space)
+N07,S182,beverages,drop,-141.99,-70.995,annual gross margin change (negative = given up; frees space)
+N07,S191,beverages,drop,-72.3413,-36.1706,annual gross margin change (negative = given up; frees space)
+N07,S194,beverages,drop,-123.162,-61.5808,annual gross margin change (negative = given up; frees space)
+N07,S196,beverages,drop,-152.102,-76.0511,annual gross margin change (negative = given up; frees space)
+N07,S198,beverages,drop,-138.071,-69.0353,annual gross margin change (negative = given up; frees space)
+N07,S210,beverages,drop,-143.486,-71.7429,annual gross margin change (negative = given up; frees space)
+N07,S213,beverages,drop,-159.612,-79.8058,annual gross margin change (negative = given up; frees space)
+N07,S235,snacks,drop,-72.9396,-36.4698,annual gross margin change (negative = given up; frees space)
+N07,S242,snacks,drop,-141.711,-70.8553,annual gross margin change (negative = given up; frees space)
+N07,S243,snacks,drop,-125.655,-62.8274,annual gross margin change (negative = given up; frees space)
+N07,S253,pantry,drop,-95.2882,-47.6441,annual gross margin change (negative = given up; frees space)
+N07,S264,pantry,drop,-142.11,-71.0548,annual gross margin change (negative = given up; frees space)
+N07,S268,pantry,drop,-65.2707,-32.6353,annual gross margin change (negative = given up; frees space)
+N07,S269,pantry,drop,-41.0472,-20.5236,annual gross margin change (negative = given up; frees space)
+N07,S272,pantry,drop,-90.1922,-45.0961,annual gross margin change (negative = given up; frees space)
+N07,S276,pantry,drop,-100.923,-50.4614,annual gross margin change (negative = given up; frees space)
+N07,S302,breakfast,drop,-132.735,-66.3677,annual gross margin change (negative = given up; frees space)
+N07,S306,breakfast,drop,-123.421,-61.7105,annual gross margin change (negative = given up; frees space)
+N07,S307,breakfast,drop,-134.869,-67.4347,annual gross margin change (negative = given up; frees space)
+N07,S379,pet,drop,-127.53,-63.7648,annual gross margin change (negative = given up; frees space)
+N07,S398,pet,drop,-133.234,-66.617,annual gross margin change (negative = given up; frees space)
+N07,S075,bakery,reduce depth,86.07,154.926,annual waste cost saved
+N07,S083,bakery,reduce depth,55.59,100.062,annual waste cost saved
+N07,S084,bakery,reduce depth,275.995,496.791,annual waste cost saved
+N07,S085,bakery,reduce depth,224.64,404.352,annual waste cost saved
+N07,S089,bakery,reduce depth,80.4,144.72,annual waste cost saved
+N07,S090,bakery,reduce depth,180.18,324.324,annual waste cost saved
+N07,S091,bakery,reduce depth,128.26,230.868,annual waste cost saved
+N07,S096,bakery,reduce depth,155.235,279.423,annual waste cost saved
+N07,S099,bakery,reduce depth,80.62,145.116,annual waste cost saved
+N07,S111,meat_fish,reduce depth,301.35,542.43,annual waste cost saved
+N07,S117,meat_fish,reduce depth,288.435,519.183,annual waste cost saved
+N07,S140,ready_meals,reduce depth,282.03,507.654,annual waste cost saved
+N07,S141,ready_meals,reduce depth,345.72,622.296,annual waste cost saved
+N07,S148,ready_meals,reduce depth,209.875,377.775,annual waste cost saved
+N08,S110,meat_fish,add,603.473,952.372,annual gross margin gained
+N08,S342,personal_care,add,790.262,1326.32,annual gross margin gained
+N08,S390,pet,add,422.646,719.486,annual gross margin gained
+N08,S399,premium_deli,add,1741.39,2659.9,annual gross margin gained
+N08,S400,premium_deli,add,1837.6,2631.76,annual gross margin gained
+N08,S401,premium_deli,add,2933.44,4512.96,annual gross margin gained
+N08,S402,premium_deli,add,2677.39,3997.41,annual gross margin gained
+N08,S403,premium_deli,add,2263.14,3494.26,annual gross margin gained
+N08,S404,premium_deli,add,1314.34,1903.87,annual gross margin gained
+N08,S007,produce,drop,58.9899,93.5449,annual gross margin change (negative = given up; frees space)
+N08,S019,produce,drop,15.944,43.972,annual gross margin change (negative = given up; frees space)
+N08,S024,produce,drop,-58.3831,-15.2716,annual gross margin change (negative = given up; frees space)
+N08,S027,produce,drop,-44.0248,-4.86241,annual gross margin change (negative = given up; frees space)
+N08,S033,produce,drop,32.986,83.218,annual gross margin change (negative = given up; frees space)
+N08,S044,dairy,drop,19.8007,50.8754,annual gross margin change (negative = given up; frees space)
+N08,S055,dairy,drop,-8.29304,18.4535,annual gross margin change (negative = given up; frees space)
+N08,S057,dairy,drop,-11.3312,10.2844,annual gross margin change (negative = given up; frees space)
+N08,S064,dairy,drop,-73.3082,-22.0241,annual gross margin change (negative = given up; frees space)
+N08,S070,dairy,drop,47.7639,70.322,annual gross margin change (negative = given up; frees space)
+N08,S072,dairy,drop,35.8986,52.0243,annual gross margin change (negative = given up; frees space)
+N08,S094,bakery,drop,9.89699,49.3885,annual gross margin change (negative = given up; frees space)
+N08,S097,bakery,drop,98.6789,136.699,annual gross margin change (negative = given up; frees space)
+N08,S098,bakery,drop,79.6121,96.366,annual gross margin change (negative = given up; frees space)
+N08,S100,bakery,drop,6.52241,52.4612,annual gross margin change (negative = given up; frees space)
+N08,S123,meat_fish,drop,177.765,215.163,annual gross margin change (negative = given up; frees space)
+N08,S125,meat_fish,drop,303.141,336.171,annual gross margin change (negative = given up; frees space)
+N08,S175,frozen,drop,-84.2685,-42.1342,annual gross margin change (negative = given up; frees space)
+N08,S181,beverages,drop,-76.3502,-38.1751,annual gross margin change (negative = given up; frees space)
+N08,S184,beverages,drop,-83.1915,-41.5957,annual gross margin change (negative = given up; frees space)
+N08,S191,beverages,drop,-41.4262,-20.7131,annual gross margin change (negative = given up; frees space)
+N08,S194,beverages,drop,-62.229,-31.1145,annual gross margin change (negative = given up; frees space)
+N08,S196,beverages,drop,-97.6916,-48.8458,annual gross margin change (negative = given up; frees space)
+N08,S201,beverages,drop,-28.9006,-14.4503,annual gross margin change (negative = given up; frees space)
+N08,S221,snacks,drop,-87.8985,-43.9493,annual gross margin change (negative = given up; frees space)
+N08,S235,snacks,drop,-29.5887,-14.7944,annual gross margin change (negative = given up; frees space)
+N08,S242,snacks,drop,-76.2306,-38.1153,annual gross margin change (negative = given up; frees space)
+N08,S252,pantry,drop,-87.1207,-43.5603,annual gross margin change (negative = given up; frees space)
+N08,S253,pantry,drop,-73.2986,-36.6493,annual gross margin change (negative = given up; frees space)
+N08,S268,pantry,drop,-23.8046,-11.9023,annual gross margin change (negative = given up; frees space)
+N08,S269,pantry,drop,-39.3718,-19.6859,annual gross margin change (negative = given up; frees space)
+N08,S272,pantry,drop,-66.4574,-33.2287,annual gross margin change (negative = given up; frees space)
+N08,S295,breakfast,drop,-98.7288,-49.3644,annual gross margin change (negative = given up; frees space)
+N08,S302,breakfast,drop,-65.161,-32.5805,annual gross margin change (negative = given up; frees space)
+N08,S306,breakfast,drop,-54.59,-27.295,annual gross margin change (negative = given up; frees space)
+N08,S307,breakfast,drop,-97.173,-48.5865,annual gross margin change (negative = given up; frees space)
+N08,S398,pet,drop,-71.6133,-35.8066,annual gross margin change (negative = given up; frees space)
+N08,S411,premium_deli,drop,41.9812,71.3106,annual gross margin change (negative = given up; frees space)
+N08,S075,bakery,reduce depth,95.13,171.234,annual waste cost saved
+N08,S083,bakery,reduce depth,92.31,166.158,annual waste cost saved
+N08,S087,bakery,reduce depth,87.6,157.68,annual waste cost saved
+N08,S092,bakery,reduce depth,66.03,118.854,annual waste cost saved
+N08,S096,bakery,reduce depth,167.085,300.753,annual waste cost saved
+N08,S101,meat_fish,reduce depth,411.84,741.312,annual waste cost saved
+N08,S108,meat_fish,reduce depth,305.91,550.638,annual waste cost saved
+N08,S111,meat_fish,reduce depth,266.5,479.7,annual waste cost saved
+N08,S114,meat_fish,reduce depth,288.995,520.191,annual waste cost saved
+N08,S131,ready_meals,reduce depth,212.205,381.969,annual waste cost saved
+N08,S138,ready_meals,reduce depth,395.625,712.125,annual waste cost saved

@@ -1,0 +1,11 @@
+driver,level,customers,repeat_rate_90d
+acquisition_channel,referral,7518,0.70564
+acquisition_channel,organic,18309,0.685018
+acquisition_channel,paid_search,11767,0.66882
+acquisition_channel,partner,5356,0.658701
+acquisition_channel,paid_social,10681,0.626814
+first_order_experience,clean first order,48271,0.67784
+first_order_experience,problem on first order,5360,0.600746
+platform,ios,22772,0.677982
+platform,web,8039,0.67185
+platform,android,22820,0.6617

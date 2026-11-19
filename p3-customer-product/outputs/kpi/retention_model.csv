@@ -1,0 +1,9 @@
+term,marginal_effect_pp,ci_low_pp,ci_high_pp,p_value,odds_ratio
+channel: paid_search (vs organic),-1.64214,-2.73054,-0.553735,0.00310531,0.92802
+channel: paid_social (vs organic),-5.68446,-6.78358,-4.58534,3.80171e-24,0.772139
+channel: partner (vs organic),-2.64302,-4.06263,-1.22341,0.000263212,0.886713
+channel: referral (vs organic),2.1378,0.84866,3.42694,0.00115308,1.10214
+platform: android (vs ios),-1.64701,-2.50729,-0.786722,0.000175198,0.927814
+platform: web (vs ios),-0.657157,-1.85225,0.537937,0.281148,0.970548
+first_order_issue,-7.37117,-8.64062,-6.10172,5.21717e-30,0.715108
+log_first_basket,0.155653,-0.542288,0.853595,0.662034,1.00711

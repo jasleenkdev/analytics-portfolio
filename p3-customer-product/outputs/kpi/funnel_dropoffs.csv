@@ -1,0 +1,17 @@
+platform,app_version,step,entering,rate,others_rate,gap_pp,p_value,p_adjusted,flagged
+android,5.4,payment_success,70177,0.716802,0.930014,-21.3213,0,0,True
+android,5.4,session_to_cart,164707,0.620526,0.642418,-2.18923,8.89472e-59,9.78419e-58,False
+android,5.4,cart_to_checkout,102205,0.778113,0.796482,-1.83698,4.9295e-37,4.43655e-36,False
+android,5.4,checkout_to_payment,79527,0.88243,0.893848,-1.14183,8.3052e-20,5.81364e-19,False
+web,web,session_to_cart,104444,0.634359,0.637788,-0.342919,0.0334596,0.200758,False
+web,web,cart_to_checkout,66255,0.790401,0.79261,-0.220885,0.195843,0.979215,False
+web,web,checkout_to_payment,52368,0.890506,0.891419,-0.0913451,0.535329,1,False
+ios,7.2,cart_to_checkout,187517,0.791891,0.792565,-0.067409,0.583537,1,False
+ios,7.2,checkout_to_payment,148493,0.891207,0.89134,-0.0132662,0.900407,1,False
+ios,7.2,session_to_cart,294006,0.6378,0.636901,0.0899165,0.439615,1,False
+android,5.3,checkout_to_payment,73755,0.901539,0.888587,1.29523,8.7366e-24,6.98928e-23,False
+android,5.3,cart_to_checkout,91014,0.81037,0.787658,2.27122,2.43989e-51,2.43989e-50,False
+android,5.3,session_to_cart,138250,0.658329,0.63211,2.62194,9.06461e-74,1.08775e-72,False
+web,web,payment_success,46634,0.931188,0.87419,5.69979,5.51226e-273,7.16594e-272,False
+android,5.3,payment_success,66493,0.928504,0.870363,5.8141,0,0,False
+ios,7.2,payment_success,132338,0.93036,0.848138,8.22226,0,0,False

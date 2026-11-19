@@ -484,3 +484,17 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** this finds where and for whom the funnel broke without knowing in advance which step to look at; the effect-size floor keeps large samples from flagging trivial differences.
 - **Alternatives rejected:** monitoring overall conversion only, because a fault in one version on one platform is diluted below noise in the total; a change-point scan per segment, because the version field already marks the onset precisely.
 - **Trade-off / consequence:** pooling "all other segments" as the reference assumes they are healthy; if two segments broke at once, each would be compared with a partly broken baseline.
+
+### D-070: formula-driven ABC-XYZ and wastage workbook
+- **Project / phase:** p3, phase 18
+- **Decision:** `outputs/p3_assortment_wastage.xlsx` holds SKU revenue, margin and weekly CV, and node-SKU stock, sales, receipts, waste and cost as values; revenue share, cumulative share, ABC, XYZ, class, margin rate, the ABC-XYZ matrix (COUNTIFS/SUMIFS), days of cover, risk score and flag, waste cost, target cover, recommended stock, depth-cut decision and savings are formulas driven by editable thresholds. Tests evaluate the formulas and compare classes, flags, costs and the total saving with the SQL results.
+- **Why:** category teams tune ABC cut-offs and cover targets themselves; with live formulas they can test "what if A is 70%" or "what if cover is 40% of shelf life" without the pipeline, and the tests guarantee the sheet starts from the same answer as the SQL.
+- **Alternatives rejected:** pivot tables, because openpyxl cannot create them reliably and they hide the logic; macros, because many organisations block them.
+- **Trade-off / consequence:** cumulative share uses a growing `SUM($C$2:Cn)` range, which is quadratic but trivial at 420 rows; the sheet must stay sorted by revenue for ABC to be valid (stated in the sheet header row).
+
+### D-071: customer and product dashboard layout
+- **Project / phase:** p3, phase 18
+- **Decision:** tiles (customers, 90-day repeat, conversion, the detected funnel fault, waste cost, assortment upside range), then funnel bars, weekly payment success by platform and version, cohort heatmap, repeat curve, retention-driver forest plot, RFM share-of-customers vs share-of-margin bars, ABC-XYZ matrix, affinity table, a log-log wastage risk scatter and filterable assortment recommendations with a per-node summary.
+- **Why:** the page follows the three business questions in order (retain, products, assortment); the payment chart by version makes the funnel fault self-evident, and the log-log scatter separates expensive overstock (top right) from cheap presentation stock (bottom right).
+- **Alternatives rejected:** a Sankey funnel, because step widths are harder to compare than bar lengths; a cohort line per cohort, because twelve overlapping lines are unreadable next to a heatmap.
+- **Trade-off / consequence:** the cohort heatmap caps its colour scale at 50% so later months are distinguishable; month 0 is 100% by definition.
