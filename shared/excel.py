@@ -1,6 +1,11 @@
 """openpyxl helpers: data sheets written as values, analysis sheets written as live formulas."""
 from __future__ import annotations
 
+import re
+import zipfile
+from datetime import datetime
+from pathlib import Path
+
 import pandas as pd
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
@@ -59,3 +64,23 @@ def autosize(ws: Worksheet) -> None:
     for col in ws.columns:
         width = max(len(str(c.value)) if c.value is not None and not str(c.value).startswith("=") else 8 for c in col)
         ws.column_dimensions[col[0].column_letter].width = min(max(10, width + 2), 48)
+
+
+FIXED_TIME = datetime(2026, 1, 1)
+
+
+def save_reproducible(wb, out: Path) -> Path:
+    """Save with fixed document metadata and zip entry timestamps so identical content gives identical bytes."""
+    wb.properties.created = wb.properties.modified = FIXED_TIME
+    wb.properties.creator = wb.properties.lastModifiedBy = "analytics-portfolio"
+    wb.save(out)
+    with zipfile.ZipFile(out) as src:
+        entries = [(i.filename, src.read(i.filename)) for i in src.infolist()]
+    # openpyxl stamps the save time into dcterms:modified regardless of the property set above
+    stamp = FIXED_TIME.strftime("%Y-%m-%dT%H:%M:%SZ").encode()
+    entries = [(n, re.sub(rb"(<dcterms:modified[^>]*>)[^<]*", rb"\g<1>" + stamp, d) if n == "docProps/core.xml" else d)
+               for n, d in entries]
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as dst:
+        for name, data in entries:
+            dst.writestr(zipfile.ZipInfo(name, date_time=FIXED_TIME.timetuple()[:6]), data, zipfile.ZIP_DEFLATED)
+    return out

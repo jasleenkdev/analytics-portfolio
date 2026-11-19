@@ -533,3 +533,10 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** the landing page is the first thing a reader sees, so its numbers must be as trustworthy as the project READMEs; generating it keeps it in step with every rebuild, and a neutral description lets the work speak for itself.
 - **Alternatives rejected:** a hand-written landing page, because its headline numbers would drift from the projects; a long narrative, because readers choose a project from a table and then dive in.
 - **Trade-off / consequence:** editing the landing page means editing a template, not the README itself.
+
+### D-077: byte-for-byte reproducible builds
+- **Project / phase:** all, phase 22
+- **Decision:** DuckDB runs single-threaded, every NTILE and every exported ordering has an explicit tie-breaker, and workbooks are saved with fixed document metadata and zip timestamps. A clean clone in a temporary folder, rebuilt with `make all`, reproduces every committed CSV, JSON, markdown, dashboard and workbook byte for byte.
+- **Why:** the clean-clone check showed last-digit differences (parallel floating-point sums), RFM scores moving between quintiles (ties in NTILE order) and workbook bytes changing on every save; any of these would make a reviewer doubt that the committed numbers come from the committed code.
+- **Alternatives rejected:** rounding every exported number, because it hides rather than removes the non-determinism and still flips at rounding boundaries; comparing outputs with a tolerance, because "nearly the same" is harder to verify than "identical".
+- **Trade-off / consequence:** single-threaded SQL makes `make all` slower (still about a minute in total); the workbooks' "created" date is a fixed placeholder rather than the real build time.

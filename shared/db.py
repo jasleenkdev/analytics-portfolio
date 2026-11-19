@@ -15,6 +15,8 @@ def load_config(project_dir: Path) -> dict:
 def connect(db_path: Path, sql_vars: dict | None = None, read_only: bool = False) -> duckdb.DuckDBPyConnection:
     """Open the project database and expose config values to SQL as getvariable('name')."""
     con = duckdb.connect(str(db_path), read_only=read_only)
+    # one thread makes floating-point aggregation order, and therefore every exported digit, reproducible
+    con.execute("SET threads TO 1")
     for name, value in (sql_vars or {}).items():
         con.execute(f"SET VARIABLE {name} = ?", [value])
     return con

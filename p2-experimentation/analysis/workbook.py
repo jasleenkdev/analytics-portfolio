@@ -8,7 +8,7 @@ from openpyxl import Workbook
 from openpyxl.formatting.rule import FormulaRule
 from openpyxl.styles import Font, PatternFill
 
-from shared.excel import INPUT_FILL, add_formula_column, autosize, style_header, write_frame
+from shared.excel import INPUT_FILL, add_formula_column, autosize, save_reproducible, style_header, write_frame
 
 PCT, NUM, NUM4 = "0.0%", "#,##0.000", "0.0000"
 
@@ -96,5 +96,4 @@ def build(con, cfg: dict, findings: dict, out: Path) -> Path:
     add_formula_column(pt, "raw_did_rel_to_treated_before", "=F{r}/B{r}", len(two), PCT)
     pt.cell(row=len(two) + 3, column=1, value="Raw 2x2 on order-weighted group means; the README's estimate adds node and date fixed effects and clustered errors.")
     out.parent.mkdir(exist_ok=True)
-    wb.save(out)
-    return out
+    return save_reproducible(wb, out)

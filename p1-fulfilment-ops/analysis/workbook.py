@@ -7,7 +7,7 @@ from openpyxl import Workbook
 from openpyxl.formatting.rule import FormulaRule
 from openpyxl.styles import Font, PatternFill
 
-from shared.excel import INPUT_FILL, add_formula_column, autosize, col_of, style_header, write_frame
+from shared.excel import INPUT_FILL, add_formula_column, autosize, col_of, style_header, save_reproducible, write_frame
 
 PCT, NUM1, MONEY, INT = "0.0%", "0.0", "#,##0.00", "#,##0"
 
@@ -108,5 +108,4 @@ def build(con, cfg: dict, out: Path) -> Path:
     for c in "BCDEFGHIJKLMNOPQR":
         s.column_dimensions[c].width = 14
     out.parent.mkdir(exist_ok=True)
-    wb.save(out)
-    return out
+    return save_reproducible(wb, out)

@@ -402,10 +402,10 @@
     ],
     "summary": [
       {
-        "action": "reduce depth",
-        "impact_high": 95423.985,
-        "impact_low": 53013.325,
-        "recs": 107
+        "action": "add",
+        "impact_high": 220398.356143,
+        "impact_low": 141645.625343,
+        "recs": 86
       },
       {
         "action": "drop",
@@ -414,10 +414,10 @@
         "recs": 299
       },
       {
-        "action": "add",
-        "impact_high": 220398.356143,
-        "impact_low": 141645.625343,
-        "recs": 86
+        "action": "reduce depth",
+        "impact_high": 95423.985,
+        "impact_low": 53013.325,
+        "recs": 107
       }
     ]
   },
@@ -763,57 +763,57 @@
   "rfm": [
     {
       "customers": 15217,
-      "mean_margin": 93.003964,
-      "mean_orders": 7.693501,
-      "mean_recency_days": 18.250838,
+      "mean_margin": 92.996543,
+      "mean_orders": 7.692581,
+      "mean_recency_days": 18.252809,
       "segment": "champions",
       "share_customers": 0.19897,
-      "share_margin": 0.424381
+      "share_margin": 0.424347
     },
     {
-      "customers": 15865,
-      "mean_margin": 52.150308,
-      "mean_orders": 4.275575,
-      "mean_recency_days": 196.826915,
+      "customers": 15866,
+      "mean_margin": 52.12847,
+      "mean_orders": 4.273415,
+      "mean_recency_days": 196.822955,
       "segment": "at risk",
-      "share_customers": 0.207443,
-      "share_margin": 0.248097
+      "share_customers": 0.207456,
+      "share_margin": 0.248009
     },
     {
-      "customers": 14805,
-      "mean_margin": 48.653213,
-      "mean_orders": 4.027693,
-      "mean_recency_days": 56.34306,
+      "customers": 14804,
+      "mean_margin": 48.68401,
+      "mean_orders": 4.030938,
+      "mean_recency_days": 56.343826,
       "segment": "loyal",
-      "share_customers": 0.193583,
-      "share_margin": 0.215996
+      "share_customers": 0.193569,
+      "share_margin": 0.216118
     },
     {
-      "customers": 14727,
-      "mean_margin": 12.162531,
-      "mean_orders": 1.100903,
-      "mean_recency_days": 222.89285,
+      "customers": 14726,
+      "mean_margin": 12.168676,
+      "mean_orders": 1.101046,
+      "mean_recency_days": 222.898886,
       "segment": "hibernating",
-      "share_customers": 0.192563,
-      "share_margin": 0.053711
+      "share_customers": 0.19255,
+      "share_margin": 0.053735
     },
     {
-      "customers": 9726,
-      "mean_margin": 12.148438,
-      "mean_orders": 1.131812,
-      "mean_recency_days": 21.292206,
+      "customers": 9728,
+      "mean_margin": 12.149965,
+      "mean_orders": 1.131887,
+      "mean_recency_days": 21.294613,
       "segment": "new or promising",
-      "share_customers": 0.127172,
-      "share_margin": 0.035431
+      "share_customers": 0.127198,
+      "share_margin": 0.035442
     },
     {
-      "customers": 6139,
-      "mean_margin": 12.159754,
-      "mean_orders": 1.113211,
-      "mean_recency_days": 79.126731,
+      "customers": 6138,
+      "mean_margin": 12.142594,
+      "mean_orders": 1.11274,
+      "mean_recency_days": 79.131313,
       "segment": "needs attention",
-      "share_customers": 0.08027,
-      "share_margin": 0.022385
+      "share_customers": 0.080257,
+      "share_margin": 0.022349
     }
   ],
   "wastage": {

@@ -1,7 +1,7 @@
 -- 12_rfm.sql
 -- Business question: who are our best, slipping and lost customers right now?
 -- Recency, frequency and monetary value as of as_of_date, scored 1-5 with NTILE (5 = best), then
--- mapped to named segments with simple, explainable rules.
+-- mapped to named segments with simple, explainable rules. customer_id breaks ties so reruns are identical.
 -- Variables: as_of_date, rfm_bins.
 
 CREATE OR REPLACE TABLE rfm AS
@@ -13,9 +13,9 @@ WITH base AS (
 ),
 scored AS (
     SELECT *,
-           ntile(getvariable('rfm_bins')) OVER (ORDER BY recency_days DESC) AS r_score,
-           ntile(getvariable('rfm_bins')) OVER (ORDER BY frequency, monetary) AS f_score,
-           ntile(getvariable('rfm_bins')) OVER (ORDER BY monetary) AS m_score
+           ntile(getvariable('rfm_bins')) OVER (ORDER BY recency_days DESC, customer_id) AS r_score,
+           ntile(getvariable('rfm_bins')) OVER (ORDER BY frequency, monetary, customer_id) AS f_score,
+           ntile(getvariable('rfm_bins')) OVER (ORDER BY monetary, customer_id) AS m_score
     FROM base
 )
 SELECT *,

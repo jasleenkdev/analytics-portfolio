@@ -6,7 +6,7 @@ Three company-agnostic analytics projects for online retail, delivery, marketpla
 
 | Project | Business question | Headline result | Found vs planted |
 |---|---|---|---|
-| [Fulfilment and delivery operations](p1-fulfilment-ops/) | Where and why are we missing the delivery SLA and losing orders to defects? | 87.2% of orders within the 30-minute SLA; evening picking at N07 (15.4 orders per picker vs 7.2) with peer-level pick times 6.2% of all late orders would have been on time | 7 hit, 1 partial, 0 missed |
+| [Fulfilment and delivery operations](p1-fulfilment-ops/) | Where and why are we missing the delivery SLA and losing orders to defects? | 87.2% of orders within the 30-minute SLA; picking at N07 from 18:00 is understaffed (15.4 orders per picker vs 7.2), and peer-level pick times would have put 6.2% of all late orders on time | 7 hit, 1 partial, 0 missed |
 | [Experimentation and pilot evaluation](p2-experimentation/) | Launch a lower free-delivery threshold? Scale rider batching? | Threshold: **do not launch** (contribution per user -13.7%, orders 9.9%). Batching: **do not scale as-is: fix the guardrail and extend** (cost -12.4%, defects +0.60 pp) | 12 hit, 1 partial, 0 missed |
 | [Customer, product and inventory](p3-customer-product/) | Which customers retain and why; which products deserve more space; how should each node's range change? | First-order problems cut 90-day repeat by 7.4 pts; a payment fault in the android app version 5.4 cost about 14,963 orders; add recommendations worth 141,646 to 220,398 a year | 6 hit, 0 partial, 0 missed |
 
