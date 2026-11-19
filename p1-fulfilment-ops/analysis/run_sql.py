@@ -13,6 +13,8 @@ def sql_vars(cfg: dict) -> dict:
     """Every SQL-visible parameter comes from config.toml."""
     return {
         "start_date": cfg["sim"]["start_date"],
+        "open_hour": cfg["sim"]["open_hour"],
+        "close_hour": cfg["sim"]["close_hour"],
         "sla_minutes": cfg["ops"]["sla_minutes"],
         **cfg["analysis"],
     }

@@ -159,7 +159,8 @@ def generate(project_dir: Path = PROJECT) -> Path:
     pickers[us_node][:, us_cols] = np.maximum(1, np.round(pickers[us_node][:, us_cols] * us["picker_ratio"]))
 
     # ---- riders: shifts cover the forecast; storms cause log-off ------------------------
-    trip_mean = 2 * (nodes.mean_distance_km.values / 20 * 60 + 2) + 2   # out, back, handover
+    # rider busy time per order: waiting at the node (~8 min) plus the delivery leg and the return leg
+    trip_mean = 2 * (nodes.mean_distance_km.values * 1.1 / 20 * 60 + 2) + 8
     req = np.ceil(lam * trip_mean[:, None, None] / (60 * ops["rider_target_utilisation"])).astype(int)
     shift_len = 5
     st = plants["storm"]
@@ -204,7 +205,7 @@ def generate(project_dir: Path = PROJECT) -> Path:
     cell = np.repeat(np.arange(flat.size), flat)
     n_idx, d_idx, h_idx = np.unravel_index(cell, counts.shape)
     n_orders = cell.size
-    minute = rng.uniform(0, 60, n_orders)
+    minute = rng.integers(0, 3600, n_orders) / 60  # whole seconds, so rounding never spills into the next hour
     placed_min = d_idx * 1440 + op_hours[h_idx] * 60 + minute
     order_sort = np.argsort(placed_min, kind="stable")
     n_idx, d_idx, h_idx, placed_min, cell = (a[order_sort] for a in (n_idx, d_idx, h_idx, placed_min, cell))

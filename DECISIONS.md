@@ -134,3 +134,45 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** a DQ report that is never checked can silently undercount; recounting in a second engine catches errors in the check SQL itself, and the cleaned-layer tests turn "no impossible timestamps" into a gate for `make all`.
 - **Alternatives rejected:** a data-validation framework (e.g. Great Expectations), because it adds a heavy dependency and its own configuration language for about a dozen checks; assertions inside the SQL, because DuckDB has no portable `ASSERT` and failures would be less readable.
 - **Trade-off / consequence:** new checks have to be added in two places (SQL and, where it matters, the pandas recount).
+
+### D-020: percentile and SLA definitions
+- **Project / phase:** p1, phase 4
+- **Decision:** P50/P90 delivery time use `QUANTILE_CONT` (linear interpolation) over orders with a valid timeline; % within SLA is orders delivered within `sla_minutes` divided by timed orders, always computed as a ratio of summed counts (also for the 7-day rolling rate), never as an average of daily rates.
+- **Why:** P90 is what customers at the tail feel and what an SLA promise is usually written against; averaging daily percentages would weight a quiet Sunday the same as a peak Friday.
+- **Alternatives rejected:** mean delivery time as the headline, because a few very late orders hide behind it; `QUANTILE_DISC`, because it returns an observed value and jumps between days, which makes small trend changes look noisy; approximate quantiles, because exact ones are cheap at this size.
+- **Trade-off / consequence:** percentiles cannot be added up across nodes, so the network P90 is computed from orders, and the Excel workbook carries P50/P90 as values while rate formulas stay live.
+
+### D-021: fill rate on all lines, stockout rate on tracked SKUs in operating hours
+- **Project / phase:** p1, phase 4
+- **Decision:** fill rate = units fulfilled / units ordered on delivered orders (every SKU); stockout rate = share of operating hours a tracked node-SKU ends with zero on hand; a node-SKU is a "repeat stockout" if it hits zero on at least `stockout_repeat_days` (50%) of days.
+- **Why:** fill rate is what the customer experiences and is available for every line; stockout rate needs a stock position, which exists only for tracked SKUs; counting closed hours would dilute it with the overnight period when nothing can sell.
+- **Alternatives rejected:** stockout rate as share of snapshots including night hours, because 7 of 24 hours are closed; "ever stocked out", because almost every SKU hits zero at least once in 90 days and the flag would not discriminate.
+- **Trade-off / consequence:** the two measures have different bases (all SKUs vs the 150 tracked fast movers), which the README states; the 50% repeat threshold is a judgement call kept in config.
+
+### D-022: rider utilisation includes waiting at the node and the return leg
+- **Project / phase:** p1, phase 4
+- **Decision:** rider busy minutes = rider assigned to delivered plus an estimated return leg equal to the outbound travel time, attributed to the hour of assignment; utilisation = busy minutes / online shift minutes; orders per rider-hour = delivered orders / online hours.
+- **Why:** a rider assigned to an order is unavailable from assignment until back at the node, including time spent waiting for a slow pick, so this is the definition that tells capacity planners how many riders an hour needs.
+- **Alternatives rejected:** picked-up to delivered only, because it ignores time stuck at the node and the ride back and shows riders as half idle when they are not; GPS-based return times, because the feed has none.
+- **Trade-off / consequence:** the return leg is an estimate; slow picking shows up partly as higher rider utilisation, which is real (riders queue at the node) but must not be read as a rider shortage. Calibrating this definition exposed that the generator's rider rostering ignored time waiting at the node, so I corrected the generator's trip-time estimate to match.
+
+### D-023: delay decomposition against a same-hour network baseline
+- **Project / phase:** p1, phase 4
+- **Decision:** for each node (and later each flagged cell) the gap to the network is split into pick, rider-wait and travel gaps, each measured against the network mean for the same hour of day; for late orders I also record which stage overran its typical (median) duration by the most minutes.
+- **Why:** stages add exactly to delivery time, so stage gaps add exactly to the delivery-time gap; comparing at the same hour of day stops nodes that trade mostly at peak from looking slow purely because of their hour mix.
+- **Alternatives rejected:** a regression of delivery time on stage times, because the stages are the delivery time and the coefficients would all be 1; Shapley-style attribution, because with an additive identity it reduces to the same answer with more code.
+- **Trade-off / consequence:** travel gaps mostly reflect delivery distance, which operations cannot change in the short run; the memo therefore focuses on pick and rider-wait gaps.
+
+### D-024: inventory turns annualised at cost, days of cover in units
+- **Project / phase:** p1, phase 4
+- **Decision:** turns = cost of units sold, annualised over the observed days, divided by average on-hand value at cost; days of cover = average on-hand units / average daily units sold; both on tracked SKUs.
+- **Why:** cost-based turns are the finance-standard definition and are not distorted by price differences between categories; days of cover in units is what a replenishment planner reads.
+- **Alternatives rejected:** turns at retail price, because margin differences would inflate high-margin categories; cover from end-of-day stock, because it ignores the intraday depletion that causes stockouts.
+- **Trade-off / consequence:** tracked SKUs are fast movers replenished daily, so turns are very high (over 100 per year); they are comparable between nodes but not to a whole-store figure that includes slow movers.
+
+### D-025: defect rate counts each order once per defect type over delivered orders
+- **Project / phase:** p1, phase 4
+- **Decision:** defect rate by type = delivered orders with at least one claim of that type / delivered orders; the "any defect" roll-up counts an order once even if it had several defect types; refund cost is also reported as a share of delivered GMV.
+- **Why:** operations teams target "orders with a problem", and one order with two missing lines is one unhappy customer, not two.
+- **Alternatives rejected:** claims per order, because multi-line shortages would inflate missing-item rates; including cancelled orders in the denominator, because they cannot carry a delivery defect.
+- **Trade-off / consequence:** line-level shortage severity is captured in fill rate and refund value rather than in the defect rate.
