@@ -288,3 +288,17 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** this is the most common real cause of SRM (a logging or redirect bug on one arm), and it is the realistic hard case: the remaining users look normal and the bias is invisible unless the split itself is tested.
 - **Alternatives rejected:** an unequal randomisation probability for the whole test, because it is detectable but has no root cause to localise; deleting whole users, because real logging bugs do not delete customers.
 - **Trade-off / consequence:** the analysis can detect and localise the bad day, but cannot recover the lost control users, so it must decide whether to exclude that day's cohort.
+
+### D-042: contribution margin per user as the promotion's primary metric
+- **Project / phase:** p2, phase 9
+- **Decision:** the primary metric is contribution per assigned user over the 21-day window, where contribution = product margin + delivery fee charged - delivery cost; orders, GMV, conversion and average basket are secondary; high-margin basket share is a guardrail. Users with no orders count as zero.
+- **Why:** a free-delivery threshold almost always raises orders and GMV, because it gives money away; the business question is whether it pays, which only a margin metric net of lost fees and serving cost answers. Per assigned user (not per ordering user) keeps the randomisation unit and the analysis unit the same.
+- **Alternatives rejected:** GMV or orders per user as primary, because they reward the promotion for its cost; contribution per order, because it ignores the extra orders the promotion generates and its denominator is itself affected by treatment.
+- **Trade-off / consequence:** contribution is noisier than order counts, so the test needs variance reduction (CUPED) and a power check; long-term effects (retention, basket habits) are outside a 21-day window.
+
+### D-043: assignment-log checks before any inference
+- **Project / phase:** p2, phase 9
+- **Decision:** `sql/01_dq_checks.sql` checks duplicate or out-of-window assignments, unknown users, users who ordered during the test without an assignment record, order validity, and missing or impossible pilot node-days; it also writes daily arm counts for a per-day sample-ratio test. The pilot panel's missing node-days are left missing (unbalanced panel), not imputed.
+- **Why:** an experiment readout is only as trustworthy as its assignment log; "active but unassigned" users are a direct symptom of a logging bug on one arm, and the daily split localises it. Fixed-effects regression handles an unbalanced panel natively, so imputing three days would only add invented data.
+- **Alternatives rejected:** checking the overall split only, because it detects but cannot localise a one-day bug; forward-filling missing pilot days, because it would understate variance.
+- **Trade-off / consequence:** the "active but unassigned" check needs the full user list; in production this would come from the exposure log rather than the user table.

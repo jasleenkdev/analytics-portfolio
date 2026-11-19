@@ -1,0 +1,9 @@
+check_name,table_name,failing_rows,total_rows,failing_pct,status,action
+users with more than one assignment row,assignments,0,58865,0,pass,keep first assignment
+assignment outside the assignment week,assignments,0,58865,0,pass,exclude
+assignment for an unknown user,assignments,0,58865,0,pass,exclude
+users ordering during the test with no assignment record,orders,816,44492,1.834,issue,report: possible lost assignment logs; check the daily split
+orders with null keys or non-positive basket,orders,0,323242,0,pass,exclude
+duplicate order ids,orders,0,323242,0,pass,drop duplicates
+pilot node-days missing from the panel,pilot_daily_ops,3,2688,0.1116,issue,keep panel unbalanced; no imputation
+pilot rows with impossible counts,pilot_daily_ops,0,2685,0,pass,exclude
