@@ -61,7 +61,11 @@ function makeTable(id, rows, cols, filters, numeric){
   cols.forEach(c => { const th = document.createElement('th'); th.textContent = c.replaceAll('_',' ');
     if (numeric.includes(c)) th.className = 'num';
     th.onclick = () => { asc = sortCol === c ? !asc : false; sortCol = c; draw(); }; head.appendChild(th); });
-  function fmt(v){ return (typeof v === 'number') ? (Number.isInteger(v) ? v.toLocaleString() : v.toFixed(2)) : (v ?? ''); }
+  function fmt(v){
+    if (typeof v !== 'number') return v ?? '';
+    if (Number.isInteger(v)) return v.toLocaleString();
+    return (v !== 0 && Math.abs(v) < 0.01) ? v.toExponential(1) : v.toFixed(2);
+  }
   function draw(){
     const q = search.value.toLowerCase();
     let r = rows.filter(x => filters.every(f => !sel[f] || String(x[f]) === sel[f]) &&
@@ -93,7 +97,7 @@ function makeTable(id, rows, cols, filters, numeric){
       Plotly.relayout(el, upd);
       (el.data || []).forEach((tr, i) => {
         const slot = tr.meta && tr.meta.slot;
-        if (slot === undefined) return;
+        if (slot === undefined || (tr.marker && Array.isArray(tr.marker.color))) return;
         const c = (d ? DARK : LIGHT)[slot];
         const key = tr.type === 'bar' ? 'marker.color' : 'line.color';
         Plotly.restyle(el, {[key]: c}, [i]);

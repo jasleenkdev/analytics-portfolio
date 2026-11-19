@@ -1,0 +1,7 @@
+metric,dimension,p_value,p_adjusted,significant_adjusted
+orders,platform,0.0794093,0.158819,False
+orders,zone,0.168757,0.168757,False
+orders,tenure,0.00954696,0.0286409,True
+contribution,platform,0.0219497,0.0658491,False
+contribution,zone,0.323141,0.323141,False
+contribution,tenure,0.0279198,0.0658491,False

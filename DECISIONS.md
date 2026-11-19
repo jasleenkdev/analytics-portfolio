@@ -358,3 +358,17 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** coding the rule removes the temptation to argue for a result after seeing it, and states the business trade-off (how much defect increase is acceptable for the saving) explicitly for stakeholders to challenge.
 - **Alternatives rejected:** a single p-value threshold on the primary metric, because it ignores guardrails; an expected-value calculation monetising defects, because the cost of a defect (refund plus churn) is not in the data and would be an invented number.
 - **Trade-off / consequence:** the tolerances (0.3 pp defects, 2 pp SLA) are judgement calls held in config; a different business could reasonably set them differently and get a different call.
+
+### D-052: experiment workbook computes the tests, not just the inputs
+- **Project / phase:** p2, phase 12
+- **Decision:** `outputs/p2_experiment_readout.xlsx` stores per-arm n, mean and variance, daily assignment counts, power inputs and the pilot 2x2 means as values, and computes difference, standard error, CI, p-value, significance, MDE, required sample size, per-day SRM chi-square p-values and the raw difference-in-differences as formulas driven by editable alpha, power and SRM-threshold cells. Tests evaluate the formulas (with scipy-backed implementations of `NORM.S.INV`, `NORM.S.DIST` and `CHISQ.DIST.RT`, which the formula engine lacks) and compare them with the Python readout.
+- **Why:** a stakeholder can change alpha or the target power and see the conclusions move, which is the most useful thing a spreadsheet adds to an experiment readout; testing the formulas proves the sheet agrees with the README.
+- **Alternatives rejected:** exporting result rows as values, because it violates the live-formula requirement and teaches nothing; reproducing the fixed-effects DiD in Excel, because regression with 130 dummies is not a spreadsheet task (the sheet shows the raw 2x2 and labels the difference).
+- **Trade-off / consequence:** the sheet uses a normal approximation instead of Welch t; with over 26k users per arm the difference is in the fourth decimal.
+
+### D-053: experiment dashboard built around the decision
+- **Project / phase:** p2, phase 12
+- **Decision:** tiles state both calls first, then a forest plot of every promotion metric (relative effect with CI), the novelty chart, the per-day SRM chart, the basket-value histogram with both thresholds, segment forest plot plus Holm and interaction tables, pilot weekly trends with a metric switcher, the event-study chart and the DiD table with pre-trend and placebo results.
+- **Why:** a forest plot shows sign, size and uncertainty of many metrics at once on one axis; each later chart answers one challenge a stakeholder would raise (is the split valid, will it fade, who responds, are the pilot groups comparable).
+- **Alternatives rejected:** bar charts of arm means, because they hide uncertainty and need one axis per metric; a dual-axis chart of cost and defects, because two scales on one chart invite false visual correlations.
+- **Trade-off / consequence:** relative effects for ratio metrics and share metrics sit on the same axis as money metrics, so the hover text gives the exact meaning of each row.

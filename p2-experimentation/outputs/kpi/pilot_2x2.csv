@@ -1,0 +1,17 @@
+pilot_group,period,metric,value
+treatment,before,cost_per_order,5.76956
+treatment,before,mean_delivery_min,23.8692
+treatment,before,pct_within_sla,0.884923
+treatment,before,defect_rate,0.0340911
+treatment,after,cost_per_order,5.27913
+treatment,after,mean_delivery_min,26.3033
+treatment,after,pct_within_sla,0.864548
+treatment,after,defect_rate,0.0417748
+control,before,cost_per_order,6.09598
+control,before,mean_delivery_min,22.9082
+control,before,pct_within_sla,0.884038
+control,before,defect_rate,0.032662
+control,after,cost_per_order,6.35548
+control,after,mean_delivery_min,23.8572
+control,after,pct_within_sla,0.877168
+control,after,defect_rate,0.0343085

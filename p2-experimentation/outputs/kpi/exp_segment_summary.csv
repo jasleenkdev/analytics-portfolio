@@ -1,0 +1,21 @@
+dimension,segment,variant,n,mean_orders,mean_contribution,var_contribution,mean_gmv
+platform,android,control,11438,2.2024,15.1965,366.806,73.4401
+platform,android,treatment,11979,2.53018,13.8122,323.32,88.5093
+platform,ios,control,13153,2.2807,15.8404,389.745,76.547
+platform,ios,treatment,13374,2.48093,13.4793,315.958,85.9279
+platform,web,control,4361,2.28778,15.9034,394.24,76.2255
+platform,web,treatment,4560,2.52851,13.6797,309.219,87.5145
+tenure,established,control,22183,2.25042,15.6396,380.232,75.468
+tenure,established,treatment,22850,2.47142,13.4701,311.261,86.2105
+tenure,new (<90 days),control,6769,2.25218,15.4508,385.417,74.6258
+tenure,new (<90 days),treatment,7063,2.62594,14.2029,338.938,90.4162
+zone,central,control,5185,2.2704,15.5486,372.123,74.8728
+zone,central,treatment,5387,2.52051,13.6368,312.363,86.8923
+zone,east,control,5118,2.27687,15.9888,396.035,77.0318
+zone,east,treatment,5471,2.5096,13.6243,302.037,86.9032
+zone,north,control,6943,2.26934,15.5501,376.18,74.7431
+zone,north,treatment,7110,2.4443,13.4477,318.591,85.7819
+zone,south,control,5218,2.24895,15.7107,389.268,75.9011
+zone,south,treatment,5365,2.51948,13.5095,319.282,86.6808
+zone,west,control,6488,2.19636,15.2786,376.692,74.2589
+zone,west,treatment,6580,2.55547,13.9842,333.686,89.6703
