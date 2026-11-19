@@ -57,3 +57,12 @@ def test_dashboard_contains_data():
     html = DASHBOARD.read_text()
     assert "Simulated data" in html and html.count("Plotly.newPlot") >= 7
     assert 'makeTable("recs"' in html
+
+
+def test_narratives_rendered_and_disclose_simulation():
+    readme, memo = (PROJECT / "README.md").read_text(), (PROJECT / "memo.md").read_text()
+    assert "simulated" in "\n".join(readme.splitlines()[:10]).lower() and "simulated" in memo.lower()
+    for text in (readme, memo):
+        assert "{{" not in text and "{%" not in text
+    f = json.loads((PROJECT / "outputs" / "findings.json").read_text())
+    assert f"{f['retention']['repeat_curve']['90'] * 100:.1f}%" in readme

@@ -1,0 +1,38 @@
+{% set r = f.retention %}
+{% set d = f.funnel.dropoff %}
+{% set w = f.wastage %}
+{% set fi = model["first_order_issue"] %}
+# Memo: retention, range and waste, full year
+
+**To:** Category and growth teams  **From:** Analytics  **Data:** simulated (seeded generator, not real company data)
+
+**Bottom line.** {{ r.customers | int }} customers placed a first order this year; {{ r.repeat_curve["90"] | pct }} ordered again within 90 days. {% set top_channel = channels | map(attribute="marginal_effect_pp") | map("abs") | max %}Retention is driven by acquisition channel and{{ ", above all," if (fi.marginal_effect_pp | abs) > top_channel }} by whether the first order goes right. {% if d %}A payment fault in {{ d.platform }} app {{ d.app_version }} has been costing orders since {{ d.first_day }}. {% endif %}On the range side, a handful of high-margin SKUs are badly under-ranged and perishable overstock at a few node-categories accounts for a large share of waste.
+
+### 1. Protect the first order
+Customers whose first order had a problem are {{ (fi.marginal_effect_pp | abs) | num(1) }} points less likely to come back within 90 days (95% CI {{ (fi.ci_high_pp | abs) | num(1) }} to {{ (fi.ci_low_pp | abs) | num(1) }}){{ ", the largest single driver in the model" if (fi.marginal_effect_pp | abs) > top_channel }}. Channel matters too: {{ channels[0].term | replace("channel: ", "") | replace(" (vs organic)", "") }} customers repeat {{ (channels[0].marginal_effect_pp | abs) | num(1) }} points less than organic, {{ channels[-1].term | replace("channel: ", "") | replace(" (vs organic)", "") }} customers {{ channels[-1].marginal_effect_pp | num(1) }} points {{ "more" if channels[-1].marginal_effect_pp > 0 else "less" }}.
+**Action:** route first orders to the most reliable pick and dispatch slots and issue an automatic credit when a first order goes wrong (test it as an experiment); weight acquisition budget by 90-day repeat, not by first-order cost alone.
+
+{% if d %}
+### 2. Fix payments on {{ d.platform }} {{ d.app_version }}
+Payment success on that version is {{ d.rate | pct }} against {{ d.others_rate | pct }} for every other platform and version (all other funnel steps are normal). The platform's success rate went from {{ d.platform_success_before | pct }} before the release to {{ d.platform_success_after_full_adoption | pct }} once adopted. That is about {{ d.lost_orders | int }} lost orders, roughly {{ d.lost_revenue | num(0) }} in basket value, plus weaker retention for the customers affected.
+**Action:** escalate to the app team as a release regression; until fixed, offer a fallback payment method in that version.
+{% endif %}
+
+### {{ 3 if d else 2 }}. Give the under-ranged premium SKUs more space
+{% if gems %}{{ gems | length }} `{{ gems[0].category }}` SKUs with about {{ gems[0].margin_rate | pct(0) }} margin are ranged at only {{ gems[0].ranged_nodes }} nodes, so they look mid-table at network level (class {{ gems[0].abc }}), yet where ranged they sell faster than the median SKU. {% endif %}Across all {{ summary.add.recs }} add recommendations, the expected gain is {{ summary.add.impact_low | num(0) }} to {{ summary.add.impact_high | num(0) }} a year in gross margin (low end assumes 30% cannibalisation and the weakest node's result).
+**Action:** range them at the remaining nodes in a staged roll-out and measure against untouched nodes.
+
+### {{ 4 if d else 3 }}. Cut depth where perishables outlive their shelf life
+Perishable waste cost {{ w.total_cost | num(0) }} ({{ w.waste_rate | pct }} of units received). {{ w.reduce_count }} node-SKUs carry more days of cover than their shelf life while selling at least {{ cfg.assortment.reduce_min_daily_units | int }} unit a day; they wasted {{ w.reduce_cost | num(0) }}, led by {{ w.top_node_category[0].category }} at {{ w.top_node_category[0].node_id }}. Cutting cover to {{ (cfg.analysis.target_cover_share * 100) | int }}% of shelf life saves an estimated {{ summary["reduce depth"].impact_low | num(0) }} to {{ summary["reduce depth"].impact_high | num(0) }} a year.
+**Action:** lower order-up-to levels for these node-SKUs (the workbook lists the recommended stock per node-SKU) and review weekly waste.
+
+### Also worth acting on
+- **Champions** are {{ rfm.champions.share_customers | pct(0) }} of customers but {{ rfm.champions.share_margin | pct(0) }} of margin; **at-risk** customers (good history, not seen recently) hold {{ rfm["at risk"].share_margin | pct(0) }} of margin and are the win-back target.
+- {{ f.affinity_pairs_strong }} product pairs are bought together far more than chance (lift {{ f.affinity[-1].lift | num(1) }} to {{ f.affinity[0].lift | num(1) }}): place them together and use them for bundles. The drop list ({{ summary.drop.recs }} slow, low-margin, class C node-SKUs) frees space for the adds above at a small margin cost.
+
+**Caveats.** Impact ranges rest on stated substitution and cannibalisation assumptions (config), not on a measured ranging test; retention effects are associations from a model and should be confirmed by experiment before large spend.
+
+## Appendix: recommendations by node (annual, currency units)
+Drop columns are the net annual margin change after waste avoided (negative = margin given up).
+
+{{ appendix }}

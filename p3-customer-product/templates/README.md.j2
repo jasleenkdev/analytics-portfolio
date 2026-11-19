@@ -1,0 +1,46 @@
+{% set r = f.retention %}
+{% set d = f.funnel.dropoff %}
+{% set w = f.wastage %}
+{% set fi = model["first_order_issue"] %}
+# Customer, product and inventory analytics
+
+**Business question:** which customers retain and why, which products and categories deserve more space, and how should each node's assortment change?
+
+> **Simulated data.** Everything comes from a seeded Python generator (`data_gen/generate.py`, seed {{ cfg.sim.seed }}), not from any real company. Assumptions: {{ cfg.sim.customers }} customers signing up through {{ cfg.sim.days }} days from {{ cfg.sim.start_date }} via five acquisition channels; Poisson ordering with a gamma-distributed personal rate while active and an exponential lifetime set by a monthly churn hazard; baskets of 1 + Poisson(4.8) lines, {{ (cfg.sim.repertoire_share * 100) | int }}% from a personal repertoire of {{ cfg.sim.repertoire_size }} favourite SKUs; {{ cfg.sim.n_skus }} SKUs in 15 categories ranged differently across {{ cfg.sim.n_nodes }} nodes; a six-step checkout funnel; daily order-up-to replenishment with FIFO ageing and write-off for perishables.
+
+{% if links.pages_url %}**Live dashboard:** {{ links.pages_url }}/p3/  |  {% endif %}Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  CSV: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p3_assortment_wastage.xlsx`](outputs/p3_assortment_wastage.xlsx)
+
+## Headline
+{{ r.customers | int }} ordering customers; {{ r.repeat_curve["30"] | pct }} reorder within 30 days and {{ r.repeat_curve["90"] | pct }} within 90. Of first-order cohorts with at least six months of history, {{ r.cohort_curve["1"] | pct }} order again in month 1 and {{ r.cohort_curve["6"] | pct }} in month 6. {{ a_skus }} class-A SKUs carry {{ a_share | pct(0) }} of revenue. Perishable waste cost {{ w.total_cost | num(0) }} ({{ w.waste_rate | pct }} of units received).
+
+## Findings
+1. **Retention drivers.** In a logistic model of 90-day repeat (n = {{ r.model_n | int }}, base rate {{ r.model_base_rate | pct }}): a problem on the first order {{ fi.marginal_effect_pp | num(1) }} pp (95% CI {{ fi.ci_low_pp | num(1) }} to {{ fi.ci_high_pp | num(1) }}); {% for c in channels %}{{ c.term | replace(" (vs organic)", "") | replace("channel: ", "") }} {{ "%+.1f" | format(c.marginal_effect_pp) }} pp{{ ", " if not loop.last }}{% endfor %} versus organic{% if "platform: android (vs ios)" in model %}; Android {{ "%+.1f" | format(model["platform: android (vs ios)"].marginal_effect_pp) }} pp versus iOS{% endif %}. First-basket size has no detectable effect ({{ "%+.2f" | format(model["log_first_basket"].marginal_effect_pp) }} pp per log unit, p = {{ model["log_first_basket"].p_value | num(2) }}).
+{% if d %}
+1. **Funnel drop-off.** Of {{ f.funnel.tests }} segment-step tests (Holm-corrected), one stands out: {{ d.platform }} app {{ d.app_version }} converts payment attempts to orders at {{ d.rate | pct }} vs {{ d.others_rate | pct }} elsewhere ({{ d.gap_pp | num(1) }} pp), from {{ d.first_day }}. Estimated {{ d.lost_orders | int }} lost orders ({{ d.lost_revenue | num(0) }} in basket value at an average basket of {{ d.aov | num(2) }}).
+{% endif %}
+1. **RFM.** {% for s, x in rfm.items() %}{{ s }}: {{ x.share_customers | pct(0) }} of customers, {{ x.share_margin | pct(0) }} of margin{{ "; " if not loop.last }}{% endfor %}.
+1. **Basket affinity.** {{ f.affinity_pairs_strong }} pairs reach lift >= {{ cfg.analysis.affinity_min_lift }} with at least {{ cfg.analysis.affinity_min_orders }} shared orders: {% for a in f.affinity %}{{ a.sku_a }} ({{ a.category_a }}) + {{ a.sku_b }} ({{ a.category_b }}) lift {{ a.lift | num(1) }}{{ ", " if not loop.last }}{% endfor %}.
+1. **Under-ranged high-margin SKUs.** {% if gems %}{% for g in gems %}{{ g.sku_id }}{{ ", " if not loop.last }}{% endfor %} ({{ gems[0].category }}, about {{ gems[0].margin_rate | pct(0) }} margin) are ranged at {{ gems[0].ranged_nodes }} nodes only and sit in class {{ gems[0].abc }} at network level, yet sell above the median SKU's velocity where ranged; they lead the add list.{% endif %} All {{ summary.add.recs }} add recommendations: {{ summary.add.impact_low | num(0) }} to {{ summary.add.impact_high | num(0) }} annual gross margin.
+1. **Perishable overstock.** {{ w.reduce_count }} node-SKUs hold more cover than shelf life while selling at least {{ cfg.assortment.reduce_min_daily_units | int }} unit a day, wasting {{ w.reduce_cost | num(0) }} ({{ (w.reduce_cost / w.total_cost) | pct(0) }} of all waste). Largest: {% for x in w.reduce[:4] %}{{ x.node_id }}/{{ x.sku_id }} ({{ x.category }}, cover {{ x.days_of_cover | num(1) }} days vs {{ x.shelf_life_days }}-day shelf life){{ ", " if not loop.last }}{% endfor %}. Saving from cutting depth: {{ summary["reduce depth"].impact_low | num(0) }} to {{ summary["reduce depth"].impact_high | num(0) }} a year.
+1. **Drop candidates.** {{ summary.drop.recs }} node-SKUs (bottom decile margin at their node, class C, no strong affinity) change annual margin by {{ summary.drop.impact_low | num(0) }} to {{ summary.drop.impact_high | num(0) }} net of waste avoided (negative = margin given up), freeing space for the adds.
+
+## Method
+1. **SQL** (`sql/`): data-quality checks; base layer with order sequence (ROW_NUMBER), days between orders (LAG) and first-order cohorts; funnel by platform x version x month (conditional aggregation); cohort triangle, repeat curve and retention by driver; RFM with NTILE quintiles; ABC on cumulative revenue (window SUM) and XYZ on median node-level weekly CV; pair affinity via a basket self-join (support, confidence, lift); wastage risk as days of cover over shelf life; per-node add / drop / reduce-depth rules with impact ranges.
+2. **Python** (`analysis/findings.py`): two-proportion tests of every segment-step against the rest with Holm correction; logistic regression of 90-day repeat with average marginal effects.
+3. **Verification** (`tests/`): generator invariants (ledger balance, no negative stock, ranging, funnel prefixes, FK integrity), SQL metrics recomputed in pandas, rule checks on every recommendation, and the Excel formulas evaluated against SQL.
+
+Every number in this README and the memo is rendered from `outputs/findings.json`. Design choices are logged in the repository's `DECISIONS.md`.
+
+## Outputs for BI tools
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The tables are exported as CSV (`outputs/kpi/`, including per-customer RFM scores) and as an Excel workbook whose ABC-XYZ classification and wastage model are live formulas over editable thresholds.
+
+## Limitations
+- Simulated data: no seasonality, promotions, price changes or substitution behaviour; churn is permanent.
+- Add/drop impacts rest on assumed cannibalisation (30%) and substitution (50%) rather than a measured ranging test.
+- Retention drivers are associations from a model; the first-order effect would need an experiment to confirm in real data.
+- XYZ uses median node-level variability, which partly reflects how widely a SKU is ranged.
+
+## Run it
+```
+make p3      # from the repository root
+```

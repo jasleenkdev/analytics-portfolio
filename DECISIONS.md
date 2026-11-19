@@ -498,3 +498,10 @@ Every choice of tool, data design, metric definition, statistical method or thre
 - **Why:** the page follows the three business questions in order (retain, products, assortment); the payment chart by version makes the funnel fault self-evident, and the log-log scatter separates expensive overstock (top right) from cheap presentation stock (bottom right).
 - **Alternatives rejected:** a Sankey funnel, because step widths are harder to compare than bar lengths; a cohort line per cohort, because twelve overlapping lines are unreadable next to a heatmap.
 - **Trade-off / consequence:** the cohort heatmap caps its colour scale at 50% so later months are distinguishable; month 0 is 100% by definition.
+
+### D-072: category and growth memo with a per-node appendix
+- **Project / phase:** p3, phase 19
+- **Decision:** the memo leads with a bottom line, then four numbered actions in order of how directly a team can act (protect the first order, fix the payment fault, range the under-ranged SKUs, cut perishable depth), a short "also worth acting on" list (RFM win-back, affinity placement, drop list) and a caveats line; the appendix is one table per node with counts and impact ranges for add, reduce-depth and drop. Claims such as "largest driver" appear only when the numbers support them.
+- **Why:** a category team plans by node and a growth team by customer group; one page with an appendix table serves both without a second document. Ranges rather than points keep the cannibalisation and substitution assumptions visible.
+- **Alternatives rejected:** separate memos per team, because the findings interact (the payment fault also lowers Android retention); listing every SKU recommendation in the memo, because 490 rows belong in the CSV and dashboard table.
+- **Trade-off / consequence:** SKU-level detail for a node requires opening the dashboard or the CSV.
