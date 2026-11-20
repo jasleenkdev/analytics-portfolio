@@ -36,7 +36,7 @@
 Every number in this README and the memo is rendered from `outputs/findings.json`. Design choices are logged in the repository's `DECISIONS.md`.
 
 ## Outputs for BI tools
-Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The tables are exported as CSV (`outputs/kpi/`, including per-customer RFM scores) and as an Excel workbook whose ABC-XYZ classification and wastage model are live formulas over editable thresholds.
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file published to GitHub Pages (`make pages` pushes the built site to the `gh-pages` branch). The tables are exported as CSV (`outputs/kpi/`, including per-customer RFM scores) and as an Excel workbook whose ABC-XYZ classification and wastage model are live formulas over editable thresholds.
 
 ## Limitations
 - Simulated data: no seasonality, promotions, price changes or substitution behaviour; churn is permanent.

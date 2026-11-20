@@ -1,4 +1,4 @@
 # Public locations, filled in when the repository is published. Empty values hide the links.
 [links]
-repo_url = ""
-pages_url = ""
+repo_url = "https://github.com/jasleenkdev/analytics-portfolio"
+pages_url = "https://jasleenkdev.github.io/analytics-portfolio"

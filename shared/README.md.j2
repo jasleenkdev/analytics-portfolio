@@ -11,7 +11,7 @@ Three company-agnostic analytics projects for online retail, delivery, marketpla
 | [Customer, product and inventory](p3-customer-product/) | Which customers retain and why; which products deserve more space; how should each node's range change? | First-order problems cut 90-day repeat by {{ (p3_fi.marginal_effect_pp | abs) | num(1) }} pts; {% if p3.funnel.dropoff %}a payment fault in the {{ p3.funnel.dropoff.platform }} app version {{ p3.funnel.dropoff.app_version }} cost about {{ p3.funnel.dropoff.lost_orders | int }} orders; {% endif %}add recommendations worth {{ p3_add.impact_low | num(0) }} to {{ p3_add.impact_high | num(0) }} a year | {{ cc3.summary.hit }} hit, {{ cc3.summary.partial }} partial, {{ cc3.summary.miss }} missed |
 
 {% if links.pages_url %}**Live dashboards:** [operations]({{ links.pages_url }}/p1/) | [experiments]({{ links.pages_url }}/p2/) | [customers and products]({{ links.pages_url }}/p3/)
-{% else %}Dashboards: [`p1`](p1-fulfilment-ops/docs/index.html) | [`p2`](p2-experimentation/docs/index.html) | [`p3`](p3-customer-product/docs/index.html) (single-file HTML; a GitHub Actions workflow publishes them to GitHub Pages)
+{% else %}Dashboards: [`p1`](p1-fulfilment-ops/docs/index.html) | [`p2`](p2-experimentation/docs/index.html) | [`p3`](p3-customer-product/docs/index.html) (single-file HTML; `make pages` publishes them to GitHub Pages)
 {% endif %}
 
 ## What each project contains
@@ -28,7 +28,7 @@ Three company-agnostic analytics projects for online retail, delivery, marketpla
 - **Reproducible:** `make all` creates a virtual environment, generates all data from fixed seeds, runs the SQL and statistics, runs the tests, and renders dashboards, workbooks, memos and READMEs. Any failing test stops the build.
 - **Numbers come from code:** every figure in the READMEs and memos is rendered from query results; nothing is typed by hand.
 - **Planted ground truth:** each generator injects known problems and effects. The analysis is written without reading them; a separate cross-check scores what was found and the READMEs report hits, partial hits and misses.
-- **BI-tool ready:** Power BI, Tableau and Looker cannot be built headlessly, so dashboards are single-file Plotly HTML, and the same numbers are exported as CSV and as Excel workbooks with live formulas for loading into any BI tool.
+- **BI-tool ready:** Power BI, Tableau and Looker cannot be built headlessly, so dashboards are single-file Plotly HTML published to GitHub Pages from the `gh-pages` branch, and the same numbers are exported as CSV and as Excel workbooks with live formulas for loading into any BI tool.
 - **Configurable:** the delivery SLA ({{ p1.network.sla_minutes }} minutes here), statistical thresholds and business tolerances live in each project's `config.toml`.
 - **Decisions logged:** [`DECISIONS.md`](DECISIONS.md) records every choice of tool, data design, metric definition, statistical method and threshold, with the alternatives rejected.
 

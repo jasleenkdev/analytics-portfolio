@@ -4,7 +4,7 @@
 
 > **Simulated data.** Everything here comes from a seeded Python generator (`data_gen/generate.py`, seed 20260105), not from any real company. Assumptions: 12 fulfilment nodes in 5 zones, 800 SKUs in 12 categories, about 400k orders over 90 days from 2026-01-05, Poisson demand with weekday/weekend hourly curves and rain uplift, pick and rider-wait times driven by queueing on rostered pickers and online riders, weather-dependent travel speed, daily order-up-to replenishment for the 150 fastest SKUs, and refund claims for late, missing, wrong and damaged items. The delivery SLA is a config value (30 minutes here).
 
-Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  KPI exports: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p1_fulfilment_kpis.xlsx`](outputs/p1_fulfilment_kpis.xlsx)
+**Live dashboard:** https://jasleenkdev.github.io/analytics-portfolio/p1/  |  Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  KPI exports: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p1_fulfilment_kpis.xlsx`](outputs/p1_fulfilment_kpis.xlsx)
 
 ## Headline
 87.2% of orders were delivered within 30 minutes (P50 19.4 min, P90 31.7 min), ranging from 77.2% at N07 to 93.1% at N01. 6.9% of delivered orders drew a refund claim and 0.67% of orders were cancelled. Fill rate was 99.33%, rider utilisation 70%.
@@ -48,7 +48,7 @@ The generator plants known effects, listed in [`GROUND_TRUTH.md`](GROUND_TRUTH.m
 Every number in this README and the memo is rendered from `outputs/findings.json`; nothing is typed by hand. Design choices are logged in the repository's `DECISIONS.md`.
 
 ## Outputs for BI tools
-Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The same numbers are exported as CSV (`outputs/kpi/`) and as an Excel workbook whose summary sheet is live `SUMIFS` formulas over the exported facts, ready to load into any BI tool.
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file published to GitHub Pages (`make pages` pushes the built site to the `gh-pages` branch). The same numbers are exported as CSV (`outputs/kpi/`) and as an Excel workbook whose summary sheet is live `SUMIFS` formulas over the exported facts, ready to load into any BI tool.
 
 ## Limitations
 - Simulated data: effects are cleaner than in production and there is no seasonality beyond weekly patterns.

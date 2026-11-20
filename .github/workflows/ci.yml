@@ -1,18 +1,12 @@
-name: build-and-deploy
+name: build-and-verify
 
+# Manual only: Pages is served from the gh-pages branch built locally with `make pages`.
+# Run this workflow by hand to rebuild and test on a clean runner when Actions is available.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
   build:
@@ -24,17 +18,5 @@ jobs:
           python-version: "3.11"
       - name: rebuild data, metrics, tests, dashboards and reports
         run: make all PYTHON_BOOT=python
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: confirm the rebuild matches the committed outputs
+        run: git diff --exit-code

@@ -21,7 +21,7 @@ define run_project
 	cd $(1) && PYTHONPATH=$(ROOT) $(PY) -m pytest -q -p no:cacheprovider -m outputs tests
 endef
 
-.PHONY: all setup p1 p2 p3 test readme site clean
+.PHONY: all setup p1 p2 p3 test readme site pages clean
 
 all: p1 p2 p3 readme site
 
@@ -51,6 +51,11 @@ readme: setup
 
 site: setup
 	PYTHONPATH=$(ROOT) $(PY) -m shared.site
+
+# push the built site to the gh-pages branch; MSG is the commit message, e.g. make pages MSG="phase 23: ..."
+pages: site
+	test -n "$(MSG)" || (echo 'set MSG="phase N: ..."' && exit 1)
+	PYTHONPATH=$(ROOT) $(PY) -m shared.publish "$(MSG)"
 
 clean:
 	rm -rf site $(addsuffix /data,$(PROJECTS))

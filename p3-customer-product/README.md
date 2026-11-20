@@ -4,7 +4,7 @@
 
 > **Simulated data.** Everything comes from a seeded Python generator (`data_gen/generate.py`, seed 20250101), not from any real company. Assumptions: 80000 customers signing up through 365 days from 2025-01-01 via five acquisition channels; Poisson ordering with a gamma-distributed personal rate while active and an exponential lifetime set by a monthly churn hazard; baskets of 1 + Poisson(4.8) lines, 55% from a personal repertoire of 12 favourite SKUs; 420 SKUs in 15 categories ranged differently across 8 nodes; a six-step checkout funnel; daily order-up-to replenishment with FIFO ageing and write-off for perishables.
 
-Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  CSV: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p3_assortment_wastage.xlsx`](outputs/p3_assortment_wastage.xlsx)
+**Live dashboard:** https://jasleenkdev.github.io/analytics-portfolio/p3/  |  Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  CSV: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p3_assortment_wastage.xlsx`](outputs/p3_assortment_wastage.xlsx)
 
 ## Headline
 76,479 ordering customers; 46.7% reorder within 30 days and 67.0% within 90. Of first-order cohorts with at least six months of history, 43.3% order again in month 1 and 17.0% in month 6. 146 class-A SKUs carry 80% of revenue. Perishable waste cost 284,290 (10.2% of units received).
@@ -42,7 +42,7 @@ The generator plants known effects, listed in [`GROUND_TRUTH.md`](GROUND_TRUTH.m
 Every number in this README and the memo is rendered from `outputs/findings.json`. Design choices are logged in the repository's `DECISIONS.md`.
 
 ## Outputs for BI tools
-Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The tables are exported as CSV (`outputs/kpi/`, including per-customer RFM scores) and as an Excel workbook whose ABC-XYZ classification and wastage model are live formulas over editable thresholds.
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file published to GitHub Pages (`make pages` pushes the built site to the `gh-pages` branch). The tables are exported as CSV (`outputs/kpi/`, including per-customer RFM scores) and as an Excel workbook whose ABC-XYZ classification and wastage model are live formulas over editable thresholds.
 
 ## Limitations
 - Simulated data: no seasonality, promotions, price changes or substitution behaviour; churn is permanent.

@@ -46,7 +46,7 @@ Two-way fixed effects (node and date) with node-clustered errors; {{ q.treated_n
 Every number in this README and the memo is rendered from `outputs/findings.json`. Design choices are logged in the repository's `DECISIONS.md`.
 
 ## Outputs for BI tools
-Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The sufficient statistics and results are exported as CSV (`outputs/kpi/`) and as an Excel workbook where CIs, p-values, power, SRM tests and the raw DiD are live formulas.
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file published to GitHub Pages (`make pages` pushes the built site to the `gh-pages` branch). The sufficient statistics and results are exported as CSV (`outputs/kpi/`) and as an Excel workbook where CIs, p-values, power, SRM tests and the raw DiD are live formulas.
 
 ## Limitations
 - Simulated data: no churn, no long-term habit change, and users do not interact with each other (no network effects or rider-capacity spillovers between arms).

@@ -4,7 +4,7 @@
 
 > **Simulated data.** Everything comes from a seeded Python generator (`data_gen/generate.py`, seed 20260504), not from any real company. Assumptions: 60000 users with gamma-Poisson order rates, lognormal basket sizes and a propensity for small high-margin baskets; a 28-day pre-period under the current policy; users randomised 50/50 on first visit during a 7-day assignment week and observed for 21 days; delivery fee 3.49 below the free threshold and a cost to serve of 3.8 per order. The pilot is a daily panel of 24 nodes (8 randomly chosen for batching) over 56 days before and 56 after the switch-on, with shared seasonality and shocks.
 
-Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  CSV: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p2_experiment_readout.xlsx`](outputs/p2_experiment_readout.xlsx)
+**Live dashboard:** https://jasleenkdev.github.io/analytics-portfolio/p2/  |  Dashboard file: [`docs/index.html`](docs/index.html)  |  Memo: [`memo.md`](memo.md)  |  CSV: [`outputs/kpi/`](outputs/kpi)  |  Excel: [`outputs/p2_experiment_readout.xlsx`](outputs/p2_experiment_readout.xlsx)
 
 ## Answers
 | Question | Call | Key evidence |
@@ -60,7 +60,7 @@ The generator plants known effects, listed in [`GROUND_TRUTH.md`](GROUND_TRUTH.m
 Every number in this README and the memo is rendered from `outputs/findings.json`. Design choices are logged in the repository's `DECISIONS.md`.
 
 ## Outputs for BI tools
-Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The sufficient statistics and results are exported as CSV (`outputs/kpi/`) and as an Excel workbook where CIs, p-values, power, SRM tests and the raw DiD are live formulas.
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file published to GitHub Pages (`make pages` pushes the built site to the `gh-pages` branch). The sufficient statistics and results are exported as CSV (`outputs/kpi/`) and as an Excel workbook where CIs, p-values, power, SRM tests and the raw DiD are live formulas.
 
 ## Limitations
 - Simulated data: no churn, no long-term habit change, and users do not interact with each other (no network effects or rider-capacity spillovers between arms).

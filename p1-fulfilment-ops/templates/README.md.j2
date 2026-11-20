@@ -43,7 +43,7 @@ Anomaly scan: {{ f.anomaly_counts.cells_scored | int }} node-hours scored, {{ f.
 Every number in this README and the memo is rendered from `outputs/findings.json`; nothing is typed by hand. Design choices are logged in the repository's `DECISIONS.md`.
 
 ## Outputs for BI tools
-Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file deployed to GitHub Pages by CI. The same numbers are exported as CSV (`outputs/kpi/`) and as an Excel workbook whose summary sheet is live `SUMIFS` formulas over the exported facts, ready to load into any BI tool.
+Power BI, Tableau and Looker cannot be built headlessly, so the dashboard is a single self-contained HTML file published to GitHub Pages (`make pages` pushes the built site to the `gh-pages` branch). The same numbers are exported as CSV (`outputs/kpi/`) and as an Excel workbook whose summary sheet is live `SUMIFS` formulas over the exported facts, ready to load into any BI tool.
 
 ## Limitations
 - Simulated data: effects are cleaner than in production and there is no seasonality beyond weekly patterns.
